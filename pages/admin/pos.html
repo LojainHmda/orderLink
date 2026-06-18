@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Point of Sale · OrderLink</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="../../assets/js/tailwind.config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/css/styles.css" rel="stylesheet"/>
+</head>
+<body class="font-body-md text-on-surface">
+<aside id="ol-sidebar"></aside>
+<header id="ol-topbar"></header>
+
+<main class="md:ml-[280px] pt-20 md:pt-24 px-container-margin-mobile md:px-container-margin-desktop min-h-screen">
+  <div class="grid lg:grid-cols-[1fr_380px] gap-6 pb-28 lg:pb-8">
+
+    <!-- Menu picker -->
+    <section>
+      <!-- category filter -->
+      <div class="sticky top-16 z-10 bg-surface/95 backdrop-blur py-3 -mx-1 px-1 no-scrollbar overflow-x-auto">
+        <div id="posTabs" class="flex gap-2 w-max"></div>
+      </div>
+      <div id="posMenu" class="space-y-6 mt-2"></div>
+    </section>
+
+    <!-- Ticket -->
+    <aside class="lg:sticky lg:top-24 lg:self-start">
+      <div class="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm flex flex-col max-h-[calc(100vh-7rem)]">
+        <div class="px-5 py-4 border-b border-outline-variant flex items-center justify-between">
+          <h2 class="font-headline-sm text-headline-sm flex items-center gap-2"><span class="material-symbols-outlined">receipt</span>Current ticket</h2>
+          <button id="clearTicket" class="text-label-md text-error hover:underline">Clear</button>
+        </div>
+
+        <div id="ticketItems" class="flex-1 overflow-y-auto px-4 py-3 space-y-2"></div>
+        <p id="ticketEmpty" class="text-center text-secondary py-10 px-4">Tap menu items to build a ticket.</p>
+
+        <div class="px-5 py-4 border-t border-outline-variant space-y-3">
+          <div class="grid grid-cols-3 gap-2" id="posType">
+            <button data-type="dine-in" class="ol-ptype py-2 rounded-lg border text-label-md flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-[20px]">restaurant</span>Dine-in</button>
+            <button data-type="pickup" class="ol-ptype py-2 rounded-lg border text-label-md flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-[20px]">storefront</span>Pickup</button>
+            <button data-type="delivery" class="ol-ptype py-2 rounded-lg border text-label-md flex flex-col items-center gap-0.5"><span class="material-symbols-outlined text-[20px]">delivery_dining</span>Delivery</button>
+          </div>
+          <div class="flex gap-2">
+            <input id="posName" placeholder="Customer name" class="flex-1 bg-surface-container border border-outline-variant rounded-lg px-3 py-2.5 focus:ring-primary focus:border-primary"/>
+            <input id="posTable" placeholder="Table" class="w-20 bg-surface-container border border-outline-variant rounded-lg px-3 py-2.5 focus:ring-primary focus:border-primary"/>
+          </div>
+          <div class="space-y-1 pt-1">
+            <div class="flex justify-between text-body-sm text-secondary"><span>Subtotal</span><span id="posSub">$0.00</span></div>
+            <div id="posFeeRow" class="flex justify-between text-body-sm text-secondary hidden"><span>Delivery</span><span id="posFee">$0.00</span></div>
+            <div class="flex justify-between font-headline-sm text-headline-sm"><span>Total</span><span id="posTotal">$0.00</span></div>
+          </div>
+          <button id="posCharge" disabled class="w-full bg-primary text-on-primary py-3.5 rounded-xl font-label-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-all disabled:opacity-50">
+            <span class="material-symbols-outlined">point_of_sale</span><span id="chargeLabel">Send to kitchen</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<nav id="ol-bottomnav"></nav>
+
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/ui.js"></script>
+<script>
+(function () {
+  var ui = OL.ui;
+  var slug = OL.activeRestaurant().slug;
+  ui.mountAdminShell({ base: "../../", active: "pos", title: "Point of Sale" });
+  var r = OL.getRestaurant(slug);
+
+  var ticket = [];
+  var type = "dine-in";
+  var activeCat = "all";
+
+  var groups = OL.menuByCategory(slug, { onlyAvailable: true });
+  var byId = {};
+  groups.forEach(function (g) { g.items.forEach(function (m) { byId[m.id] = m; }); });
+
+  // tabs
+  var tabs = document.getElementById("posTabs");
+  function paintTabs() {
+    var cats = ["all"].concat(groups.map(function (g) { return g.category; }));
+    tabs.innerHTML = cats.map(function (c) {
+      var on = c === activeCat;
+      return '<button data-cat="' + c + '" class="whitespace-nowrap px-4 py-2 rounded-full font-label-lg text-label-lg ' +
+        (on ? "bg-on-surface text-surface" : "bg-surface-container-high text-on-surface") + '">' + (c === "all" ? "All" : OL.escapeHtml(c)) + '</button>';
+    }).join("");
+  }
+  tabs.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-cat]"); if (!b) return;
+    activeCat = b.getAttribute("data-cat"); paintTabs(); renderMenu();
+  });
+
+  function renderMenu() {
+    var host = document.getElementById("posMenu");
+    var shown = groups.filter(function (g) { return activeCat === "all" || g.category === activeCat; });
+    host.innerHTML = shown.map(function (g) {
+      return '<section><h3 class="font-label-lg text-label-lg text-secondary uppercase tracking-wide mb-2">' + OL.escapeHtml(g.category) + '</h3>' +
+        '<div class="grid grid-cols-2 sm:grid-cols-3 gap-2">' + g.items.map(function (m) {
+          return '<button data-pick="' + m.id + '" class="text-left bg-surface-container-lowest border border-outline-variant rounded-xl p-3 hover:border-primary hover:shadow-sm active:scale-95 transition-all">' +
+            '<div class="text-2xl mb-1">' + (m.emoji || "🍽️") + '</div>' +
+            '<p class="font-label-lg text-label-lg leading-tight line-clamp-2">' + OL.escapeHtml(m.name) + '</p>' +
+            '<p class="text-primary font-label-lg mt-1">' + OL.money(m.price, r) + '</p></button>';
+        }).join("") + '</div></section>';
+    }).join("");
+  }
+
+  document.getElementById("posMenu").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-pick]"); if (!b) return;
+    var m = byId[b.getAttribute("data-pick")];
+    var ex = ticket.find(function (t) { return t.id === m.id; });
+    if (ex) ex.qty++; else ticket.push({ id: m.id, name: m.name, emoji: m.emoji, price: m.price, qty: 1 });
+    renderTicket();
+  });
+
+  function totals() {
+    var subtotal = ticket.reduce(function (s, t) { return s + t.price * t.qty; }, 0);
+    var fee = type === "delivery" ? (r.deliveryFee || 0) : 0;
+    return { subtotal: subtotal, fee: fee, total: subtotal + fee };
+  }
+
+  function renderTicket() {
+    var host = document.getElementById("ticketItems");
+    document.getElementById("ticketEmpty").classList.toggle("hidden", ticket.length > 0);
+    host.innerHTML = ticket.map(function (t) {
+      return '<div class="flex items-center gap-2 bg-surface-container-low rounded-lg p-2">' +
+        '<span class="text-xl">' + (t.emoji || "🍽️") + '</span>' +
+        '<div class="flex-1 min-w-0"><p class="font-label-lg text-label-lg truncate">' + OL.escapeHtml(t.name) + '</p>' +
+        '<p class="text-body-sm text-secondary">' + OL.money(t.price * t.qty, r) + '</p></div>' +
+        '<div class="flex items-center gap-1.5 bg-surface rounded-full border border-outline-variant px-1 py-0.5">' +
+          '<button data-dec="' + t.id + '" class="w-6 h-6 rounded-full hover:bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-[16px]">remove</span></button>' +
+          '<span class="w-4 text-center font-label-md">' + t.qty + '</span>' +
+          '<button data-inc="' + t.id + '" class="w-6 h-6 rounded-full bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined text-[16px]">add</span></button>' +
+        '</div></div>';
+    }).join("");
+
+    var tt = totals();
+    document.getElementById("posSub").textContent = OL.money(tt.subtotal, r);
+    document.getElementById("posFee").textContent = OL.money(tt.fee, r);
+    document.getElementById("posTotal").textContent = OL.money(tt.total, r);
+    document.getElementById("posFeeRow").classList.toggle("hidden", type !== "delivery");
+    document.getElementById("posCharge").disabled = ticket.length === 0;
+  }
+
+  document.getElementById("ticketItems").addEventListener("click", function (e) {
+    var inc = e.target.closest("[data-inc]"), dec = e.target.closest("[data-dec]");
+    if (inc) { var a = ticket.find(function (t) { return t.id === inc.getAttribute("data-inc"); }); if (a) a.qty++; }
+    if (dec) {
+      var id = dec.getAttribute("data-dec");
+      var b = ticket.find(function (t) { return t.id === id; });
+      if (b) { b.qty--; if (b.qty <= 0) ticket = ticket.filter(function (t) { return t.id !== id; }); }
+    }
+    renderTicket();
+  });
+
+  document.getElementById("clearTicket").addEventListener("click", function () { ticket = []; renderTicket(); });
+
+  // type toggle
+  function paintType() {
+    document.querySelectorAll(".ol-ptype").forEach(function (b) {
+      var on = b.getAttribute("data-type") === type;
+      b.className = "ol-ptype py-2 rounded-lg border text-label-md flex flex-col items-center gap-0.5 " +
+        (on ? "border-primary bg-primary-container/20 text-on-primary-container" : "border-outline-variant text-on-surface-variant");
+    });
+  }
+  document.getElementById("posType").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-type]"); if (!b) return;
+    type = b.getAttribute("data-type"); paintType(); renderTicket();
+  });
+
+  // charge / send
+  document.getElementById("posCharge").addEventListener("click", function () {
+    if (!ticket.length) return;
+    var order = OL.placeOrder(slug, {
+      items: ticket,
+      customer: { name: document.getElementById("posName").value.trim() || "Walk-in" },
+      type: type,
+      table: document.getElementById("posTable").value.trim() || null,
+      channel: "pos",
+      status: "preparing"   // staff-entered orders are already accepted
+    });
+    ticket = [];
+    document.getElementById("posName").value = "";
+    document.getElementById("posTable").value = "";
+    renderTicket();
+    ui.toast("Ticket #" + order.code + " sent to kitchen", { tone: "success" });
+  });
+
+  paintTabs(); renderMenu(); paintType(); renderTicket();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Order status · OrderLink</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="../../assets/js/tailwind.config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="../../assets/css/styles.css" rel="stylesheet"/>
+</head>
+<body class="font-body-md text-on-surface bg-surface">
+
+<div id="notFound" class="hidden min-h-screen flex flex-col items-center justify-center text-center px-6">
+  <div class="text-6xl mb-4">🧾</div>
+  <h1 class="font-headline-md text-headline-md mb-2">Order not found</h1>
+  <p class="text-body-md text-secondary max-w-xs mb-5">We couldn't find this order on this device.</p>
+  <a id="backMenu1" class="bg-primary text-on-primary px-5 py-3 rounded-xl font-label-lg">Back to menu</a>
+</div>
+
+<div id="app" class="hidden max-w-lg mx-auto min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="bg-primary-container text-on-primary-container px-5 pt-6 pb-8 text-center">
+    <div id="bigIcon" class="w-20 h-20 mx-auto rounded-full bg-white/25 flex items-center justify-center mb-3">
+      <span class="material-symbols-outlined text-[40px]">receipt_long</span>
+    </div>
+    <h1 id="headline" class="font-headline-md text-headline-md font-bold">Order received!</h1>
+    <p id="subline" class="text-body-sm opacity-90 mt-1"></p>
+    <div class="mt-3 inline-flex items-center gap-2 bg-white/20 rounded-full px-3 py-1 text-label-md">
+      <span class="material-symbols-outlined text-[16px]">tag</span><span id="orderCode"></span>
+    </div>
+  </header>
+
+  <main class="flex-1 px-5 py-6 space-y-6 -mt-4 bg-surface rounded-t-3xl">
+    <!-- Status stepper -->
+    <section id="stepper" class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-5"></section>
+
+    <!-- ETA / rejected note -->
+    <div id="etaBox" class="flex items-center gap-3 bg-primary-container/15 border border-primary-container/30 rounded-2xl p-4">
+      <span class="material-symbols-outlined text-primary">schedule</span>
+      <div><p class="font-label-lg text-label-lg" id="etaTitle">Estimated time</p>
+      <p class="text-body-sm text-secondary" id="etaText">15–25 minutes</p></div>
+    </div>
+
+    <!-- Order summary -->
+    <section class="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden">
+      <div class="px-5 py-4 border-b border-outline-variant flex items-center justify-between">
+        <h2 class="font-headline-sm text-headline-sm">Order summary</h2>
+        <span id="typeBadge" class="text-label-md px-2.5 py-1 rounded-full bg-surface-container-high text-on-surface-variant"></span>
+      </div>
+      <div id="items" class="px-5 py-3 divide-y divide-outline-variant"></div>
+      <div class="px-5 py-4 bg-surface-container-low space-y-1.5">
+        <div class="flex justify-between text-body-sm text-secondary"><span>Subtotal</span><span id="sumSub"></span></div>
+        <div id="feeRow" class="flex justify-between text-body-sm text-secondary"><span>Delivery</span><span id="sumFee"></span></div>
+        <div class="flex justify-between font-headline-sm text-headline-sm pt-1"><span>Total</span><span id="sumTotal"></span></div>
+      </div>
+    </section>
+
+    <div id="noteBox" class="hidden bg-tertiary-fixed/40 border border-tertiary/20 rounded-2xl p-4">
+      <p class="font-label-md text-secondary mb-1">Your note</p>
+      <p id="noteText" class="text-body-md italic"></p>
+    </div>
+  </main>
+
+  <!-- Actions -->
+  <div class="sticky bottom-0 bg-surface border-t border-outline-variant px-5 py-4 space-y-2">
+    <a id="waBtn" target="_blank" class="w-full bg-primary text-on-primary py-3.5 rounded-2xl font-label-lg flex items-center justify-center gap-2 active:scale-[0.98] transition-transform">
+      <span class="material-symbols-outlined">chat</span>Message restaurant on WhatsApp
+    </a>
+    <a id="backMenu2" class="w-full bg-surface-container-high text-on-surface py-3 rounded-2xl font-label-lg flex items-center justify-center gap-2">
+      <span class="material-symbols-outlined">add</span>Order more
+    </a>
+  </div>
+</div>
+
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/ui.js"></script>
+<script>
+(function () {
+  var params = new URLSearchParams(location.search);
+  var id = params.get("id");
+  var order = id && OL.getOrder(id);
+
+  if (!order) {
+    document.getElementById("notFound").classList.remove("hidden");
+    document.getElementById("backMenu1").href = "menu.html";
+    return;
+  }
+  document.getElementById("app").classList.remove("hidden");
+  var r = OL.getRestaurant(order.restaurant);
+  var menuLink = "menu.html?r=" + order.restaurant + (order.table ? "&table=" + order.table : "");
+  document.getElementById("backMenu2").href = menuLink;
+
+  // WhatsApp deep link
+  var waText = encodeURIComponent("Hi " + r.name + "! Checking on my order #" + order.code + ".");
+  document.getElementById("waBtn").href = r.phone
+    ? "https://wa.me/" + r.phone + "?text=" + waText
+    : "#";
+
+  // Steps shown to the customer
+  var STEPS = [
+    { key: "new", label: "Order received", icon: "receipt_long" },
+    { key: "preparing", label: "Preparing your food", icon: "skillet" },
+    { key: "ready", label: order.type === "delivery" ? "Out for delivery" : "Ready for " + (order.type === "pickup" ? "pickup" : "you"), icon: order.type === "delivery" ? "delivery_dining" : "check_circle" },
+    { key: "completed", label: order.type === "delivery" ? "Delivered" : "Completed", icon: "task_alt" }
+  ];
+
+  function render() {
+    var o = OL.getOrder(id);
+    if (!o) return;
+    var rejected = o.status === "rejected" || o.status === "cancelled";
+    var idx = OL.PIPELINE.indexOf(o.status);
+
+    // Header
+    document.getElementById("orderCode").textContent = "#" + o.code;
+    var big = document.getElementById("bigIcon");
+    var headline = document.getElementById("headline");
+    var subline = document.getElementById("subline");
+    if (rejected) {
+      big.className = "w-20 h-20 mx-auto rounded-full bg-error/20 flex items-center justify-center mb-3";
+      big.innerHTML = '<span class="material-symbols-outlined text-[40px]">cancel</span>';
+      headline.textContent = "Order " + (o.status === "cancelled" ? "cancelled" : "declined");
+      subline.textContent = "Please contact the restaurant for details.";
+    } else if (o.status === "completed") {
+      big.innerHTML = '<span class="material-symbols-outlined text-[40px]">task_alt</span>';
+      headline.textContent = o.type === "delivery" ? "Delivered — enjoy!" : "All done — enjoy!";
+      subline.textContent = "Thanks for ordering with " + r.name + ".";
+    } else {
+      big.innerHTML = '<span class="material-symbols-outlined text-[40px]">' + (STEPS[Math.max(0, idx)].icon) + '</span>';
+      headline.textContent = STEPS[Math.max(0, idx)].label;
+      subline.textContent = "We'll keep this page updated live.";
+    }
+
+    // Stepper
+    var stepper = document.getElementById("stepper");
+    if (rejected) {
+      stepper.innerHTML = '<div class="flex items-center gap-3 text-error"><span class="material-symbols-outlined">cancel</span>' +
+        '<p class="font-label-lg text-label-lg">' + (o.status === "cancelled" ? "This order was cancelled." : "This order was declined by the restaurant.") + '</p></div>';
+    } else {
+      stepper.innerHTML = STEPS.map(function (s, i) {
+        var done = i < idx, current = i === idx;
+        var circle = done || current
+          ? "bg-primary text-on-primary"
+          : "bg-surface-container-high text-secondary";
+        var line = i < STEPS.length - 1
+          ? '<div class="w-0.5 flex-1 my-1 ' + (i < idx ? "bg-primary" : "bg-outline-variant") + '"></div>'
+          : "";
+        var when = "";
+        var hist = (o.statusHistory || []).find(function (h) { return h.status === s.key; });
+        if (hist) when = new Date(hist.at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+        return '<div class="flex gap-3">' +
+          '<div class="flex flex-col items-center">' +
+            '<div class="w-9 h-9 rounded-full flex items-center justify-center ' + circle + ' ' + (current ? "animate-new-order" : "") + '">' +
+              '<span class="material-symbols-outlined text-[20px]">' + (done ? "check" : s.icon) + '</span></div>' + line +
+          '</div>' +
+          '<div class="pb-' + (i < STEPS.length - 1 ? "5" : "0") + ' pt-1">' +
+            '<p class="font-label-lg text-label-lg ' + (done || current ? "text-on-surface" : "text-secondary") + '">' + s.label + '</p>' +
+            (when ? '<p class="text-label-md text-secondary">' + when + '</p>' : (current ? '<p class="text-label-md text-primary">In progress…</p>' : "")) +
+          '</div></div>';
+      }).join("");
+    }
+
+    // ETA box
+    var eta = document.getElementById("etaBox");
+    if (rejected || o.status === "completed") { eta.classList.add("hidden"); }
+    else {
+      eta.classList.remove("hidden");
+      document.getElementById("etaText").textContent =
+        o.status === "ready" ? (o.type === "delivery" ? "On the way to you" : "Come pick it up!") : "15–25 minutes";
+    }
+
+    // Summary
+    document.getElementById("typeBadge").textContent =
+      ({ delivery: "Delivery", pickup: "Pickup", "dine-in": "Dine-in" })[o.type] + (o.table ? " · Table " + o.table : "");
+    document.getElementById("items").innerHTML = o.items.map(function (it) {
+      return '<div class="flex justify-between items-center py-2.5">' +
+        '<span class="flex items-center gap-2"><span class="text-xl">' + (it.emoji || "🍽️") + '</span>' +
+        '<span class="font-label-lg text-label-lg"><span class="text-primary font-bold">' + it.qty + '× </span>' + OL.escapeHtml(it.name) + '</span></span>' +
+        '<span class="text-body-md">' + OL.money(it.price * it.qty, r) + '</span></div>';
+    }).join("");
+    document.getElementById("sumSub").textContent = OL.money(o.subtotal, r);
+    document.getElementById("sumFee").textContent = OL.money(o.deliveryFee, r);
+    document.getElementById("sumTotal").textContent = OL.money(o.total, r);
+    document.getElementById("feeRow").classList.toggle("hidden", !o.deliveryFee);
+
+    if (o.note) {
+      document.getElementById("noteBox").classList.remove("hidden");
+      document.getElementById("noteText").textContent = '"' + o.note + '"';
+    }
+  }
+
+  OL.subscribe(render);
+  render();
+})();
+</script>
+</body>
+</html>

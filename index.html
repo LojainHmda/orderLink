@@ -1,413 +1,134 @@
 <!DOCTYPE html>
-<!-- OrderLink — Global Admin Control / Dashboard -->
 <html class="light" lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-  <title>OrderLink Admin Dashboard</title>
-
-  <!-- Tailwind Play CDN + shared design tokens -->
-  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-  <script src="assets/js/tailwind.config.js"></script>
-
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
-
-  <!-- Shared custom styles -->
-  <link href="assets/css/styles.css" rel="stylesheet" />
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink — Share a menu, take orders, track the kitchen</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script src="assets/js/tailwind.config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="assets/css/styles.css" rel="stylesheet"/>
 </head>
-<body class="font-body-md text-body-md overflow-x-hidden">
+<body class="font-body-md text-on-surface bg-surface overflow-x-hidden">
 
-  <!-- SideNavBar (Desktop) -->
-  <aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low dark:bg-inverse-surface shadow-md hidden md:flex flex-col p-stack-lg z-40">
-    <div class="mb-stack-lg flex items-center gap-3">
-      <div class="w-10 h-10 bg-primary-container rounded-lg flex items-center justify-center text-on-primary-container">
-        <span class="material-symbols-outlined">restaurant</span>
-      </div>
-      <div>
-        <h1 class="font-headline-md text-headline-md font-bold text-on-surface dark:text-inverse-on-surface leading-tight">OrderLink Admin</h1>
-        <span class="bg-primary text-on-primary font-label-md text-[10px] px-2 py-0.5 rounded-full uppercase tracking-wider">Admin</span>
-      </div>
+<!-- Nav -->
+<header class="sticky top-0 z-40 bg-surface/90 backdrop-blur border-b border-outline-variant">
+  <div class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-9 h-9 rounded-xl bg-primary text-on-primary flex items-center justify-center"><span class="material-symbols-outlined">restaurant</span></div>
+      <span class="font-headline-sm text-headline-sm font-bold">OrderLink</span>
     </div>
-    <nav class="flex-1 flex flex-col gap-2">
-      <a class="bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-lg font-bold px-4 py-3 flex items-center gap-3 active:translate-x-1 duration-200" href="index.html">
-        <span class="material-symbols-outlined">dashboard</span>
-        <span class="font-label-lg text-label-lg">Dashboard</span>
-      </a>
-      <a class="text-on-surface-variant dark:text-secondary-fixed-dim px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all active:translate-x-1 duration-200" href="pages/orders.html">
-        <span class="material-symbols-outlined">receipt_long</span>
-        <span class="font-label-lg text-label-lg">Orders</span>
-      </a>
-      <a class="text-on-surface-variant dark:text-secondary-fixed-dim px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all active:translate-x-1 duration-200" href="pages/menu.html">
-        <span class="material-symbols-outlined">restaurant_menu</span>
-        <span class="font-label-lg text-label-lg">Menu</span>
-      </a>
-      <a class="text-on-surface-variant dark:text-secondary-fixed-dim px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all active:translate-x-1 duration-200" href="pages/analytics.html">
-        <span class="material-symbols-outlined">analytics</span>
-        <span class="font-label-lg text-label-lg">Analytics</span>
-      </a>
-      <a class="text-on-surface-variant dark:text-secondary-fixed-dim px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all active:translate-x-1 duration-200" href="pages/whatsapp-settings.html">
-        <span class="material-symbols-outlined">chat</span>
-        <span class="font-label-lg text-label-lg">WhatsApp</span>
-      </a>
-      <a class="text-on-surface-variant dark:text-secondary-fixed-dim px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest dark:hover:bg-on-secondary-fixed-variant transition-all active:translate-x-1 duration-200" href="pages/profile.html">
-        <span class="material-symbols-outlined">settings</span>
-        <span class="font-label-lg text-label-lg">Settings</span>
-      </a>
-    </nav>
-    <div class="mt-auto pt-stack-lg border-t border-outline-variant flex flex-col gap-2">
-      <a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:bg-surface-container-highest transition-all" href="#">
-        <span class="material-symbols-outlined">support_agent</span>
-        <span class="font-label-lg text-label-lg">Support</span>
-      </a>
-      <a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:bg-surface-container-highest transition-all" href="#">
-        <span class="material-symbols-outlined">logout</span>
-        <span class="font-label-lg text-label-lg">Logout</span>
-      </a>
+    <div class="flex items-center gap-2">
+      <a href="pages/admin/dashboard.html" class="hidden sm:inline-flex text-on-surface-variant font-label-lg px-4 py-2 rounded-lg hover:bg-surface-container-high transition-colors">Restaurant console</a>
+      <a id="ctaDemo" target="_blank" class="bg-primary text-on-primary font-label-lg px-4 py-2 rounded-lg hover:shadow-lg active:scale-95 transition-all">Try the menu</a>
     </div>
-  </aside>
+  </div>
+</header>
 
-  <!-- TopNavBar -->
-  <header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop h-16 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none md:ml-[280px] md:w-[calc(100%-280px)]">
-    <div class="flex items-center gap-4">
-      <button class="md:hidden p-2 hover:bg-surface-container-high rounded-full">
-        <span class="material-symbols-outlined">menu</span>
-      </button>
-      <h2 class="font-headline-sm text-headline-sm text-on-surface hidden md:block">Overview</h2>
-      <h2 class="font-headline-sm text-headline-sm text-on-surface md:hidden">OrderLink</h2>
+<!-- Hero -->
+<section class="max-w-6xl mx-auto px-5 pt-16 pb-12 text-center">
+  <span class="inline-flex items-center gap-2 bg-primary-container/30 text-on-primary-container px-3 py-1 rounded-full text-label-md mb-5">
+    <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>Live order tracking, no app required
+  </span>
+  <h1 class="font-display-lg text-[clamp(2.2rem,6vw,3.5rem)] leading-[1.05] font-bold max-w-3xl mx-auto">
+    Share your menu by link.<br/><span class="text-primary">Take orders in real time.</span>
+  </h1>
+  <p class="text-body-lg text-secondary max-w-xl mx-auto mt-5">
+    OrderLink gives every restaurant a shareable menu, a live kitchen board, and a built-in POS — so customers order from a link and you watch each ticket move from <b>requested</b> to <b>delivered</b>.
+  </p>
+  <div class="flex flex-col sm:flex-row gap-3 justify-center mt-8">
+    <a href="pages/admin/dashboard.html" class="bg-primary text-on-primary font-label-lg px-6 py-3.5 rounded-2xl flex items-center justify-center gap-2 hover:shadow-lg active:scale-95 transition-all">
+      <span class="material-symbols-outlined">dashboard</span>Open restaurant console
+    </a>
+    <a id="ctaDemo2" target="_blank" class="bg-surface-container-high text-on-surface font-label-lg px-6 py-3.5 rounded-2xl flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-all">
+      <span class="material-symbols-outlined">smartphone</span>Open customer demo menu
+    </a>
+  </div>
+
+  <!-- Live stats strip -->
+  <div class="mt-12 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl mx-auto">
+    <div class="glass-card rounded-2xl p-4"><p id="sOrders" class="text-headline-lg font-headline-lg text-primary">0</p><p class="text-label-md text-secondary">Orders today</p></div>
+    <div class="glass-card rounded-2xl p-4"><p id="sLive" class="text-headline-lg font-headline-lg text-primary">0</p><p class="text-label-md text-secondary">Live now</p></div>
+    <div class="glass-card rounded-2xl p-4"><p id="sItems" class="text-headline-lg font-headline-lg text-primary">0</p><p class="text-label-md text-secondary">Menu items</p></div>
+    <div class="glass-card rounded-2xl p-4"><p id="sRevenue" class="text-headline-lg font-headline-lg text-primary">$0</p><p class="text-label-md text-secondary">Revenue today</p></div>
+  </div>
+</section>
+
+<!-- How it works -->
+<section class="max-w-6xl mx-auto px-5 py-12">
+  <h2 class="font-headline-md text-headline-md text-center mb-2">How it works</h2>
+  <p class="text-secondary text-center mb-10">Four steps, one continuous flow — every screen shares the same live data.</p>
+  <div class="grid md:grid-cols-4 gap-4">
+    <a href="pages/admin/menu.html" class="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow group">
+      <div class="w-12 h-12 rounded-xl bg-primary-container/30 text-on-primary-container flex items-center justify-center mb-4"><span class="material-symbols-outlined">restaurant_menu</span></div>
+      <p class="text-label-sm text-primary mb-1">Step 1</p>
+      <h3 class="font-headline-sm text-headline-sm mb-1">Build your menu</h3>
+      <p class="text-body-sm text-secondary">Add dishes, prices and categories. Get a shareable link + QR instantly.</p>
+    </a>
+    <a id="step2" target="_blank" class="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 rounded-xl bg-primary-container/30 text-on-primary-container flex items-center justify-center mb-4"><span class="material-symbols-outlined">share</span></div>
+      <p class="text-label-sm text-primary mb-1">Step 2</p>
+      <h3 class="font-headline-sm text-headline-sm mb-1">Customer orders</h3>
+      <p class="text-body-sm text-secondary">They open the link, add to cart and place an order — no app, no signup.</p>
+    </a>
+    <a href="pages/admin/orders.html" class="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 rounded-xl bg-primary-container/30 text-on-primary-container flex items-center justify-center mb-4"><span class="material-symbols-outlined">receipt_long</span></div>
+      <p class="text-label-sm text-primary mb-1">Step 3</p>
+      <h3 class="font-headline-sm text-headline-sm mb-1">Track the kitchen</h3>
+      <p class="text-body-sm text-secondary">Orders land live on the board: Requested → Preparing → Ready → Delivered.</p>
+    </a>
+    <a href="pages/admin/pos.html" class="glass-card rounded-2xl p-6 hover:shadow-md transition-shadow">
+      <div class="w-12 h-12 rounded-xl bg-primary-container/30 text-on-primary-container flex items-center justify-center mb-4"><span class="material-symbols-outlined">point_of_sale</span></div>
+      <p class="text-label-sm text-primary mb-1">Step 4</p>
+      <h3 class="font-headline-sm text-headline-sm mb-1">Ring up at the counter</h3>
+      <p class="text-body-sm text-secondary">The built-in POS pushes walk-in tickets into the very same pipeline.</p>
+    </a>
+  </div>
+</section>
+
+<!-- Tip -->
+<section class="max-w-3xl mx-auto px-5 pb-16">
+  <div class="bg-primary-container/20 border border-primary-container/30 rounded-2xl p-5 flex gap-3">
+    <span class="material-symbols-outlined text-primary">lightbulb</span>
+    <p class="text-body-sm text-on-surface">Open the <b>customer demo</b> and the <b>orders board</b> in two windows side by side — place an order in one and watch it appear live in the other. It all runs in your browser; nothing is sent to a server.</p>
+  </div>
+</section>
+
+<footer class="border-t border-outline-variant">
+  <div class="max-w-6xl mx-auto px-5 py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-secondary text-body-sm">
+    <span>© <span id="year"></span> OrderLink</span>
+    <div class="flex gap-4">
+      <a href="pages/admin/dashboard.html" class="hover:text-primary">Console</a>
+      <a href="pages/admin/menu.html" class="hover:text-primary">Menu</a>
+      <a href="pages/admin/orders.html" class="hover:text-primary">Orders</a>
+      <a href="pages/admin/pos.html" class="hover:text-primary">POS</a>
     </div>
-    <div class="flex items-center gap-4">
-      <div class="hidden md:flex items-center bg-surface-container rounded-full px-4 py-1.5 border border-outline-variant">
-        <span class="material-symbols-outlined text-secondary mr-2">search</span>
-        <input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search tenants..." type="text" />
-      </div>
-      <button class="p-2 hover:bg-surface-container-high rounded-full text-secondary">
-        <span class="material-symbols-outlined">notifications</span>
-      </button>
-      <div class="w-8 h-8 rounded-full overflow-hidden border border-primary">
-        <img alt="Merchant Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBW11FnfZMzGp4RM_HCoLXWLTMvKGIblWOHO6eZgJc-eegegIjzuZh5HQcmOC7s6ZomfEnvsSB5_ItqkVIUR-5KyTkO8Ckg8knfVGtZ45eo1UdhhacBKvXRAVl8uJcOMnsPXT88aFRydNNLIeP6ebdmhmwqp-n3xybnEvNdQXfSUJR96fr9CtHTknb_50VlXu9GyY4xon7AV_PbigmdEf68vk9k8vJkmovmRgaIoAJDGt2a67T6OvO4nsg3sTzAHIZxKufjNkv6Das" />
-      </div>
-    </div>
-  </header>
+  </div>
+</footer>
 
-  <!-- Main Content Canvas -->
-  <main class="pt-24 pb-20 md:pb-8 px-container-margin-mobile md:px-container-margin-desktop md:ml-[280px] min-h-screen">
+<script src="assets/js/store.js"></script>
+<script src="assets/js/ui.js"></script>
+<script>
+(function () {
+  var slug = OL.activeRestaurant().slug;
+  var demoLink = "pages/customer/menu.html?r=" + slug;
+  document.getElementById("ctaDemo").href = demoLink;
+  document.getElementById("ctaDemo2").href = demoLink;
+  document.getElementById("step2").href = demoLink;
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    <!-- Stats Section (Bento Grid) -->
-    <section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter mb-stack-lg">
-      <!-- Total Tenants -->
-      <div class="glass-card p-6 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-3 bg-primary/10 text-primary rounded-lg">
-            <span class="material-symbols-outlined">corporate_fare</span>
-          </div>
-          <span class="text-primary font-label-md">+2.4%</span>
-        </div>
-        <p class="text-secondary font-label-lg mb-1">Total Tenants</p>
-        <h3 class="text-display-lg font-display-lg text-on-surface">542</h3>
-      </div>
-      <!-- Active Restaurants -->
-      <div class="glass-card p-6 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-3 bg-primary-container/20 text-on-primary-container rounded-lg">
-            <span class="material-symbols-outlined">check_circle</span>
-          </div>
-          <span class="text-secondary font-label-md">88.5% rate</span>
-        </div>
-        <p class="text-secondary font-label-lg mb-1">Active Restaurants</p>
-        <h3 class="text-display-lg font-display-lg text-on-surface">480</h3>
-      </div>
-      <!-- Total Orders -->
-      <div class="glass-card p-6 rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] hover:shadow-md transition-shadow">
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-3 bg-tertiary-container/20 text-on-tertiary-container rounded-lg">
-            <span class="material-symbols-outlined">shopping_bag</span>
-          </div>
-          <span class="text-secondary font-label-md">Lifetime</span>
-        </div>
-        <p class="text-secondary font-label-lg mb-1">Total Orders</p>
-        <h3 class="text-display-lg font-display-lg text-on-surface">12,400</h3>
-      </div>
-      <!-- New This Month -->
-      <div class="glass-card p-6 rounded-xl bg-primary-container border-none shadow-[0_4px_20px_rgba(0,0,0,0.1)] hover:scale-[1.02] transition-transform">
-        <div class="flex justify-between items-start mb-4">
-          <div class="p-3 bg-white/30 text-on-primary-container rounded-lg">
-            <span class="material-symbols-outlined">trending_up</span>
-          </div>
-        </div>
-        <p class="text-on-primary-container/80 font-label-lg mb-1">New This Month</p>
-        <h3 class="text-display-lg font-display-lg text-on-primary-container">+15%</h3>
-        <p class="text-on-primary-container/60 text-body-sm mt-2">vs. previous month</p>
-      </div>
-    </section>
-
-    <!-- Manage Tenants Table -->
-    <section class="glass-card rounded-xl shadow-[0_4px_20px_rgba(0,0,0,0.05)] overflow-hidden">
-      <div class="px-6 py-5 border-b border-outline-variant flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h2 class="font-headline-sm text-headline-sm text-on-surface">Manage Tenants</h2>
-          <p class="text-secondary text-body-sm">Overview of all restaurant partners and their status.</p>
-        </div>
-        <div class="flex gap-2">
-          <button class="bg-surface-container-high text-on-surface px-4 py-2 rounded-lg font-label-lg flex items-center gap-2 hover:bg-surface-container-highest transition-colors">
-            <span class="material-symbols-outlined text-[20px]">filter_list</span>
-            Filter
-          </button>
-          <button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-lg flex items-center gap-2 hover:shadow-lg active:scale-95 transition-all">
-            <span class="material-symbols-outlined text-[20px]">add</span>
-            New Tenant
-          </button>
-        </div>
-      </div>
-      <div class="overflow-x-auto">
-        <table class="w-full text-left border-collapse">
-          <thead>
-            <tr class="bg-surface-container-low">
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant">Restaurant Name</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant">Owner</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant">Plan</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant">Status</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant text-right">Total Orders</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant">Created Date</th>
-              <th class="px-6 py-4 font-label-lg text-secondary border-b border-outline-variant text-center">Actions</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-outline-variant">
-            <!-- Tenant Row 1 -->
-            <tr class="hover:bg-surface-container-low/50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center overflow-hidden">
-                    <img alt="Green Olive Bistro" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYH74GFKiz66CHQL_syERHxwOslokBu4c6_9zCmhkYyJibp7jeDVA3WatACV5icBXLYwOill0yFPiH76cog7gHT00wQLr3riLpLzswgKk0yTFvfea8oLRgdjRfxmZsY8fDWc0MQJTdEJx9WbvW03uVSsqu6bLBOIOyhVMpVUNjNXIVY9MtQclbrTrZPfd420f19PS9e7bfLM6DoM2z722PZTZtLQydSKpj0f4XKdtiMcLLOsBWQywc_SPVRfE06rpOC96DjB0S704" />
-                  </div>
-                  <span class="font-label-lg text-on-surface">Green Olive Bistro</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Marco Rossi</td>
-              <td class="px-6 py-4">
-                <span class="bg-primary-container/20 text-on-primary-container text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-tight">Pro</span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-primary-container ring-4 ring-primary-container/20"></span>
-                  <span class="text-body-sm text-on-surface">Active</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-on-surface text-right font-medium">1,245</td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Oct 12, 2023</td>
-              <td class="px-6 py-4">
-                <div class="flex justify-center gap-2">
-                  <button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Manage">
-                    <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors" title="Suspend">
-                    <span class="material-symbols-outlined">block</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <!-- Tenant Row 2 -->
-            <tr class="hover:bg-surface-container-low/50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center overflow-hidden">
-                    <img alt="Burger Barn" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADQU4GL4x4a8EHjoEwxBt_59Tt1lIXlGtBEDTxelKg2k_1RD3eNa2_1osRMm4JIvsh_dpPHSSqqv6i73_ZtBZrPcjv_SadJfnxt0F6LwnzMalOmsVKXmLUuZ4sBBm7SLbg4Z2nSI9FJOxk4gOZTnxEZX_IluwIQrLTpZ52JDl_d6XfO-tw9MtmkGbdkcws9zm4vf-QOXXfT0gQ8hVJ_GWMqKRNu8FcQ9Ce2aNScHxSfgFL_PsXX8MMsJlD_HfgsCPh3YfMdDxpgBc" />
-                  </div>
-                  <span class="font-label-lg text-on-surface">Burger Barn</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Sarah Jenkins</td>
-              <td class="px-6 py-4">
-                <span class="bg-surface-container-highest text-secondary text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-tight">Starter</span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-primary-container ring-4 ring-primary-container/20"></span>
-                  <span class="text-body-sm text-on-surface">Active</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-on-surface text-right font-medium">432</td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Nov 05, 2023</td>
-              <td class="px-6 py-4">
-                <div class="flex justify-center gap-2">
-                  <button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Manage">
-                    <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors" title="Suspend">
-                    <span class="material-symbols-outlined">block</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <!-- Tenant Row 3 (Suspended) -->
-            <tr class="hover:bg-surface-container-low/50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center overflow-hidden opacity-50">
-                    <img alt="Pizza Central" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCm04jk6D3K2B_WOuzezT02-os7RbBwI5BUXcKwFhlSV2QvWm9-8-d42s8V_gnHSeSZnuuqDU9Gf6o3sRGCLPxbSG_JZFsQxWuRyfjnK18qNcztsbgImu8HmXh8OsEpDzhQK2o_avyGMAsgOFHax7dw8QFaU4PLXIxagIghgdseCe6guIyh58M2L6mSOBusUdziY37JO2UKdhyQ72Umo5OK8p_cQOJtroYnIzN4Jjgz2fUTzsSO-csBjRNQg1jRq8Qf2h3WkNGMIPI" />
-                  </div>
-                  <span class="font-label-lg text-on-surface opacity-50">Pizza Central</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-secondary opacity-50">David Chen</td>
-              <td class="px-6 py-4 opacity-50">
-                <span class="bg-surface-container-highest text-secondary text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-tight">Pro</span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-error ring-4 ring-error/20"></span>
-                  <span class="text-body-sm text-error font-medium">Suspended</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-secondary text-right font-medium opacity-50">2,890</td>
-              <td class="px-6 py-4 text-body-sm text-secondary opacity-50">Jan 20, 2023</td>
-              <td class="px-6 py-4">
-                <div class="flex justify-center gap-2">
-                  <button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Restore">
-                    <span class="material-symbols-outlined">settings_backup_restore</span>
-                  </button>
-                  <button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors" title="Delete">
-                    <span class="material-symbols-outlined">delete</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-            <!-- Tenant Row 4 -->
-            <tr class="hover:bg-surface-container-low/50 transition-colors">
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-3">
-                  <div class="w-10 h-10 rounded bg-surface-container flex items-center justify-center overflow-hidden">
-                    <img alt="Sushi House" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDx3IqWqwqUsZka7L9hoJT4w7bMGdC9AsmkW9fhZD9mQCk3oZBBfPB-3XQTRNG1eC821rct3IaWOWCaSEgGXq0p0t1tGYx7z-G2KDceTVBaIsIcDwhynMbv5sG6nInWdn92gxTlUzX-nWShoOs30N5h3g2o6a9OpTw5yzFXz2Esi4goBjikwJ2gOWk0Qc1BfqWUIwIAaFb4ueculjXZkjwYMMXTfLdtiep4SXfJQ5AdfPW7zlzW-RGzuQWRaMsf6p4Cq6ewwMrTi6c" />
-                  </div>
-                  <span class="font-label-lg text-on-surface">Sushi House</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Aki Tanaka</td>
-              <td class="px-6 py-4">
-                <span class="bg-primary-container/20 text-on-primary-container text-[11px] px-2.5 py-1 rounded-full font-bold uppercase tracking-tight">Pro</span>
-              </td>
-              <td class="px-6 py-4">
-                <div class="flex items-center gap-2">
-                  <span class="w-2 h-2 rounded-full bg-primary-container ring-4 ring-primary-container/20"></span>
-                  <span class="text-body-sm text-on-surface">Active</span>
-                </div>
-              </td>
-              <td class="px-6 py-4 text-body-sm text-on-surface text-right font-medium">812</td>
-              <td class="px-6 py-4 text-body-sm text-secondary">Feb 11, 2024</td>
-              <td class="px-6 py-4">
-                <div class="flex justify-center gap-2">
-                  <button class="p-2 hover:bg-surface-container-high rounded-lg text-primary transition-colors" title="Manage">
-                    <span class="material-symbols-outlined">edit</span>
-                  </button>
-                  <button class="p-2 hover:bg-error-container/20 rounded-lg text-error transition-colors" title="Suspend">
-                    <span class="material-symbols-outlined">block</span>
-                  </button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- Pagination -->
-      <div class="px-6 py-4 border-t border-outline-variant flex justify-between items-center bg-surface-container-low/30">
-        <p class="text-label-md text-secondary">Showing 1 to 10 of 542 tenants</p>
-        <div class="flex items-center gap-1">
-          <button class="p-1 hover:bg-surface-container rounded-md disabled:opacity-30" disabled>
-            <span class="material-symbols-outlined">chevron_left</span>
-          </button>
-          <button class="w-8 h-8 rounded-md bg-primary text-on-primary font-label-md">1</button>
-          <button class="w-8 h-8 rounded-md hover:bg-surface-container text-on-surface font-label-md">2</button>
-          <button class="w-8 h-8 rounded-md hover:bg-surface-container text-on-surface font-label-md">3</button>
-          <span class="px-2 text-secondary">...</span>
-          <button class="w-8 h-8 rounded-md hover:bg-surface-container text-on-surface font-label-md">55</button>
-          <button class="p-1 hover:bg-surface-container rounded-md">
-            <span class="material-symbols-outlined">chevron_right</span>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- Secondary Section: Recent System Activity -->
-    <section class="mt-stack-lg grid grid-cols-1 lg:grid-cols-3 gap-gutter">
-      <div class="lg:col-span-2 glass-card rounded-xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)]">
-        <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Platform Growth</h3>
-        <div class="h-64 w-full bg-surface-container/30 rounded-lg flex items-end justify-between p-4 relative overflow-hidden">
-          <!-- Placeholder chart visualization -->
-          <div class="absolute inset-0 flex items-center justify-center opacity-10">
-            <span class="material-symbols-outlined text-[120px]">show_chart</span>
-          </div>
-          <div class="w-8 bg-primary rounded-t-sm h-[40%] transition-all hover:h-[45%]"></div>
-          <div class="w-8 bg-primary rounded-t-sm h-[55%] transition-all hover:h-[60%]"></div>
-          <div class="w-8 bg-primary rounded-t-sm h-[48%] transition-all hover:h-[53%]"></div>
-          <div class="w-8 bg-primary rounded-t-sm h-[70%] transition-all hover:h-[75%]"></div>
-          <div class="w-8 bg-primary rounded-t-sm h-[62%] transition-all hover:h-[67%]"></div>
-          <div class="w-8 bg-primary rounded-t-sm h-[85%] transition-all hover:h-[90%]"></div>
-          <div class="w-8 bg-primary-container rounded-t-sm h-[95%] shadow-lg"></div>
-        </div>
-        <div class="flex justify-between mt-2 px-2">
-          <span class="text-[10px] font-label-md text-secondary">OCT</span>
-          <span class="text-[10px] font-label-md text-secondary">NOV</span>
-          <span class="text-[10px] font-label-md text-secondary">DEC</span>
-          <span class="text-[10px] font-label-md text-secondary">JAN</span>
-          <span class="text-[10px] font-label-md text-secondary">FEB</span>
-          <span class="text-[10px] font-label-md text-secondary">MAR</span>
-          <span class="text-[10px] font-label-md text-primary font-bold">APR</span>
-        </div>
-      </div>
-      <div class="glass-card rounded-xl p-6 shadow-[0_4px_20px_rgba(0,0,0,0.05)] flex flex-col">
-        <h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Recent Alerts</h3>
-        <div class="flex-1 flex flex-col gap-4">
-          <div class="flex gap-3 p-3 bg-error-container/10 border-l-4 border-error rounded-r-lg">
-            <span class="material-symbols-outlined text-error text-[20px]">warning</span>
-            <div>
-              <p class="font-label-lg text-on-surface">Payment Failed</p>
-              <p class="text-body-sm text-secondary">Sushi House subscription renewal failed.</p>
-            </div>
-          </div>
-          <div class="flex gap-3 p-3 bg-primary-container/10 border-l-4 border-primary rounded-r-lg">
-            <span class="material-symbols-outlined text-primary text-[20px]">verified</span>
-            <div>
-              <p class="font-label-lg text-on-surface">New Pro Tenant</p>
-              <p class="text-body-sm text-secondary">The Taco Stand joined the Pro plan.</p>
-            </div>
-          </div>
-          <div class="flex gap-3 p-3 bg-tertiary-container/10 border-l-4 border-tertiary rounded-r-lg">
-            <span class="material-symbols-outlined text-tertiary text-[20px]">info</span>
-            <div>
-              <p class="font-label-lg text-on-surface">System Update</p>
-              <p class="text-body-sm text-secondary">v2.4.0 rollout scheduled for 2 AM UTC.</p>
-            </div>
-          </div>
-        </div>
-        <button class="mt-6 w-full text-primary font-label-lg py-2 border border-primary/20 rounded-lg hover:bg-primary/5 transition-colors">
-          View All Activity
-        </button>
-      </div>
-    </section>
-  </main>
-
-  <!-- BottomNavBar (Mobile) -->
-  <nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden pb-safe bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-lg rounded-t-xl">
-    <a class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary text-on-primary-container dark:text-on-primary rounded-full px-5 py-1 active:scale-90 transition-transform duration-150" href="index.html">
-      <span class="material-symbols-outlined">home</span>
-      <span class="font-label-sm text-[10px]">Home</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container dark:hover:bg-on-surface-variant/5 active:scale-90 transition-transform duration-150" href="#">
-      <span class="material-symbols-outlined">list_alt</span>
-      <span class="font-label-sm text-[10px]">Tenants</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container dark:hover:bg-on-surface-variant/5 active:scale-90 transition-transform duration-150" href="#">
-      <span class="material-symbols-outlined">shopping_cart</span>
-      <span class="font-label-sm text-[10px]">Cart</span>
-    </a>
-    <a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-secondary-fixed-dim hover:bg-surface-container dark:hover:bg-on-surface-variant/5 active:scale-90 transition-transform duration-150" href="#">
-      <span class="material-symbols-outlined">person</span>
-      <span class="font-label-sm text-[10px]">Profile</span>
-    </a>
-  </nav>
-
-  <!-- Shared interactions -->
-  <script src="assets/js/main.js"></script>
+  function render() {
+    var s = OL.stats(slug);
+    var r = OL.getRestaurant(slug);
+    document.getElementById("sOrders").textContent = s.ordersToday;
+    document.getElementById("sLive").textContent = s.liveOrders;
+    document.getElementById("sItems").textContent = r.menu.length;
+    document.getElementById("sRevenue").textContent = OL.money(s.revenueToday, r);
+  }
+  OL.subscribe(render);
+  render();
+})();
+</script>
 </body>
 </html>

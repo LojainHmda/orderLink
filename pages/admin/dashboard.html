@@ -3,221 +3,143 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Burger House - Merchant Dashboard</title>
+<title>Dashboard · OrderLink</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script src="../../assets/js/tailwind.config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
-body {background-color: #f8f9fa;}
-</style>
+<link href="../../assets/css/styles.css" rel="stylesheet"/>
 </head>
 <body class="font-body-md text-on-surface">
-<!-- Sidebar -->
-<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low hidden md:flex flex-col p-stack-lg shadow-md z-40">
-<div class="mb-10">
-<div class="flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary-container">restaurant</span>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Burger House</h2>
-<p class="font-label-md text-label-md text-secondary">Dashboard</p>
-</div>
-</div>
-</div>
-<nav class="flex-1 space-y-2">
-<a class="bg-primary-container text-on-primary-container px-4 py-3 flex items-center gap-3 rounded-lg font-bold" href="dashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-lg">Dashboard</span>
-</a>
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="orders.html">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-label-lg">Orders</span>
-</a>
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="menu.html">
-<span class="material-symbols-outlined">restaurant_menu</span>
-<span class="font-label-lg">Menu</span>
-</a>
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="analytics.html">
-<span class="material-symbols-outlined">analytics</span>
-<span class="font-label-lg">Analytics</span>
-</a>
-</nav>
-<button class="w-full bg-primary text-on-primary font-label-lg py-3 rounded-lg hover:shadow-lg transition-all">View Menu Online</button>
-</aside>
+<aside id="ol-sidebar"></aside>
+<header id="ol-topbar"></header>
 
-<!-- Header -->
-<header class="fixed top-0 md:left-[280px] left-0 right-0 h-16 bg-surface border-b border-outline-variant px-4 md:px-8 flex items-center justify-between z-30 shadow-sm">
-<h1 class="font-headline-sm text-headline-sm font-bold">Dashboard</h1>
-<div class="flex items-center gap-4">
-<button class="text-on-surface-variant hover:text-on-surface">
-<span class="material-symbols-outlined">notifications</span>
-</button>
-<img alt="Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAURdu-N8rW_qoUNMnPZPI1UujgiEDT-RoXqKsh-qbP9w7nlmJU6hteXFbar0qlZADuS0zhAjq9GgpWUYzYfg0DSTvNuATtYLLQEykoAmtU7qy4ubLBhCHtlwkZMwXiTKVztRh83N39gtSxtLIzLY7UIG3SJcduhRaJr_51L_oDb__sFKnm5LKYEbgqcPuivlpRcmL4d4y8ZdOU8xHo3P4JTQn5M0HjIYNdBu6L2jkvrCz0UYKoF6LncJpaqui8rapLEJUDYpBEPHs"/>
-</div>
-</header>
+<main class="md:ml-[280px] pt-24 pb-28 md:pb-12 px-container-margin-mobile md:px-container-margin-desktop min-h-screen">
 
-<!-- Main Content -->
-<main class="pt-24 pb-20 md:ml-[280px] px-4 md:px-8 min-h-screen">
-<!-- Welcome Hero -->
-<div class="bg-gradient-to-r from-primary-container to-primary-container/80 text-on-primary-container rounded-2xl p-8 mb-8 shadow-md">
-<div class="flex items-start justify-between">
-<div>
-<h2 class="font-display-lg text-display-lg font-bold mb-2">Welcome back, Sarah!</h2>
-<p class="text-body-lg text-on-primary-container/80 mb-6">Your restaurant is performing great. Keep it up! 🚀</p>
-<div class="flex gap-3">
-<button class="bg-white text-primary-container px-6 py-2 rounded-full font-label-lg font-bold hover:shadow-lg transition-all">Copy Menu Link</button>
-<button class="border-2 border-white text-white px-6 py-2 rounded-full font-label-lg font-bold hover:bg-white/10 transition-all">View Menu</button>
-</div>
-</div>
-<span class="material-symbols-outlined text-[64px] text-on-primary-container/30">celebration</span>
-</div>
-</div>
+  <div class="mb-6">
+    <h1 class="font-headline-md text-headline-md text-on-surface">Good day, <span id="rName"></span> 👋</h1>
+    <p class="text-body-sm text-secondary">Here's what's happening in your kitchen right now.</p>
+  </div>
 
-<!-- Stats Grid -->
-<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
-<div class="flex justify-between items-start mb-4">
-<span class="bg-primary-container/20 text-primary-container p-3 rounded-lg">
-<span class="material-symbols-outlined">shopping_bag</span>
-</span>
-<span class="text-primary font-label-md font-bold">Today</span>
-</div>
-<p class="text-secondary font-label-md mb-1">Active Orders</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">12</h3>
-</div>
+  <!-- KPIs -->
+  <section class="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-stack-lg">
+    <div class="glass-card rounded-2xl p-5">
+      <div class="p-2.5 bg-primary/10 text-primary rounded-lg w-fit mb-3"><span class="material-symbols-outlined">receipt_long</span></div>
+      <p class="text-secondary font-label-md mb-1">Orders today</p>
+      <h3 id="kpiOrders" class="text-headline-lg font-headline-lg text-on-surface">0</h3>
+    </div>
+    <div class="glass-card rounded-2xl p-5">
+      <div class="p-2.5 bg-primary/10 text-primary rounded-lg w-fit mb-3"><span class="material-symbols-outlined">payments</span></div>
+      <p class="text-secondary font-label-md mb-1">Revenue today</p>
+      <h3 id="kpiRevenue" class="text-headline-lg font-headline-lg text-on-surface">$0</h3>
+    </div>
+    <div class="glass-card rounded-2xl p-5">
+      <div class="p-2.5 bg-tertiary-container/30 text-on-tertiary-container rounded-lg w-fit mb-3"><span class="material-symbols-outlined">local_fire_department</span></div>
+      <p class="text-secondary font-label-md mb-1">Live orders</p>
+      <h3 id="kpiLive" class="text-headline-lg font-headline-lg text-on-surface">0</h3>
+    </div>
+    <div class="glass-card rounded-2xl p-5">
+      <div class="p-2.5 bg-primary/10 text-primary rounded-lg w-fit mb-3"><span class="material-symbols-outlined">sell</span></div>
+      <p class="text-secondary font-label-md mb-1">Avg. ticket</p>
+      <h3 id="kpiAvg" class="text-headline-lg font-headline-lg text-on-surface">$0</h3>
+    </div>
+  </section>
 
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
-<div class="flex justify-between items-start mb-4">
-<span class="bg-tertiary-container/20 text-tertiary p-3 rounded-lg">
-<span class="material-symbols-outlined">attach_money</span>
-</span>
-<span class="text-primary font-label-md font-bold">Today</span>
-</div>
-<p class="text-secondary font-label-md mb-1">Revenue</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">$425</h3>
-</div>
+  <div class="grid lg:grid-cols-3 gap-gutter">
+    <!-- Live queue -->
+    <section class="lg:col-span-2 glass-card rounded-2xl p-5">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="font-headline-sm text-headline-sm">Live order queue</h2>
+        <a href="orders.html" class="text-primary font-label-lg flex items-center gap-1">Open board<span class="material-symbols-outlined text-[18px]">arrow_forward</span></a>
+      </div>
+      <div id="liveQueue" class="space-y-2"></div>
+      <p id="queueEmpty" class="hidden text-center text-secondary py-10">No active orders. Share your menu to get started.</p>
+    </section>
 
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
-<div class="flex justify-between items-start mb-4">
-<span class="bg-primary-container/20 text-primary-container p-3 rounded-lg">
-<span class="material-symbols-outlined">pending_actions</span>
-</span>
-<span class="text-error font-label-md font-bold">Action needed</span>
-</div>
-<p class="text-secondary font-label-md mb-1">Pending Approval</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">3</h3>
-</div>
+    <!-- Side column -->
+    <div class="space-y-gutter">
+      <!-- Share -->
+      <section class="glass-card rounded-2xl p-5">
+        <h2 class="font-headline-sm text-headline-sm mb-3">Your menu link</h2>
+        <div class="flex items-center bg-surface-container rounded-lg border border-outline-variant px-3 py-2 mb-2">
+          <input id="shareLink" readonly class="flex-1 bg-transparent border-none focus:ring-0 text-body-sm truncate p-0"/>
+        </div>
+        <div class="flex gap-2">
+          <button id="copyLink" class="flex-1 bg-primary text-on-primary py-2.5 rounded-lg font-label-lg flex items-center justify-center gap-1 active:scale-95 transition-all"><span class="material-symbols-outlined text-[18px]">content_copy</span>Copy</button>
+          <a id="openLink" target="_blank" class="flex-1 bg-surface-container-high text-on-surface py-2.5 rounded-lg font-label-lg flex items-center justify-center gap-1"><span class="material-symbols-outlined text-[18px]">open_in_new</span>Open</a>
+        </div>
+      </section>
 
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
-<div class="flex justify-between items-start mb-4">
-<span class="bg-error-container/20 text-error p-3 rounded-lg">
-<span class="material-symbols-outlined">trending_up</span>
-</span>
-<span class="text-primary font-label-md font-bold">This month</span>
-</div>
-<p class="text-secondary font-label-md mb-1">Total Revenue</p>
-<h3 class="font-headline-md text-headline-md text-on-surface">$12.4K</h3>
-</div>
-</div>
-
-<!-- Recent Orders Table -->
-<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm overflow-hidden mb-8">
-<div class="px-6 py-5 border-b border-outline-variant flex justify-between items-center">
-<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Orders</h3>
-<a class="text-primary font-label-lg hover:underline" href="orders.html">View all →</a>
-</div>
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low">
-<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Order ID</th>
-<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Customer</th>
-<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Amount</th>
-<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Status</th>
-<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Time</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant">
-<tr class="hover:bg-surface-container-low/50">
-<td class="px-6 py-4 font-body-md font-bold">#1047</td>
-<td class="px-6 py-4 text-body-md">John Smith</td>
-<td class="px-6 py-4 text-body-md font-bold text-on-surface">$28.50</td>
-<td class="px-6 py-4">
-<span class="bg-primary-container/20 text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">In Prep</span>
-</td>
-<td class="px-6 py-4 text-body-sm text-secondary">2 min ago</td>
-</tr>
-<tr class="hover:bg-surface-container-low/50">
-<td class="px-6 py-4 font-body-md font-bold">#1046</td>
-<td class="px-6 py-4 text-body-md">Emily Chen</td>
-<td class="px-6 py-4 text-body-md font-bold text-on-surface">$32.00</td>
-<td class="px-6 py-4">
-<span class="bg-primary-container/20 text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">Ready</span>
-</td>
-<td class="px-6 py-4 text-body-sm text-secondary">8 min ago</td>
-</tr>
-<tr class="hover:bg-surface-container-low/50">
-<td class="px-6 py-4 font-body-md font-bold">#1045</td>
-<td class="px-6 py-4 text-body-md">Mike Johnson</td>
-<td class="px-6 py-4 text-body-md font-bold text-on-surface">$15.75</td>
-<td class="px-6 py-4">
-<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">Completed</span>
-</td>
-<td class="px-6 py-4 text-body-sm text-secondary">25 min ago</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-
-<!-- Quick Actions -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-<span class="bg-primary-container/20 text-primary-container p-4 rounded-lg inline-block mb-4">
-<span class="material-symbols-outlined text-[28px]">restaurant_menu</span>
-</span>
-<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Manage Menu</h3>
-<p class="text-body-sm text-secondary">Add, edit, or remove items</p>
-</div>
-
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-<span class="bg-tertiary-container/20 text-tertiary p-4 rounded-lg inline-block mb-4">
-<span class="material-symbols-outlined text-[28px]">percent</span>
-</span>
-<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Run Promotion</h3>
-<p class="text-body-sm text-secondary">Create discount or loyalty offer</p>
-</div>
-
-<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-<span class="bg-error-container/20 text-error p-4 rounded-lg inline-block mb-4">
-<span class="material-symbols-outlined text-[28px]">settings</span>
-</span>
-<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Store Settings</h3>
-<p class="text-body-sm text-secondary">Update hours, fees, and more</p>
-</div>
-</div>
+      <!-- Top items -->
+      <section class="glass-card rounded-2xl p-5">
+        <h2 class="font-headline-sm text-headline-sm mb-3">Top sellers today</h2>
+        <div id="topItems" class="space-y-3"></div>
+        <p id="topEmpty" class="hidden text-secondary text-body-sm py-4">No sales yet today.</p>
+      </section>
+    </div>
+  </div>
 </main>
 
-<!-- BottomNav (Mobile) -->
-<nav class="fixed bottom-0 left-0 w-full md:hidden z-50 flex justify-around bg-surface border-t border-outline-variant shadow-lg pb-safe">
-<a class="flex flex-col items-center justify-center py-3 bg-primary-container text-on-primary-container rounded-t-xl px-5" href="dashboard.html">
-<span class="material-symbols-outlined">dashboard</span>
-<span class="font-label-sm text-[10px]">Dashboard</span>
-</a>
-<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="orders.html">
-<span class="material-symbols-outlined">receipt_long</span>
-<span class="font-label-sm text-[10px]">Orders</span>
-</a>
-<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="menu.html">
-<span class="material-symbols-outlined">restaurant_menu</span>
-<span class="font-label-sm text-[10px]">Menu</span>
-</a>
-<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="#">
-<span class="material-symbols-outlined">person</span>
-<span class="font-label-sm text-[10px]">Profile</span>
-</a>
-</nav>
+<nav id="ol-bottomnav"></nav>
+
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/ui.js"></script>
+<script>
+(function () {
+  var ui = OL.ui;
+  var slug = OL.activeRestaurant().slug;
+  ui.mountAdminShell({ base: "../../", active: "dashboard", title: "Dashboard" });
+  var r = OL.getRestaurant(slug);
+  document.getElementById("rName").textContent = r.name;
+
+  var link = OL.customerLink(slug);
+  document.getElementById("shareLink").value = link;
+  document.getElementById("openLink").href = link;
+  document.getElementById("copyLink").addEventListener("click", function () {
+    ui.copy(link).then(function () { ui.toast("Link copied", { tone: "success" }); });
+  });
+
+  function render() {
+    var s = OL.stats(slug);
+    document.getElementById("kpiOrders").textContent = s.ordersToday;
+    document.getElementById("kpiRevenue").textContent = OL.money(s.revenueToday, r);
+    document.getElementById("kpiLive").textContent = s.liveOrders;
+    document.getElementById("kpiAvg").textContent = OL.money(s.avgTicket, r);
+
+    // live queue (active, non-completed)
+    var live = OL.listOrders(slug).filter(function (o) {
+      return ["new", "preparing", "ready"].indexOf(o.status) > -1;
+    });
+    document.getElementById("queueEmpty").classList.toggle("hidden", live.length > 0);
+    document.getElementById("liveQueue").innerHTML = live.map(function (o) {
+      var next = OL.nextStatus(o.status);
+      var nextLabel = o.status === "new" ? "Accept" : o.status === "preparing" ? "Ready" : (o.type === "delivery" ? "Delivered" : "Complete");
+      return '<div class="flex items-center gap-3 bg-surface-container-lowest border border-outline-variant rounded-xl p-3">' +
+        '<div class="w-10 h-10 rounded-lg bg-primary-container/15 flex items-center justify-center">' + ui.statusBadgeIcon(o.status) + '</div>' +
+        '<div class="flex-1 min-w-0"><div class="flex items-center gap-2"><p class="font-label-lg text-label-lg">#' + o.code + '</p>' + ui.statusBadge(o.status) + '</div>' +
+        '<p class="text-body-sm text-secondary truncate">' + OL.escapeHtml(o.customer.name) + ' · ' + o.items.reduce(function (a, b) { return a + b.qty; }, 0) + ' items · ' + OL.money(o.total, r) + '</p></div>' +
+        (next ? '<button data-advance="' + o.id + '" class="bg-primary text-on-primary px-3 py-2 rounded-lg font-label-md whitespace-nowrap active:scale-95 transition-all">' + nextLabel + '</button>' : '') +
+      '</div>';
+    }).join("");
+
+    // top items
+    document.getElementById("topEmpty").classList.toggle("hidden", s.topItems.length > 0);
+    var max = s.topItems.length ? s.topItems[0].qty : 1;
+    document.getElementById("topItems").innerHTML = s.topItems.map(function (t) {
+      return '<div><div class="flex justify-between text-body-sm mb-1"><span class="font-label-lg truncate pr-2">' + OL.escapeHtml(t.name) + '</span><span class="text-secondary">' + t.qty + '</span></div>' +
+        '<div class="h-2 bg-surface-container-high rounded-full overflow-hidden"><div class="h-full bg-primary rounded-full" style="width:' + Math.round(t.qty / max * 100) + '%"></div></div></div>';
+    }).join("");
+  }
+
+  document.getElementById("liveQueue").addEventListener("click", function (e) {
+    var adv = e.target.closest("[data-advance]");
+    if (adv) { var o = OL.advanceOrder(adv.getAttribute("data-advance")); if (o) ui.toast("#" + o.code + " → " + OL.STATUS_META[o.status].label, { tone: "success" }); }
+  });
+
+  OL.subscribe(render);
+  render();
+  setInterval(render, 30000);
+})();
+</script>
 </body>
 </html>

@@ -3,198 +3,237 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>OrderLink Admin - Menu Management</title>
+<title>Menu Manager · OrderLink</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<script src="../../assets/js/tailwind.config.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<style>
-.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
-body {background-color: #f8f9fa;}
-.custom-scrollbar::-webkit-scrollbar {width: 6px;}
-.custom-scrollbar::-webkit-scrollbar-thumb {background: #bbcbb9; border-radius: 10px;}
-</style>
+<link href="../../assets/css/styles.css" rel="stylesheet"/>
 </head>
 <body class="font-body-md text-on-surface">
-<!-- Sidebar Navigation -->
-<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low flex flex-col p-stack-lg shadow-md z-40 hidden md:flex">
-<div class="mb-10 flex items-center gap-3">
-<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
-<span class="material-symbols-outlined text-on-primary-container" data-icon="restaurant">restaurant</span>
-</div>
-<div>
-<h2 class="font-headline-md text-headline-md font-bold text-on-surface">OrderLink Admin</h2>
-<p class="font-label-md text-label-md text-secondary">Green Olive Bistro</p>
-</div>
-</div>
-<nav class="flex-1 flex flex-col gap-2">
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-200 rounded-lg" href="../../index.html">
-<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-<span class="font-label-lg text-label-lg">Dashboard</span>
-</a>
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-200 rounded-lg" href="orders.html">
-<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
-<span class="font-label-lg text-label-lg">Orders</span>
-</a>
-<a class="bg-primary-container text-on-primary-container rounded-lg font-bold px-4 py-3 flex items-center gap-3 active:translate-x-1 duration-200 shadow-sm" href="menu.html">
-<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
-<span class="font-label-lg text-label-lg">Menu</span>
-</a>
-<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-200 rounded-lg" href="analytics.html">
-<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
-<span class="font-label-lg text-label-lg">Analytics</span>
-</a>
-</nav>
-</aside>
+<aside id="ol-sidebar"></aside>
+<header id="ol-topbar"></header>
 
-<!-- Top AppBar -->
-<header class="fixed top-0 left-0 md:left-[280px] right-0 h-16 bg-surface border-b border-outline-variant px-container-margin-mobile md:px-container-margin-desktop flex items-center justify-between z-30 shadow-sm">
-<div class="flex items-center gap-4">
-<button class="md:hidden text-on-surface">
-<span class="material-symbols-outlined" data-icon="menu">menu</span>
-</button>
-<h1 class="font-headline-sm text-headline-sm font-bold">Menu Management</h1>
-</div>
-<div class="flex items-center gap-4">
-<div class="relative hidden sm:block">
-<input class="bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 w-64 focus:ring-2 focus:ring-primary text-body-sm font-body-sm outline-none" placeholder="Search menu..." type="text"/>
-<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary" data-icon="search">search</span>
-</div>
-<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-high transition-colors">
-<span class="material-symbols-outlined text-secondary" data-icon="notifications">notifications</span>
-</button>
-</div>
-</header>
+<main class="md:ml-[280px] pt-24 pb-28 md:pb-12 px-container-margin-mobile md:px-container-margin-desktop min-h-screen">
 
-<!-- Main Content Area -->
-<main class="pt-24 pb-stack-lg md:ml-[280px] px-container-margin-mobile md:px-container-margin-desktop min-h-screen">
-<!-- Action Header -->
-<div class="flex flex-col md:flex-row md:items-center justify-between gap-gutter mb-stack-lg">
-<div class="flex gap-stack-md overflow-x-auto pb-2 custom-scrollbar">
-<button class="bg-on-surface text-on-secondary px-6 py-2.5 rounded-full font-label-lg text-label-lg whitespace-nowrap">All Items</button>
-<button class="bg-surface-container-highest text-on-surface-variant px-6 py-2.5 rounded-full font-label-lg text-label-lg whitespace-nowrap hover:bg-surface-container transition-colors">Burgers</button>
-<button class="bg-surface-container-highest text-on-surface-variant px-6 py-2.5 rounded-full font-label-lg text-label-lg whitespace-nowrap hover:bg-surface-container transition-colors">Sides</button>
-<button class="bg-surface-container-highest text-on-surface-variant px-6 py-2.5 rounded-full font-label-lg text-label-lg whitespace-nowrap hover:bg-surface-container transition-colors">Beverages</button>
-</div>
-<div class="flex gap-stack-md">
-<button class="bg-surface border border-outline-variant text-on-surface px-5 py-2.5 rounded-xl font-bold font-label-lg text-label-lg flex items-center gap-2 hover:bg-surface-container-low transition-all active:scale-95">
-<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>Add Category</button>
-<button class="bg-primary text-on-primary px-5 py-2.5 rounded-xl font-bold font-label-lg text-label-lg flex items-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95">
-<span class="material-symbols-outlined" data-icon="add">add</span>Add New Item</button>
-</div>
-</div>
+  <!-- Share panel -->
+  <section class="glass-card rounded-2xl p-6 mb-stack-lg shadow-sm">
+    <div class="flex flex-col lg:flex-row gap-6 items-start">
+      <div class="flex-1 w-full">
+        <div class="flex items-center gap-2 mb-1">
+          <span class="material-symbols-outlined text-primary">share</span>
+          <h2 class="font-headline-sm text-headline-sm text-on-surface">Share your menu</h2>
+        </div>
+        <p class="text-body-sm text-secondary mb-4">Send this link to customers, print the QR for tables, or add it to your bio. Every order placed here lands on your <a class="text-primary underline" href="orders.html">Orders board</a> instantly.</p>
+        <div class="flex flex-col sm:flex-row gap-2">
+          <div class="flex-1 flex items-center bg-surface-container rounded-lg border border-outline-variant px-3 py-2 min-w-0">
+            <span class="material-symbols-outlined text-secondary text-[20px] mr-2">link</span>
+            <input id="shareLink" readonly class="flex-1 bg-transparent border-none focus:ring-0 text-body-sm truncate p-0" />
+          </div>
+          <button id="copyLink" class="bg-primary text-on-primary px-4 py-2.5 rounded-lg font-label-lg flex items-center justify-center gap-2 hover:shadow-lg active:scale-95 transition-all whitespace-nowrap">
+            <span class="material-symbols-outlined text-[20px]">content_copy</span>Copy link
+          </button>
+          <a id="openLink" target="_blank" class="bg-surface-container-high text-on-surface px-4 py-2.5 rounded-lg font-label-lg flex items-center justify-center gap-2 hover:bg-surface-container-highest transition-all whitespace-nowrap">
+            <span class="material-symbols-outlined text-[20px]">open_in_new</span>Preview
+          </a>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest rounded-xl border border-outline-variant p-3 flex flex-col items-center gap-2 mx-auto">
+        <img id="qrImg" alt="Menu QR code" width="148" height="148" class="rounded-lg"/>
+        <span class="text-label-sm text-secondary">Scan to order</span>
+      </div>
+    </div>
+  </section>
 
-<!-- Menu Grid/Table Container -->
-<div class="bg-surface-container-lowest rounded-2xl shadow-sm border border-outline-variant overflow-hidden">
-<div class="overflow-x-auto">
-<table class="w-full text-left border-collapse">
-<thead>
-<tr class="bg-surface-container-low border-b border-outline-variant">
-<th class="px-6 py-4 font-label-lg text-label-lg text-secondary">Product</th>
-<th class="px-6 py-4 font-label-lg text-label-lg text-secondary">Category</th>
-<th class="px-6 py-4 font-label-lg text-label-lg text-secondary">Price</th>
-<th class="px-6 py-4 font-label-lg text-label-lg text-secondary text-center">Status</th>
-<th class="px-6 py-4 font-label-lg text-label-lg text-secondary text-right">Actions</th>
-</tr>
-</thead>
-<tbody class="divide-y divide-outline-variant">
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-6 py-4">
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-<img alt="Classic Cheeseburger" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr5D7lZ1uc9qb7gHpn_X6kx8fz0iSN0aBzsGedQKIggrU6OhxWDWZFbXA2zY08ne-P6iK_Q4VJbQAOs5KVQfm-GT-xRzvfgj9qu3d_KFtxaABpS_FMX5DU6R3oYp40csTYa3SZr6IVrVi0VQMzmjITrMH9kulxodAMXxespACWL6RW6kYs4Mpf9w7lUXnpgQzm2LD87iAwCvipVY2EmMqMRrX0V06jeNDq3sIGT5j4dtNc-0iV5I0bNAOWMAFs-ROFegOvQdsHgL4"/>
-</div>
-<div>
-<h4 class="font-body-md text-body-md font-bold text-on-surface">Classic Cheeseburger</h4>
-<p class="font-body-sm text-body-sm text-secondary truncate max-w-xs">Angus beef patty, cheddar, secret sauce</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">Burgers</span>
-</td>
-<td class="px-6 py-4 font-bold text-on-surface">$12.00</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<label class="relative inline-flex items-center cursor-pointer">
-<input checked="" class="sr-only peer" type="checkbox"/>
-<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-</label>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
-</button>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
+  <!-- Menu header -->
+  <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+    <div>
+      <h1 class="font-headline-md text-headline-md text-on-surface">Menu items</h1>
+      <p class="text-body-sm text-secondary"><span id="itemCount">0</span> items across <span id="catCount">0</span> categories</p>
+    </div>
+    <button id="addItemBtn" class="bg-primary text-on-primary px-5 py-3 rounded-xl font-label-lg flex items-center justify-center gap-2 hover:shadow-lg active:scale-95 transition-all">
+      <span class="material-symbols-outlined">add</span>Add item
+    </button>
+  </div>
 
-<tr class="hover:bg-surface-container-low transition-colors group">
-<td class="px-6 py-4">
-<div class="flex items-center gap-4">
-<div class="w-16 h-16 rounded-lg bg-surface-container overflow-hidden flex-shrink-0">
-<img alt="Truffle Fries" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQcmWAsNdNLYZZk7pK819Hh9lcdob39vwZlpi_E3sw5fGyKMoifXC4xbEZ8Y9vAnFA6ieujHqu0uO8qeRGwCMPxc2j5VCPKy2b3w_phwHa82ilvpoPiuf5TDdWVzE8MpofBJKn2xZ_7TrWam8HQIbYzRdSFmG-SSE3f2EKmjnBHE7nCyx0q9qkLch6GKT0FeLWlAVFYK6g1mil9CfJBzQQqeYmYEwNGxLX36kk6y0fhG8sNnweWn1LJWIt1nqL_te6e_YnoC_DpcU"/>
-</div>
-<div>
-<h4 class="font-body-md text-body-md font-bold text-on-surface">Truffle Fries</h4>
-<p class="font-body-sm text-body-sm text-secondary truncate max-w-xs">Double fried, truffle oil, parmesan</p>
-</div>
-</div>
-</td>
-<td class="px-6 py-4">
-<span class="bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">Sides</span>
-</td>
-<td class="px-6 py-4 font-bold text-on-surface">$6.50</td>
-<td class="px-6 py-4">
-<div class="flex justify-center">
-<label class="relative inline-flex items-center cursor-pointer">
-<input checked="" class="sr-only peer" type="checkbox"/>
-<div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-</label>
-</div>
-</td>
-<td class="px-6 py-4 text-right">
-<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="edit">edit</span>
-</button>
-<button class="w-8 h-8 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-error-container hover:text-on-error-container transition-colors">
-<span class="material-symbols-outlined text-[20px]" data-icon="delete">delete</span>
-</button>
-</div>
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="px-6 py-4 border-t border-outline-variant flex items-center justify-between">
-<p class="text-label-sm font-label-sm text-secondary">Showing 3 of 42 items</p>
-</div>
-</div>
+  <div id="menuList" class="space-y-8"></div>
+  <div id="emptyState" class="hidden text-center py-16">
+    <div class="text-5xl mb-3">🍽️</div>
+    <p class="font-headline-sm text-headline-sm text-on-surface">No menu items yet</p>
+    <p class="text-body-sm text-secondary mb-4">Add your first dish to start taking orders.</p>
+  </div>
 </main>
 
-<!-- BottomNavBar (Mobile) -->
-<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface border-t border-outline-variant shadow-lg rounded-t-xl pb-safe">
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="../../index.html">
-<span class="material-symbols-outlined" data-icon="home">home</span>
-<span class="font-label-sm">Home</span>
-</a>
-<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform" href="menu.html">
-<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
-<span class="font-label-sm">Menu</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="#">
-<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
-<span class="font-label-sm">Cart</span>
-</a>
-<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-<span class="font-label-sm">Profile</span>
-</a>
-</nav>
+<nav id="ol-bottomnav"></nav>
+
+<!-- Item editor modal -->
+<div id="itemModal" class="fixed inset-0 z-[80] hidden items-end sm:items-center justify-center bg-black/40 backdrop-blur-sm p-0 sm:p-4">
+  <form id="itemForm" class="bg-surface w-full sm:max-w-md rounded-t-2xl sm:rounded-2xl shadow-xl p-6 animate-pop max-h-[92vh] overflow-y-auto">
+    <div class="flex items-center justify-between mb-5">
+      <h3 id="modalTitle" class="font-headline-sm text-headline-sm text-on-surface">Add item</h3>
+      <button type="button" id="closeModal" class="p-2 -mr-2 hover:bg-surface-container-high rounded-full"><span class="material-symbols-outlined">close</span></button>
+    </div>
+    <input type="hidden" name="id"/>
+    <div class="space-y-4">
+      <div class="flex gap-3">
+        <div class="w-20">
+          <label class="block text-label-md text-secondary mb-1">Icon</label>
+          <input name="emoji" maxlength="2" value="🍽️" class="w-full text-center text-2xl bg-surface-container border border-outline-variant rounded-lg py-2 focus:ring-primary focus:border-primary"/>
+        </div>
+        <div class="flex-1">
+          <label class="block text-label-md text-secondary mb-1">Name</label>
+          <input name="name" required placeholder="e.g. Chicken Shawarma" class="w-full bg-surface-container border border-outline-variant rounded-lg px-3 py-2.5 focus:ring-primary focus:border-primary"/>
+        </div>
+      </div>
+      <div>
+        <label class="block text-label-md text-secondary mb-1">Description</label>
+        <input name="description" placeholder="Short description" class="w-full bg-surface-container border border-outline-variant rounded-lg px-3 py-2.5 focus:ring-primary focus:border-primary"/>
+      </div>
+      <div class="flex gap-3">
+        <div class="flex-1">
+          <label class="block text-label-md text-secondary mb-1">Category</label>
+          <input name="category" list="catOptions" required placeholder="e.g. Mains" class="w-full bg-surface-container border border-outline-variant rounded-lg px-3 py-2.5 focus:ring-primary focus:border-primary"/>
+          <datalist id="catOptions"></datalist>
+        </div>
+        <div class="w-28">
+          <label class="block text-label-md text-secondary mb-1">Price</label>
+          <div class="flex items-center bg-surface-container border border-outline-variant rounded-lg px-3 focus-within:ring-1 focus-within:ring-primary">
+            <span class="text-secondary" id="curSymbol">$</span>
+            <input name="price" type="number" step="0.01" min="0" required placeholder="0.00" class="w-full bg-transparent border-none focus:ring-0 px-1 py-2.5"/>
+          </div>
+        </div>
+      </div>
+      <label class="flex items-center gap-3 bg-surface-container rounded-lg px-3 py-3 cursor-pointer">
+        <input name="available" type="checkbox" checked class="rounded text-primary focus:ring-primary w-5 h-5"/>
+        <span class="text-body-md">Available to order</span>
+      </label>
+    </div>
+    <div class="flex gap-3 mt-6">
+      <button type="button" id="cancelModal" class="flex-1 py-3 rounded-xl font-label-lg text-on-surface-variant bg-surface-container-high hover:bg-surface-container-highest transition-colors">Cancel</button>
+      <button type="submit" class="flex-1 py-3 rounded-xl font-label-lg bg-primary text-on-primary hover:shadow-lg active:scale-95 transition-all">Save item</button>
+    </div>
+  </form>
+</div>
+
+<script src="../../assets/js/store.js"></script>
+<script src="../../assets/js/ui.js"></script>
+<script>
+(function () {
+  var slug = OL.activeRestaurant().slug;
+  var ui = OL.ui;
+  ui.mountAdminShell({ base: "../../", active: "menu", title: "Menu Manager" });
+
+  // ---- Share panel ----
+  var link = OL.customerLink(slug);
+  document.getElementById("shareLink").value = link;
+  document.getElementById("openLink").href = link;
+  document.getElementById("qrImg").src = ui.qrUrl(link, 148);
+  document.getElementById("copyLink").addEventListener("click", function () {
+    ui.copy(link).then(function () { ui.toast("Link copied to clipboard", { tone: "success" }); });
+  });
+
+  // ---- Modal ----
+  var modal = document.getElementById("itemModal");
+  var form = document.getElementById("itemForm");
+  function openModal(item) {
+    form.reset();
+    document.getElementById("modalTitle").textContent = item ? "Edit item" : "Add item";
+    form.id.value = item ? item.id : "";
+    form.emoji.value = item ? item.emoji : "🍽️";
+    form.name.value = item ? item.name : "";
+    form.description.value = item ? item.description : "";
+    form.category.value = item ? item.category : "";
+    form.price.value = item ? item.price : "";
+    form.available.checked = item ? item.available : true;
+    refreshCatOptions();
+    modal.classList.remove("hidden"); modal.classList.add("flex");
+    setTimeout(function () { form.name.focus(); }, 50);
+  }
+  function closeModal() { modal.classList.add("hidden"); modal.classList.remove("flex"); }
+  document.getElementById("addItemBtn").addEventListener("click", function () { openModal(null); });
+  document.getElementById("closeModal").addEventListener("click", closeModal);
+  document.getElementById("cancelModal").addEventListener("click", closeModal);
+  modal.addEventListener("click", function (e) { if (e.target === modal) closeModal(); });
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var data = {
+      id: form.id.value || undefined,
+      name: form.name.value.trim(),
+      description: form.description.value.trim(),
+      category: form.category.value.trim(),
+      price: parseFloat(form.price.value) || 0,
+      emoji: form.emoji.value.trim() || "🍽️",
+      available: form.available.checked
+    };
+    if (!data.name || !data.category) return;
+    OL.saveMenuItem(slug, data);
+    closeModal();
+    ui.toast(data.id ? "Item updated" : "Item added", { tone: "success" });
+  });
+
+  function refreshCatOptions() {
+    var r = OL.getRestaurant(slug);
+    document.getElementById("catOptions").innerHTML =
+      r.categories.map(function (c) { return '<option value="' + OL.escapeHtml(c) + '">'; }).join("");
+  }
+
+  // ---- Render menu list ----
+  function render() {
+    var r = OL.getRestaurant(slug);
+    document.getElementById("curSymbol").textContent = r.currency;
+    document.getElementById("itemCount").textContent = r.menu.length;
+    document.getElementById("catCount").textContent = r.categories.filter(function (c) {
+      return r.menu.some(function (m) { return m.category === c; });
+    }).length;
+
+    var groups = OL.menuByCategory(slug);
+    var host = document.getElementById("menuList");
+    document.getElementById("emptyState").classList.toggle("hidden", r.menu.length > 0);
+
+    host.innerHTML = groups.map(function (g) {
+      return '<section>' +
+        '<h3 class="font-label-lg text-label-lg text-secondary uppercase tracking-wide mb-3 px-1">' + OL.escapeHtml(g.category) + ' · ' + g.items.length + '</h3>' +
+        '<div class="grid sm:grid-cols-2 gap-3">' +
+        g.items.map(function (m) {
+          return '<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-3 flex items-center gap-3 ' + (m.available ? "" : "opacity-60") + '">' +
+            '<div class="w-12 h-12 rounded-lg bg-primary-container/20 flex items-center justify-center text-2xl shrink-0">' + (m.emoji || "🍽️") + '</div>' +
+            '<div class="min-w-0 flex-1">' +
+              '<div class="flex items-center gap-2"><p class="font-label-lg text-label-lg text-on-surface truncate">' + OL.escapeHtml(m.name) + '</p>' +
+              (m.available ? '' : '<span class="text-label-sm text-error">Hidden</span>') + '</div>' +
+              '<p class="text-body-sm text-secondary truncate">' + OL.escapeHtml(m.description || "") + '</p>' +
+              '<p class="font-label-lg text-primary mt-0.5">' + OL.money(m.price, r) + '</p>' +
+            '</div>' +
+            '<div class="flex flex-col items-center gap-1 shrink-0">' +
+              '<button data-toggle="' + m.id + '" title="Toggle availability" class="p-1.5 rounded-lg hover:bg-surface-container-high text-secondary"><span class="material-symbols-outlined text-[20px]">' + (m.available ? "visibility" : "visibility_off") + '</span></button>' +
+              '<div class="flex gap-1">' +
+                '<button data-edit="' + m.id + '" class="p-1.5 rounded-lg hover:bg-surface-container-high text-primary"><span class="material-symbols-outlined text-[20px]">edit</span></button>' +
+                '<button data-del="' + m.id + '" class="p-1.5 rounded-lg hover:bg-error-container/30 text-error"><span class="material-symbols-outlined text-[20px]">delete</span></button>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+        }).join("") +
+        '</div></section>';
+    }).join("");
+  }
+
+  document.getElementById("menuList").addEventListener("click", function (e) {
+    var r = OL.getRestaurant(slug);
+    var edit = e.target.closest("[data-edit]");
+    var del = e.target.closest("[data-del]");
+    var tog = e.target.closest("[data-toggle]");
+    if (edit) { openModal(r.menu.find(function (m) { return m.id === edit.getAttribute("data-edit"); })); }
+    if (tog) { OL.toggleMenuItem(slug, tog.getAttribute("data-toggle")); }
+    if (del) {
+      var item = r.menu.find(function (m) { return m.id === del.getAttribute("data-del"); });
+      ui.confirm({ title: "Delete item?", message: '"' + (item ? item.name : "") + '" will be removed from your menu.', confirmText: "Delete", icon: "delete" })
+        .then(function (ok) { if (ok) { OL.deleteMenuItem(slug, del.getAttribute("data-del")); ui.toast("Item deleted"); } });
+    }
+  });
+
+  OL.subscribe(render);
+  render();
+})();
+</script>
 </body>
 </html>
