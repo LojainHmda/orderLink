@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink - WhatsApp Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
+body {background-color: #f8f9fa;}
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low hidden md:flex flex-col p-stack-lg shadow-md z-40">
+<div class="mb-10">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">restaurant</span>
+</div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">OrderLink</h2>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="../../index.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg">Dashboard</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="orders.html">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-lg">Orders</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="analytics.html">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-lg">Analytics</span>
+</a>
+<a class="bg-primary-container text-on-primary-container px-4 py-3 flex items-center gap-3 rounded-lg font-bold" href="whatsapp.html">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-lg">WhatsApp</span>
+</a>
+</nav>
+</aside>
+
+<!-- Header -->
+<header class="fixed top-0 md:left-[280px] left-0 right-0 h-16 bg-surface border-b border-outline-variant px-4 md:px-8 flex items-center justify-between z-30 shadow-sm">
+<h1 class="font-headline-sm text-headline-sm font-bold">WhatsApp Settings</h1>
+</header>
+
+<!-- Main Content -->
+<main class="pt-24 pb-20 md:ml-[280px] px-4 md:px-8 min-h-screen">
+<div class="max-w-4xl">
+<!-- Connection Status Card -->
+<div class="bg-primary-container text-on-primary-container rounded-2xl p-8 mb-8 shadow-md">
+<div class="flex items-start justify-between mb-6">
+<div>
+<h2 class="font-headline-md text-headline-md font-bold mb-2">WhatsApp Connected</h2>
+<p class="font-body-md text-on-primary-container/80">Your restaurant is successfully connected to WhatsApp Business</p>
+</div>
+<span class="material-symbols-outlined text-[40px] animate-bounce">verified</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+<p class="font-label-md text-on-primary-container/60 mb-1">Phone Number</p>
+<p class="font-headline-sm text-headline-sm">+1 (555) 123-4567</p>
+</div>
+<div class="bg-white/10 rounded-xl p-4 backdrop-blur-sm">
+<p class="font-label-md text-on-primary-container/60 mb-1">Status</p>
+<p class="font-headline-sm text-headline-sm flex items-center gap-2"><span class="w-2 h-2 bg-green-300 rounded-full"></span>Active</p>
+</div>
+</div>
+</div>
+
+<!-- Notification Settings -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 mb-8 shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Notification Settings</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-lg transition-colors">
+<div>
+<p class="font-body-md font-bold text-on-surface">New Order Notifications</p>
+<p class="text-body-sm text-secondary">Get WhatsApp messages for every new order</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-lg transition-colors">
+<div>
+<p class="font-body-md font-bold text-on-surface">Customer Messages</p>
+<p class="text-body-sm text-secondary">Receive special requests and inquiries</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low rounded-lg transition-colors">
+<div>
+<p class="font-body-md font-bold text-on-surface">Reminder Messages</p>
+<p class="text-body-sm text-secondary">Send order reminders to customers</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+
+<!-- Menu QR Code Section -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 mb-8 shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Menu QR Code</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col items-center justify-center">
+<div class="w-48 h-48 bg-surface-container-high rounded-2xl p-4 border-2 border-outline-variant relative group cursor-pointer hover:border-primary transition-colors">
+<div class="w-full h-full bg-white flex items-center justify-center text-center">
+<img alt="Menu QR Code" class="w-full h-full object-cover" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect fill='%23fff' width='100' height='100'/%3E%3Crect fill='%23000' width='20' height='20'/%3E%3Crect fill='%23000' x='80' width='20' height='20'/%3E%3Crect fill='%23000' y='80' width='20' height='20'/%3E%3Crect fill='%23000' x='20' y='20' width='60' height='60' fill='none' stroke='%23000' stroke-width='2'/%3E%3Crect fill='%23000' x='25' y='40' width='10' height='10'/%3E%3Crect fill='%23000' x='40' y='40' width='10' height='10'/%3E%3Crect fill='%23000' x='55' y='40' width='10' height='10'/%3E%3C/svg%3E"/>
+</div>
+<span class="absolute top-2 right-2 bg-on-surface text-surface rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[20px]">download</span>
+</span>
+</div>
+<button class="mt-4 w-full text-center text-primary font-label-lg hover:text-primary/80 transition-colors">
+<span class="material-symbols-outlined text-[20px] mr-1">share</span>Share QR Code</button>
+</div>
+<div>
+<p class="text-body-md text-secondary mb-4">Your unique menu link:</p>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-container border border-outline-variant rounded-lg px-4 py-3 font-mono text-body-sm focus:ring-2 focus:ring-primary outline-none" readonly="" type="text" value="orderlink.app/menu/greenolive2024"/>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-lg hover:shadow-lg transition-all active:scale-95">
+<span class="material-symbols-outlined">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Message Templates -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-6">Message Templates</h3>
+<div class="space-y-4">
+<div class="bg-surface-container-high rounded-xl p-4 border-l-4 border-primary-container">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-2">Order Confirmation</p>
+<p class="text-body-sm text-secondary italic">"Thanks for your order! Your #{ORDER_ID} is confirmed and will be ready in {PREP_TIME} minutes. Track your order: {LINK}"</p>
+</div>
+<div class="bg-surface-container-high rounded-xl p-4 border-l-4 border-primary-container">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-2">Ready for Pickup</p>
+<p class="text-body-sm text-secondary italic">"Your order #{ORDER_ID} is ready! Come pick it up at the counter."</p>
+</div>
+<div class="bg-surface-container-high rounded-xl p-4 border-l-4 border-primary-container">
+<p class="font-label-lg text-label-lg text-on-surface font-bold mb-2">Delivery Incoming</p>
+<p class="text-body-sm text-secondary italic">"Your delivery is on the way! Driver: {DRIVER_NAME} - {VEHICLE} ({PLATE})"</p>
+</div>
+</div>
+</div>
+</main>
+
+<!-- BottomNav (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden z-50 flex justify-around bg-surface border-t border-outline-variant shadow-lg pb-safe">
+<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="../../index.html">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center py-3 bg-primary-container text-on-primary-container rounded-t-xl px-5" href="whatsapp.html">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-sm text-[10px]">WhatsApp</span>
+</a>
+<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-[10px]">Settings</span>
+</a>
+</nav>
+</body>
+</html>

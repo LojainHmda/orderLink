@@ -1,0 +1,97 @@
+<!-- Menu Management - Digital Storefront -->
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink Admin - Menu Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-surface": "#191c1d",
+          "primary": "#006d2f",
+          "primary-container": "#25d366",
+          "surface": "#f8f9fa"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  body { background-color: #f8f9fa; }
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low flex flex-col p-4 shadow-md z-40 hidden md:flex">
+  <div class="mb-8 flex items-center gap-3">
+    <div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+      <span class="material-symbols-outlined text-on-primary-container">restaurant</span>
+    </div>
+    <div>
+      <h2 class="font-headline-md text-headline-md font-bold text-on-surface">OrderLink Admin</h2>
+      <p class="font-label-md text-label-md text-secondary">Menu</p>
+    </div>
+  </div>
+</aside>
+
+<!-- Main Content -->
+<main class="md:ml-[280px] pt-24 pb-12 px-4 md:px-12">
+  <h1 class="font-headline-lg mb-8">Menu Management</h1>
+  <div class="bg-surface-container-lowest rounded-xl p-6 border border-outline-variant shadow-sm">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="font-headline-sm">Your Menu Items</h2>
+      <button class="bg-primary text-on-primary px-6 py-2 rounded-lg font-label-lg">
+        <span class="material-symbols-outlined text-[20px] inline-block mr-2">add</span>
+        Add New Item
+      </button>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <table class="w-full text-left">
+        <thead>
+          <tr class="bg-surface-container-low border-b border-outline-variant">
+            <th class="px-6 py-4 font-label-lg text-secondary">Product</th>
+            <th class="px-6 py-4 font-label-lg text-secondary">Category</th>
+            <th class="px-6 py-4 font-label-lg text-secondary">Price</th>
+            <th class="px-6 py-4 font-label-lg text-secondary">Status</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-outline-variant">
+          <tr class="hover:bg-surface-container-low/50">
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden">
+                  <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr5D7lZ1uc9qb7gHpn_X6kx8fz0iSN0aBzsGedQKIggrU6OhxWDWZFbXA2zY08ne-P6iK_Q4VJbQAOs5KVQfm-GT-xRzvfgj9qu3d_KFtxaABpS_FMX5DU6R3oYp40csTYa3SZr6IVrVi0VQMzmjITrMH9kulxodAMXxespACWL6RW6kYs4Mpf9w7lUXnpgQzm2LD87iAwCvipVY2EmMqMRrX0V06jeNDq3sIGT5j4dtNc-0iV5I0bNAOWMAFs-ROFegOvQdsHgL4" class="w-full h-full object-cover"/>
+                </div>
+                <div>
+                  <h4 class="font-label-lg text-on-surface">Classic Cheeseburger</h4>
+                  <p class="text-body-sm text-secondary">Angus beef patty, cheddar</p>
+                </div>
+              </div>
+            </td>
+            <td class="px-6 py-4"><span class="bg-primary-container/20 text-on-primary-container text-[11px] px-2.5 py-1 rounded-full font-bold">Burgers</span></td>
+            <td class="px-6 py-4 font-bold">$12.00</td>
+            <td class="px-6 py-4">
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input checked type="checkbox" class="sr-only peer"/>
+                <div class="w-11 h-6 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+              </label>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>

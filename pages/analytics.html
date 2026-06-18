@@ -1,0 +1,45 @@
+<!-- Business Insights & Analytics -->
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink Admin - Restaurant Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+          "on-surface": "#191c1d",
+          "primary": "#006d2f",
+          "primary-container": "#25d366",
+          "surface": "#f8f9fa"
+        }
+      }
+    }
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+</style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Analytics Dashboard Content -->
+<main class="md:ml-[280px] pt-24 pb-10 px-4 md:px-12">
+  <h1 class="font-headline-lg text-headline-lg mb-8">Restaurant Analytics</h1>
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant shadow-sm">
+      <h3 class="font-headline-sm mb-2">Average Order Value</h3>
+      <p class="font-headline-md text-primary">$34.20</p>
+      <p class="text-sm text-secondary">+12.5% from last week</p>
+    </div>
+  </div>
+</main>
+</body>
+</html>

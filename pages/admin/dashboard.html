@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Burger House - Merchant Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
+body {background-color: #f8f9fa;}
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low hidden md:flex flex-col p-stack-lg shadow-md z-40">
+<div class="mb-10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">restaurant</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">Burger House</h2>
+<p class="font-label-md text-label-md text-secondary">Dashboard</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="bg-primary-container text-on-primary-container px-4 py-3 flex items-center gap-3 rounded-lg font-bold" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg">Dashboard</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="orders.html">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-lg">Orders</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="menu.html">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-label-lg">Menu</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="analytics.html">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-lg">Analytics</span>
+</a>
+</nav>
+<button class="w-full bg-primary text-on-primary font-label-lg py-3 rounded-lg hover:shadow-lg transition-all">View Menu Online</button>
+</aside>
+
+<!-- Header -->
+<header class="fixed top-0 md:left-[280px] left-0 right-0 h-16 bg-surface border-b border-outline-variant px-4 md:px-8 flex items-center justify-between z-30 shadow-sm">
+<h1 class="font-headline-sm text-headline-sm font-bold">Dashboard</h1>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img alt="Profile" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAURdu-N8rW_qoUNMnPZPI1UujgiEDT-RoXqKsh-qbP9w7nlmJU6hteXFbar0qlZADuS0zhAjq9GgpWUYzYfg0DSTvNuATtYLLQEykoAmtU7qy4ubLBhCHtlwkZMwXiTKVztRh83N39gtSxtLIzLY7UIG3SJcduhRaJr_51L_oDb__sFKnm5LKYEbgqcPuivlpRcmL4d4y8ZdOU8xHo3P4JTQn5M0HjIYNdBu6L2jkvrCz0UYKoF6LncJpaqui8rapLEJUDYpBEPHs"/>
+</div>
+</header>
+
+<!-- Main Content -->
+<main class="pt-24 pb-20 md:ml-[280px] px-4 md:px-8 min-h-screen">
+<!-- Welcome Hero -->
+<div class="bg-gradient-to-r from-primary-container to-primary-container/80 text-on-primary-container rounded-2xl p-8 mb-8 shadow-md">
+<div class="flex items-start justify-between">
+<div>
+<h2 class="font-display-lg text-display-lg font-bold mb-2">Welcome back, Sarah!</h2>
+<p class="text-body-lg text-on-primary-container/80 mb-6">Your restaurant is performing great. Keep it up! 🚀</p>
+<div class="flex gap-3">
+<button class="bg-white text-primary-container px-6 py-2 rounded-full font-label-lg font-bold hover:shadow-lg transition-all">Copy Menu Link</button>
+<button class="border-2 border-white text-white px-6 py-2 rounded-full font-label-lg font-bold hover:bg-white/10 transition-all">View Menu</button>
+</div>
+</div>
+<span class="material-symbols-outlined text-[64px] text-on-primary-container/30">celebration</span>
+</div>
+</div>
+
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary-container/20 text-primary-container p-3 rounded-lg">
+<span class="material-symbols-outlined">shopping_bag</span>
+</span>
+<span class="text-primary font-label-md font-bold">Today</span>
+</div>
+<p class="text-secondary font-label-md mb-1">Active Orders</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">12</h3>
+</div>
+
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-tertiary-container/20 text-tertiary p-3 rounded-lg">
+<span class="material-symbols-outlined">attach_money</span>
+</span>
+<span class="text-primary font-label-md font-bold">Today</span>
+</div>
+<p class="text-secondary font-label-md mb-1">Revenue</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">$425</h3>
+</div>
+
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-primary-container/20 text-primary-container p-3 rounded-lg">
+<span class="material-symbols-outlined">pending_actions</span>
+</span>
+<span class="text-error font-label-md font-bold">Action needed</span>
+</div>
+<p class="text-secondary font-label-md mb-1">Pending Approval</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">3</h3>
+</div>
+
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="bg-error-container/20 text-error p-3 rounded-lg">
+<span class="material-symbols-outlined">trending_up</span>
+</span>
+<span class="text-primary font-label-md font-bold">This month</span>
+</div>
+<p class="text-secondary font-label-md mb-1">Total Revenue</p>
+<h3 class="font-headline-md text-headline-md text-on-surface">$12.4K</h3>
+</div>
+</div>
+
+<!-- Recent Orders Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl shadow-sm overflow-hidden mb-8">
+<div class="px-6 py-5 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Recent Orders</h3>
+<a class="text-primary font-label-lg hover:underline" href="orders.html">View all →</a>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Order ID</th>
+<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Customer</th>
+<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Amount</th>
+<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Status</th>
+<th class="px-6 py-3 font-label-md text-secondary border-b border-outline-variant">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-6 py-4 font-body-md font-bold">#1047</td>
+<td class="px-6 py-4 text-body-md">John Smith</td>
+<td class="px-6 py-4 text-body-md font-bold text-on-surface">$28.50</td>
+<td class="px-6 py-4">
+<span class="bg-primary-container/20 text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">In Prep</span>
+</td>
+<td class="px-6 py-4 text-body-sm text-secondary">2 min ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-6 py-4 font-body-md font-bold">#1046</td>
+<td class="px-6 py-4 text-body-md">Emily Chen</td>
+<td class="px-6 py-4 text-body-md font-bold text-on-surface">$32.00</td>
+<td class="px-6 py-4">
+<span class="bg-primary-container/20 text-on-primary-container px-3 py-1 rounded-full text-label-sm font-label-sm">Ready</span>
+</td>
+<td class="px-6 py-4 text-body-sm text-secondary">8 min ago</td>
+</tr>
+<tr class="hover:bg-surface-container-low/50">
+<td class="px-6 py-4 font-body-md font-bold">#1045</td>
+<td class="px-6 py-4 text-body-md">Mike Johnson</td>
+<td class="px-6 py-4 text-body-md font-bold text-on-surface">$15.75</td>
+<td class="px-6 py-4">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full text-label-sm font-label-sm">Completed</span>
+</td>
+<td class="px-6 py-4 text-body-sm text-secondary">25 min ago</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<!-- Quick Actions -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<span class="bg-primary-container/20 text-primary-container p-4 rounded-lg inline-block mb-4">
+<span class="material-symbols-outlined text-[28px]">restaurant_menu</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Manage Menu</h3>
+<p class="text-body-sm text-secondary">Add, edit, or remove items</p>
+</div>
+
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<span class="bg-tertiary-container/20 text-tertiary p-4 rounded-lg inline-block mb-4">
+<span class="material-symbols-outlined text-[28px]">percent</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Run Promotion</h3>
+<p class="text-body-sm text-secondary">Create discount or loyalty offer</p>
+</div>
+
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+<span class="bg-error-container/20 text-error p-4 rounded-lg inline-block mb-4">
+<span class="material-symbols-outlined text-[28px]">settings</span>
+</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-2">Store Settings</h3>
+<p class="text-body-sm text-secondary">Update hours, fees, and more</p>
+</div>
+</div>
+</main>
+
+<!-- BottomNav (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden z-50 flex justify-around bg-surface border-t border-outline-variant shadow-lg pb-safe">
+<a class="flex flex-col items-center justify-center py-3 bg-primary-container text-on-primary-container rounded-t-xl px-5" href="dashboard.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-[10px]">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="orders.html">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-sm text-[10px]">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="menu.html">
+<span class="material-symbols-outlined">restaurant_menu</span>
+<span class="font-label-sm text-[10px]">Menu</span>
+</a>
+<a class="flex flex-col items-center justify-center py-3 text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-[10px]">Profile</span>
+</a>
+</nav>
+</body>
+</html>

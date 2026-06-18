@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink Admin - Order Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.4); }
+            50% { box-shadow: 0 0 20px 4px rgba(37, 211, 102, 0.2); }
+        }
+        .animate-new-order {
+            animation: pulse-glow 2s infinite ease-in-out;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low shadow-md hidden md:flex flex-col p-stack-lg z-40">
+<div class="flex items-center gap-3 mb-10 px-4">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface">OrderLink Admin</h1>
+<p class="font-label-md text-label-md text-secondary">Green Olive Bistro</p>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-150 rounded-lg" href="../../index.html">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-lg text-label-lg">Dashboard</span>
+</a>
+<a class="bg-primary-container text-on-primary-container rounded-lg font-bold px-4 py-3 flex items-center gap-3 active:translate-x-1 duration-200" href="orders.html">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+<span class="font-label-lg text-label-lg">Orders</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-150 rounded-lg" href="menu.html">
+<span class="material-symbols-outlined" data-icon="restaurant_menu">restaurant_menu</span>
+<span class="font-label-lg text-label-lg">Menu</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-150 rounded-lg" href="analytics.html">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-lg text-label-lg">Analytics</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-150 rounded-lg" href="whatsapp.html">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-label-lg text-label-lg">WhatsApp</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest transition-all duration-150 rounded-lg" href="settings.html">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-lg text-label-lg">Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-stack-lg space-y-1">
+<button class="w-full bg-primary text-on-primary rounded-lg font-label-lg text-label-lg py-3 mb-4 hover:shadow-lg transition-all active:scale-95">
+                View Live Menu
+            </button>
+<a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:bg-surface-container-highest transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-label-lg text-label-lg">Support</span>
+</a>
+<a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:bg-surface-container-highest transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-lg text-label-lg">Logout</span>
+</a>
+</div>
+</aside>
+
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 w-full md:w-[calc(100%-280px)] z-30 flex justify-between items-center px-container-margin-mobile md:px-container-margin-desktop h-16 bg-surface border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface">Orders</h2>
+<div class="hidden md:flex gap-4 ml-6">
+<a class="font-label-md text-label-md text-primary border-b-2 border-primary pb-1" href="#">New (3)</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Accepted</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Preparing</a>
+<a class="font-label-md text-label-md text-secondary hover:text-primary transition-colors" href="#">Ready</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex bg-surface-container items-center px-3 py-1.5 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-secondary text-[20px]" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-48" placeholder="Search orders..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="help">help</span>
+</button>
+<img alt="Merchant Profile" class="w-8 h-8 rounded-full border border-outline-variant ml-2" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAURdu-N8rW_qoUNMnPZPI1UujgiEDT-RoXqKsh-qbP9w7nlmJU6hteXFbar0qlZADuS0zhAjq9GgpWUYzYfg0DSTvNuATtYLLQEykoAmtU7qy4ubLBhCHtlwkZMwXiTKVztRh83N39gtSxtLIzLY7UIG3SJcduhRaJr_51L_oDb__sFKnm5LKYEbgqcPuivlpRcmL4d4y8ZdOU8xHo3P4JTQn5M0HjIYNdBu6L2jkvrCz0UYKoF6LncJpaqui8rapLEJUDYpBEPHs"/>
+</div>
+</div>
+</header>
+
+<!-- Main Workspace -->
+<main class="md:ml-[280px] pt-24 px-container-margin-mobile md:px-container-margin-desktop">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter mb-8">
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+<p class="font-label-md text-label-md text-secondary">Active Orders</p>
+<p class="font-headline-md text-headline-md text-on-surface">12</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+<p class="font-label-md text-label-md text-secondary">Estimated Prep Time</p>
+<p class="font-headline-md text-headline-md text-on-surface">18m</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+<p class="font-label-md text-label-md text-secondary">Today's Revenue</p>
+<p class="font-headline-md text-headline-md text-on-surface">$1,420.50</p>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant shadow-sm">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary rounded-full"></div>
+<p class="font-label-md text-label-md text-secondary">Kitchen Status</p>
+</div>
+<p class="font-headline-md text-headline-md text-on-surface">Live</p>
+</div>
+</div>
+
+<!-- Orders Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-gutter mb-32">
+<!-- NEW ORDER CARD (Animated Glow) -->
+<div class="bg-surface-container-lowest border-2 border-primary-container rounded-xl shadow-md overflow-hidden animate-new-order relative group">
+<div class="absolute top-0 right-0 bg-primary-container text-on-primary-container font-label-sm text-label-sm px-3 py-1 rounded-bl-lg">NEW</div>
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Order #1042</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-body-md text-body-md font-semibold text-on-surface">John Doe</span>
+<a class="text-primary-container hover:text-primary transition-colors flex" href="#">
+<span class="material-symbols-outlined text-[20px]" data-icon="chat" style="font-variation-settings: 'FILL' 1;">chat</span>
+</a>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-3 py-1 rounded-full border border-outline-variant">Delivery</span>
+</div>
+<div class="space-y-2 mb-4">
+<div class="flex justify-between">
+<span class="font-body-md text-body-md text-secondary"><span class="font-bold text-on-surface">2x</span> Classic Burger</span>
+</div>
+<div class="flex justify-between">
+<span class="font-body-md text-body-md text-secondary"><span class="font-bold text-on-surface">1x</span> Truffle Fries</span>
+</div>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-dashed border-outline-variant mb-4">
+<p class="font-label-md text-label-md text-secondary italic">"No onions please"</p>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant">
+<div>
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Total</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">$28.50</p>
+</div>
+<p class="font-label-sm text-label-sm text-error font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>5 mins ago</p>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-6">
+<button class="bg-primary-container text-on-primary-container font-label-lg text-label-lg py-3 rounded-lg hover:shadow-lg active:scale-95 transition-all">Accept</button>
+<button class="bg-surface-container-high text-secondary font-label-lg text-label-lg py-3 rounded-lg hover:bg-error-container hover:text-error transition-all">Reject</button>
+<button class="col-span-2 flex items-center justify-center gap-2 border-2 border-primary-container text-on-primary-container font-label-lg text-label-lg py-3 rounded-lg hover:bg-primary-container/10 transition-all">
+<span class="material-symbols-outlined text-[20px]" data-icon="send">send</span>Send WhatsApp Message</button>
+</div>
+</div>
+</div>
+
+<!-- Order Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
+<div class="p-5">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Order #1041</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-body-md text-body-md font-semibold text-on-surface">Sarah Smith</span>
+</div>
+</div>
+<span class="bg-surface-container-high text-on-surface-variant font-label-md text-label-md px-3 py-1 rounded-full border border-outline-variant">Pickup</span>
+</div>
+<div class="space-y-2 mb-4">
+<div class="flex justify-between">
+<span class="font-body-md text-body-md text-secondary"><span class="font-bold text-on-surface">1x</span> Avocado Salad</span>
+</div>
+</div>
+<div class="flex justify-between items-center pt-4 border-t border-outline-variant">
+<div>
+<p class="font-label-sm text-label-sm text-secondary uppercase tracking-wider">Total</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">$32.00</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-3 mt-6">
+<button class="bg-primary-container text-on-primary-container font-label-lg text-label-lg py-3 rounded-lg hover:shadow-lg transition-all">Accept</button>
+<button class="bg-surface-container-high text-secondary font-label-lg text-label-lg py-3 rounded-lg hover:bg-error-container hover:text-error transition-all">Reject</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 md:hidden bg-surface border-t border-outline-variant shadow-lg rounded-t-xl pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="../../index.html">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1 active:scale-90 transition-transform duration-150" href="orders.html">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="font-label-sm">Orders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-sm">Cart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container transition-colors p-2 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm">Profile</span>
+</a>
+</nav>
+</body>
+</html>

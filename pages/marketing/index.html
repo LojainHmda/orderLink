@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink - WhatsApp Ordering Platform for Restaurants</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
+body {background-color: #f8f9fa;}
+.gradient-hero {background: linear-gradient(135deg, #006d2f 0%, #25d366 100%);}
+.glass-card {background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px);}
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Navigation Bar -->
+<nav class="fixed top-0 left-0 right-0 z-50 bg-surface border-b border-outline-variant px-container-margin-mobile md:px-container-margin-desktop flex items-center justify-between h-16 shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="restaurant">restaurant</span>
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-on-surface hidden sm:block">OrderLink</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-on-surface transition-colors font-label-lg">Docs</button>
+<a class="text-primary-container bg-on-surface rounded-full px-4 py-2 font-label-lg hover:shadow-lg transition-all active:scale-95" href="#">Get Started</a>
+</div>
+</nav>
+
+<!-- Hero Section -->
+<section class="pt-32 pb-16 md:pb-24 gradient-hero text-on-primary relative overflow-hidden">
+<div class="container-margin-desktop mx-auto px-container-margin-mobile md:px-container-margin-desktop max-w-6xl">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div>
+<h2 class="font-display-lg text-display-lg font-bold mb-6 leading-tight">Empower Your Restaurant with WhatsApp Ordering</h2>
+<p class="text-body-lg text-on-primary/90 mb-8">OrderLink connects your restaurant directly to WhatsApp, letting customers order from their favorite messaging app. Increase sales. Simplify operations. Delight customers.</p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-on-primary text-primary px-8 py-4 rounded-full font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Start Free Trial</button>
+<button class="border-2 border-on-primary text-on-primary px-8 py-4 rounded-full font-label-lg text-label-lg font-bold hover:bg-white/10 transition-all active:scale-95">Watch Demo</button>
+</div>
+<p class="text-body-sm text-on-primary/70 mt-6">✓ No credit card required ✓ Setup in 5 minutes ✓ Join 500+ restaurants</p>
+</div>
+<div class="relative hidden md:block h-80 bg-white/10 rounded-2xl backdrop-blur-sm border border-white/20 overflow-hidden">
+<div class="flex items-center justify-center h-full">
+<span class="material-symbols-outlined text-[120px] text-on-primary/20">phone_iphone</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Features Section (Bento Grid) -->
+<section class="py-24 px-container-margin-mobile md:px-container-margin-desktop">
+<div class="max-w-6xl mx-auto">
+<h2 class="text-center font-headline-lg text-headline-lg font-bold text-on-surface mb-16">Everything You Need to Succeed</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Feature 1 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-primary-container text-[24px]" data-icon="chat">chat</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">WhatsApp Native</h3>
+<p class="text-body-md text-secondary">Customers order directly via WhatsApp. No app downloads. No friction.</p>
+</div>
+<!-- Feature 2 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-tertiary-container rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-tertiary-container text-[24px]" data-icon="restaurant_menu">restaurant_menu</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Digital Menu</h3>
+<p class="text-body-md text-secondary">Beautiful, shareable menus with photos, prices, and descriptions.</p>
+</div>
+<!-- Feature 3 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="receipt_long">receipt_long</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Order Management</h3>
+<p class="text-body-md text-secondary">Track and manage orders from one dashboard. Real-time notifications.</p>
+</div>
+<!-- Feature 4 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-error-container rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-error-container text-[24px]" data-icon="analytics">analytics</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Analytics</h3>
+<p class="text-body-md text-secondary">Understand your customers and optimize your menu with real data.</p>
+</div>
+<!-- Feature 5 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-secondary-fixed rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-secondary-fixed text-[24px]" data-icon="discount">discount</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Promotions</h3>
+<p class="text-body-md text-secondary">Run campaigns and loyalty programs to bring customers back.</p>
+</div>
+<!-- Feature 6 -->
+<div class="glass-card rounded-2xl p-8 border border-white/20 shadow-md hover:shadow-lg transition-shadow">
+<div class="w-12 h-12 bg-primary-container rounded-xl flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-on-primary-container text-[24px]" data-icon="settings">settings</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Multi-Location</h3>
+<p class="text-body-md text-secondary">Manage multiple restaurants from a single platform.</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- How It Works Section -->
+<section class="py-24 px-container-margin-mobile md:px-container-margin-desktop bg-surface-container-low">
+<div class="max-w-6xl mx-auto">
+<h2 class="text-center font-headline-lg text-headline-lg font-bold text-on-surface mb-16">How It Works</h2>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Step 1 -->
+<div class="text-center">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mx-auto mb-4 font-headline-md text-headline-md font-bold">1</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Create Account</h3>
+<p class="text-body-md text-secondary">Sign up with your restaurant info</p>
+</div>
+<!-- Arrow -->
+<div class="hidden md:flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px] rotate-90">arrow_forward</span>
+</div>
+<!-- Step 2 -->
+<div class="text-center">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mx-auto mb-4 font-headline-md text-headline-md font-bold">2</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Add Menu</h3>
+<p class="text-body-md text-secondary">Upload your menu in minutes</p>
+</div>
+<!-- Arrow -->
+<div class="hidden md:flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px] rotate-90">arrow_forward</span>
+</div>
+<!-- Step 3 -->
+<div class="text-center">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mx-auto mb-4 font-headline-md text-headline-md font-bold">3</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Share Link</h3>
+<p class="text-body-md text-secondary">Get your unique WhatsApp link</p>
+</div>
+<!-- Arrow -->
+<div class="hidden md:flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[32px] rotate-90">arrow_forward</span>
+</div>
+<!-- Step 4 -->
+<div class="text-center">
+<div class="w-16 h-16 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center mx-auto mb-4 font-headline-md text-headline-md font-bold">4</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Start Selling</h3>
+<p class="text-body-md text-secondary">Receive orders directly</p>
+</div>
+</div>
+</div>
+</section>
+
+<!-- Pricing Section -->
+<section class="py-24 px-container-margin-mobile md:px-container-margin-desktop">
+<div class="max-w-6xl mx-auto">
+<h2 class="text-center font-headline-lg text-headline-lg font-bold text-on-surface mb-6">Simple Pricing</h2>
+<p class="text-center text-body-lg text-secondary mb-16">No hidden fees. No contracts. Scale as you grow.</p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Starter Plan -->
+<div class="glass-card border border-white/20 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Starter</h3>
+<p class="text-tertiary font-label-lg text-label-lg mb-6">Perfect for small restaurants</p>
+<p class="font-display-lg text-display-lg font-bold text-on-surface mb-6">Free</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]" data-icon="check">✓</span>
+<span>Digital menu</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]" data-icon="check">✓</span>
+<span>WhatsApp ordering</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]" data-icon="check">✓</span>
+<span>30 orders/month</span>
+</li>
+</ul>
+<button class="w-full border-2 border-primary text-primary font-label-lg py-3 rounded-full hover:bg-primary/5 transition-all">Get Started</button>
+</div>
+<!-- Pro Plan (Featured) -->
+<div class="glass-card border-2 border-primary-container rounded-2xl p-8 relative shadow-lg hover:shadow-xl transition-shadow scale-105 md:scale-100 md:-translate-y-4">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary-container text-on-primary-container px-4 py-1 rounded-full text-label-md font-label-md">Popular</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Pro</h3>
+<p class="text-on-primary-container font-label-lg text-label-lg mb-6">For growing businesses</p>
+<p class="font-display-lg text-display-lg font-bold text-on-surface mb-1">$29</p>
+<p class="text-secondary text-body-sm mb-6">/month, billed monthly</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Everything in Starter</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Unlimited orders</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Analytics dashboard</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Priority support</span>
+</li>
+</ul>
+<button class="w-full bg-primary-container text-on-primary-container font-label-lg py-3 rounded-full hover:shadow-lg transition-all active:scale-95">Start Free Trial</button>
+</div>
+<!-- Enterprise Plan -->
+<div class="glass-card border border-white/20 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+<h3 class="font-headline-sm text-headline-sm text-on-surface font-bold mb-2">Enterprise</h3>
+<p class="text-secondary font-label-lg text-label-lg mb-6">For large organizations</p>
+<p class="font-display-lg text-display-lg font-bold text-on-surface mb-6">Custom</p>
+<ul class="space-y-3 mb-8">
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Everything in Pro</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Custom integration</span>
+</li>
+<li class="flex items-center gap-2 text-body-md text-secondary">
+<span class="w-5 h-5 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container text-[12px]">✓</span>
+<span>Dedicated support</span>
+</li>
+</ul>
+<button class="w-full border-2 border-primary text-primary font-label-lg py-3 rounded-full hover:bg-primary/5 transition-all">Contact Sales</button>
+</div>
+</div>
+</div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-20 px-container-margin-mobile md:px-container-margin-desktop gradient-hero text-on-primary">
+<div class="max-w-4xl mx-auto text-center">
+<h2 class="font-headline-lg text-headline-lg font-bold mb-6">Ready to Transform Your Restaurant?</h2>
+<p class="text-body-lg text-on-primary/90 mb-8">Join 500+ restaurants already using OrderLink to boost sales and streamline operations.</p>
+<button class="bg-on-primary text-primary px-8 py-4 rounded-full font-label-lg text-label-lg font-bold hover:shadow-lg transition-all active:scale-95">Start Your Free Trial Today</button>
+</div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-on-surface text-surface px-container-margin-mobile md:px-container-margin-desktop py-12">
+<div class="max-w-6xl mx-auto">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+<div>
+<h4 class="font-label-lg font-bold mb-4">Product</h4>
+<ul class="space-y-2 text-body-sm"><li><a class="hover:text-primary-container transition-colors" href="#">Features</a></li><li><a class="hover:text-primary-container transition-colors" href="#">Pricing</a></li><li><a class="hover:text-primary-container transition-colors" href="#">Security</a></li></ul>
+</div>
+<div>
+<h4 class="font-label-lg font-bold mb-4">Company</h4>
+<ul class="space-y-2 text-body-sm"><li><a class="hover:text-primary-container transition-colors" href="#">About</a></li><li><a class="hover:text-primary-container transition-colors" href="#">Blog</a></li><li><a class="hover:text-primary-container transition-colors" href="#">Contact</a></li></ul>
+</div>
+<div>
+<h4 class="font-label-lg font-bold mb-4">Developers</h4>
+<ul class="space-y-2 text-body-sm"><li><a class="hover:text-primary-container transition-colors" href="#">Documentation</a></li><li><a class="hover:text-primary-container transition-colors" href="#">API</a></li></ul>
+</div>
+<div>
+<h4 class="font-label-lg font-bold mb-4">Legal</h4>
+<ul class="space-y-2 text-body-sm"><li><a class="hover:text-primary-container transition-colors" href="#">Privacy</a></li><li><a class="hover:text-primary-container transition-colors" href="#">Terms</a></li></ul>
+</div>
+</div>
+<div class="border-t border-surface-container pt-8 flex flex-col md:flex-row justify-between items-center">
+<p class="text-body-sm text-secondary mb-4 md:mb-0">© 2024 OrderLink. All rights reserved.</p>
+<div class="flex gap-4">
+<a class="text-secondary hover:text-primary-container transition-colors" href="#">Twitter</a>
+<a class="text-secondary hover:text-primary-container transition-colors" href="#">Facebook</a>
+<a class="text-secondary hover:text-primary-container transition-colors" href="#">Instagram</a>
+</div>
+</div>
+</div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrderLink - Restaurant Profile</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+.material-symbols-outlined {font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;}
+body {background-color: #f8f9fa;}
+.phone-mockup {aspect-ratio: 9/16;}
+.dropzone:hover {border-color: #006d2f; background-color: #006d2f/5;}
+</style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-[280px] bg-surface-container-low hidden md:flex flex-col p-stack-lg shadow-md z-40">
+<div class="mb-10 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">restaurant</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md font-bold text-on-surface">OrderLink</h2>
+<p class="font-label-md text-label-md text-secondary">Admin</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="../../index.html">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-lg">Dashboard</span>
+</a>
+<a class="bg-primary-container text-on-primary-container px-4 py-3 flex items-center gap-3 rounded-lg font-bold" href="profile.html">
+<span class="material-symbols-outlined">business</span>
+<span class="font-label-lg">Profile</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container-highest rounded-lg" href="settings.html">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-lg">Settings</span>
+</a>
+</nav>
+</aside>
+
+<!-- Header -->
+<header class="fixed top-0 md:left-[280px] left-0 right-0 h-16 bg-surface border-b border-outline-variant px-4 md:px-8 flex items-center justify-between z-30 shadow-sm">
+<h1 class="font-headline-sm text-headline-sm font-bold">Restaurant Profile</h1>
+<button class="text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined">help</span>
+</button>
+</header>
+
+<!-- Main Content -->
+<main class="pt-24 pb-20 md:ml-[280px] px-4 md:px-8 min-h-screen">
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 max-w-7xl">
+<!-- Form Section -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Basic Information -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-6">Basic Information</h2>
+<div class="space-y-5">
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Restaurant Name *</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none" placeholder="Your restaurant name" type="text" value="Green Olive Bistro"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Description</label>
+<textarea class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none h-24 resize-none" placeholder="Tell customers about your restaurant...">Mediterranean cuisine with traditional recipes and exceptional service since 2015.</textarea>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Cuisine Type</label>
+<select class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none cursor-pointer">
+<option>Mediterranean</option>
+<option>Italian</option>
+<option>American</option>
+<option>Asian</option>
+</select>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Price Range</label>
+<select class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none cursor-pointer">
+<option>$ (Budget-friendly)</option>
+<option>$$ (Moderate)</option>
+<option>$$$ (Upscale)</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Opening Time</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none" type="time" value="10:00"/>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-2">Closing Time</label>
+<input class="w-full border border-outline-variant rounded-lg px-4 py-3 font-body-md focus:ring-2 focus:ring-primary outline-none" type="time" value="22:00"/>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Branding -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-6">Branding</h2>
+<div class="space-y-6">
+<!-- Logo Upload -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-3">Restaurant Logo (1:1 aspect ratio)</label>
+<div class="dropzone border-2 border-dashed border-outline-variant rounded-xl p-8 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-[48px] text-secondary block mb-2 mx-auto">image</span>
+<p class="font-label-lg text-on-surface-variant mb-1">Upload logo</p>
+<p class="text-body-sm text-secondary">PNG, JPG up to 2MB</p>
+</div>
+</div>
+
+<!-- Cover Image Upload -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-3">Cover Image (16:9 aspect ratio)</label>
+<div class="dropzone border-2 border-dashed border-outline-variant rounded-xl p-8 text-center hover:border-primary hover:bg-primary/5 transition-all cursor-pointer" style="aspect-ratio: 16/9;">
+<div class="h-full flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-[48px] text-secondary mb-2">landscape</span>
+<p class="font-label-lg text-on-surface-variant mb-1">Upload cover image</p>
+<p class="text-body-sm text-secondary">PNG, JPG up to 5MB</p>
+</div>
+</div>
+</div>
+
+<!-- Color Theme -->
+<div>
+<label class="block text-label-md font-label-md text-on-surface-variant mb-3">Brand Color</label>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-lg bg-primary border-2 border-primary shadow-sm active:scale-95 transition-transform" style="background-color: #006d2f;" title="Forest Green"></button>
+<button class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-outline-variant hover:border-primary transition-all active:scale-95" style="background-color: #f97316;"></button>
+<button class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-outline-variant hover:border-primary transition-all active:scale-95" style="background-color: #3b82f6;"></button>
+<button class="w-12 h-12 rounded-lg bg-surface-container-high border-2 border-outline-variant hover:border-primary transition-all active:scale-95" style="background-color: #ec4899;"></button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Operating Hours -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-8 shadow-sm">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-6">Operating Hours</h2>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded-lg">
+<span class="font-body-md text-on-surface">Monday</span>
+<div class="flex gap-2">
+<input class="border border-outline-variant rounded px-2 py-1 w-20 text-body-sm" type="time" value="10:00"/>
+<span class="text-secondary">-</span>
+<input class="border border-outline-variant rounded px-2 py-1 w-20 text-body-sm" type="time" value="22:00"/>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline-variant rounded-lg">
+<span class="font-body-md text-on-surface">Tuesday</span>
+<div class="flex gap-2">
+<input class="border border-outline-variant rounded px-2 py-1 w-20 text-body-sm" type="time" value="10:00"/>
+<span class="text-secondary">-</span>
+<input class="border border-outline-variant rounded px-2 py-1 w-20 text-body-sm" type="time" value="22:00"/>
+</div>
+</div>
+</div>
+<p class="text-body-sm text-secondary italic mt-4">Apply same hours to all days</p>
+<button class="mt-4 w-full bg-primary text-on-primary font-label-lg py-3 rounded-lg hover:shadow-lg transition-all active:scale-95">Save Changes</button>
+</div>
+</main>
+
+<!-- Phone Preview (Sticky Right Panel) -->
+<aside class="fixed bottom-0 right-0 hidden lg:block w-[340px] h-screen bg-surface border-l border-outline-variant overflow-y-auto z-40 pt-24">
+<div class="p-6">
+<h3 class="font-headline-sm text-headline-sm text-on-surface mb-4">Preview</h3>
+<div class="bg-black rounded-3xl p-3 phone-mockup">
+<div class="bg-surface-container-lowest rounded-2xl h-full overflow-hidden flex flex-col">
+<!-- Phone Header -->
+<div class="bg-primary-container text-on-primary-container p-4 text-center border-b border-outline-variant">
+<p class="font-label-lg text-label-lg font-bold">Green Olive Bistro</p>
+<p class="text-[11px] text-on-primary-container/80">Mediterranean</p>
+</div>
+<!-- Logo -->
+<div class="flex justify-center py-4">
+<div class="w-16 h-16 rounded-lg bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[32px]">restaurant</span>
+</div>
+</div>
+<!-- Info -->
+<div class="px-3 text-center space-y-3 flex-1">
+<div class="bg-surface-container rounded-lg p-2">
+<p class="text-[10px] text-secondary">Hours</p>
+<p class="text-[11px] font-bold">10:00 AM - 10:00 PM</p>
+</div>
+<div class="bg-surface-container rounded-lg p-2">
+<p class="text-[10px] text-secondary">Cuisine</p>
+<p class="text-[11px] font-bold">Mediterranean</p>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container text-[10px] font-bold py-2 rounded mt-2 hover:shadow-sm">View Menu</button>
+</div>
+</div>
+</div>
+</aside>
+</body>
+</html>

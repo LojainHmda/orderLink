@@ -1,0 +1,46 @@
+{
+  "summary": {
+    "totalTenants": 542,
+    "activeRestaurants": 480,
+    "totalOrders": 12400,
+    "newThisMonthPct": 15
+  },
+  "tenants": [
+    {
+      "id": "green-olive-bistro",
+      "name": "Green Olive Bistro",
+      "owner": "Marco Rossi",
+      "plan": "Pro",
+      "status": "active",
+      "totalOrders": 1245,
+      "createdDate": "2023-10-12"
+    },
+    {
+      "id": "burger-barn",
+      "name": "Burger Barn",
+      "owner": "Sarah Jenkins",
+      "plan": "Starter",
+      "status": "active",
+      "totalOrders": 432,
+      "createdDate": "2023-11-05"
+    },
+    {
+      "id": "pizza-central",
+      "name": "Pizza Central",
+      "owner": "David Chen",
+      "plan": "Pro",
+      "status": "suspended",
+      "totalOrders": 2890,
+      "createdDate": "2023-01-20"
+    },
+    {
+      "id": "sushi-house",
+      "name": "Sushi House",
+      "owner": "Aki Tanaka",
+      "plan": "Pro",
+      "status": "active",
+      "totalOrders": 812,
+      "createdDate": "2024-02-11"
+    }
+  ]
+}
