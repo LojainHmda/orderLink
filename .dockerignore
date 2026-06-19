@@ -1,0 +1,19 @@
+node_modules
+**/node_modules
+**/dist
+**/build
+.git
+.github
+*.log
+.env
+**/.env
+**/.env.*
+!**/.env.example
+coverage
+**/*.tsbuildinfo
+client/vite.config.js
+client/vite.config.d.ts
+# Legacy static prototype — not part of the deployed app.
+assets
+pages
+index.html
