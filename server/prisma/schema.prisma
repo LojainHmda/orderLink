@@ -1,0 +1,130 @@
+// OrderLink data model.
+// Run `npm run db:migrate` to create/update the database from this schema.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum OrderStatus {
+  NEW
+  PREPARING
+  READY
+  COMPLETED
+  REJECTED
+  CANCELLED
+}
+
+enum OrderType {
+  DELIVERY
+  PICKUP
+  DINE_IN
+}
+
+enum OrderChannel {
+  ONLINE
+  POS
+}
+
+model Restaurant {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  tagline     String?
+  cuisine     String?
+  phone       String?
+  currency    String   @default("$")
+  address     String?
+  deliveryFee Decimal  @default(0) @db.Decimal(10, 2)
+  minOrder    Decimal  @default(0) @db.Decimal(10, 2)
+  emoji       String?
+  categories  String[] @default([])
+  // Per-restaurant running counter for human-friendly order codes (#1041, #1042…).
+  orderSeq    Int      @default(1040)
+
+  menuItems MenuItem[]
+  orders    Order[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model MenuItem {
+  id           String   @id @default(cuid())
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  name        String
+  description String  @default("")
+  category    String
+  price       Decimal @db.Decimal(10, 2)
+  emoji       String?
+  available   Boolean @default(true)
+
+  orderItems OrderItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([restaurantId])
+}
+
+model Order {
+  id           String   @id @default(cuid())
+  code         Int
+  restaurantId String
+  restaurant   Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+
+  channel       OrderChannel @default(ONLINE)
+  type          OrderType    @default(DELIVERY)
+  table         String?
+  customerName  String
+  customerPhone String?
+  note          String?
+  status        OrderStatus  @default(NEW)
+
+  subtotal    Decimal @db.Decimal(10, 2)
+  deliveryFee Decimal @default(0) @db.Decimal(10, 2)
+  total       Decimal @db.Decimal(10, 2)
+
+  items  OrderItem[]
+  events OrderEvent[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([restaurantId, code])
+  @@index([restaurantId, status])
+  @@index([restaurantId, createdAt])
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId String?
+  menuItem   MenuItem? @relation(fields: [menuItemId], references: [id], onDelete: SetNull)
+
+  // Snapshots — captured at order time so historical orders are immune to later menu edits.
+  name  String
+  emoji String?
+  price Decimal @db.Decimal(10, 2)
+  qty   Int
+  note  String?
+
+  @@index([orderId])
+}
+
+model OrderEvent {
+  id        String      @id @default(cuid())
+  orderId   String
+  order     Order       @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    OrderStatus
+  createdAt DateTime    @default(now())
+
+  @@index([orderId])
+}

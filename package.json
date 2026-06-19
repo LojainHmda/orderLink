@@ -2,13 +2,34 @@
   "name": "orderlink",
   "version": "1.0.0",
   "private": true,
-  "description": "Share a menu by link, take orders in real time, track the kitchen. Static app on a reactive client-side data layer.",
+  "description": "OrderLink — share a menu by link, take orders in real time, track the kitchen. PERN monorepo.",
+  "workspaces": [
+    "shared",
+    "server",
+    "client"
+  ],
   "scripts": {
-    "dev": "serve . -l 5173",
-    "start": "serve . -l 5173",
-    "serve": "serve . -l 5173"
+    "postinstall": "npm run build --workspace shared",
+    "dev": "concurrently -n shared,api,web -c gray,green,cyan \"npm:dev:shared\" \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:shared": "npm run dev --workspace shared",
+    "dev:server": "npm run dev --workspace server",
+    "dev:client": "npm run dev --workspace client",
+    "build": "npm run build --workspace shared && npm run build --workspace server && npm run build --workspace client",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{ts,tsx,js,json,css,md}\" --ignore-path .gitignore",
+    "db:up": "docker compose up -d db",
+    "db:migrate": "npm run db:migrate --workspace server",
+    "db:seed": "npm run db:seed --workspace server",
+    "db:studio": "npm run db:studio --workspace server",
+    "legacy": "serve . -l 5173"
   },
   "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.4.2",
     "serve": "^14.2.4"
+  },
+  "engines": {
+    "node": ">=20"
   }
 }

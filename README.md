@@ -2,83 +2,123 @@
 
 **Share a menu by link. Take orders in real time. Track the kitchen.**
 
-OrderLink gives a restaurant a shareable menu, a live order board, customer order
-tracking, and a built-in point-of-sale — all in one. A customer opens the link,
-places an order, and the restaurant watches that ticket move through
-**Requested → Preparing → Ready → Completed/Delivered** in real time.
+A restaurant ordering platform built as a **PERN** monorepo (PostgreSQL · Express ·
+React · Node) in **TypeScript**, end-to-end type-safe from the database to the UI.
 
-Built with plain HTML + the [Tailwind CSS Play CDN](https://tailwindcss.com/docs/installation/play-cdn)
-and a small vanilla-JS data layer. **No build step, no backend, no signup** — it runs
-entirely in the browser and deploys to any static host (e.g. GitHub Pages).
+Customers open a shared menu link and order; the restaurant watches each ticket
+move through **Requested → Preparing → Ready → Completed/Delivered** live, and can
+ring up walk-ins from a built-in POS.
 
-## The flow
+---
 
-| # | Screen | What happens |
-|---|--------|--------------|
-| 1 | **Menu Manager** · `pages/admin/menu.html` | Add dishes, prices & categories. Get a shareable link + QR. |
-| 2 | **Customer Menu** · `pages/customer/menu.html?r=<slug>` | Customer browses, builds a cart, places an order. |
-| 3 | **Order Tracking** · `pages/customer/order.html?id=<id>` | Customer watches their order status update live. |
-| 4 | **Order Board** · `pages/admin/orders.html` | Orders land live in kitchen lanes; staff advance each ticket. |
-| 5 | **POS** · `pages/admin/pos.html` | Staff ring up walk-in tickets into the same pipeline. |
-| 6 | **Dashboard** · `pages/admin/dashboard.html` | Live KPIs, order queue, top sellers, menu link. |
-
-> **Try it:** open the customer menu and the order board in two windows side by side —
-> place an order in one and watch it appear instantly in the other.
-
-## How the logic works
-
-Everything is coordinated by a single client-side store, [`assets/js/store.js`](assets/js/store.js):
-
-- **Single source of truth** persisted to `localStorage` (survives reloads).
-- **Order state machine** — `new → preparing → ready → completed` (+ `rejected`),
-  with a recorded status history per order.
-- **Live cross-tab sync** via `BroadcastChannel` (with a `storage`-event fallback), so
-  every open tab — customer and restaurant — stays in sync in real time.
-- **Reactive views** — pages call `OL.subscribe(render)` and re-render on any change.
-- **Derived stats** (revenue, live count, top sellers) computed on demand.
-
-The store's logic is covered by a headless test suite (run under Node, no browser needed).
-
-## Project structure
+## Monorepo layout
 
 ```
 OrderLink/
-├── index.html                      # Landing hub → routes to console / customer demo
-├── pages/
-│   ├── admin/
-│   │   ├── dashboard.html          # Owner dashboard (live KPIs + queue)
-│   │   ├── orders.html             # Live kitchen order board (pipeline lanes)
-│   │   ├── menu.html               # Menu manager + shareable link / QR
-│   │   └── pos.html                # Point of sale (staff order entry)
-│   └── customer/
-│       ├── menu.html               # Customer ordering page (the shared link)
-│       └── order.html              # Live order-status tracking
-├── assets/
-│   ├── css/styles.css              # Shared styles + animations
-│   └── js/
-│       ├── store.js                # Reactive data layer (orders, menu, state machine)
-│       ├── ui.js                   # Shared UI kit (toasts, QR, admin shell, badges)
-│       └── tailwind.config.js      # Design tokens (single source of truth)
-└── README.md
+├── shared/        @orderlink/shared — domain types, order state machine, Zod API
+│                  contracts & DTOs. The single source of truth imported by both
+│                  the server and the client (DRY — they can never drift).
+├── server/        Express + Prisma API (TypeScript)
+│   ├── prisma/    schema.prisma, seed
+│   └── src/
+│       ├── config/        env validation (Zod, fail-fast)
+│       ├── lib/           prisma client, logger, realtime (socket.io), serializers
+│       ├── errors/        ApiError
+│       ├── middleware/    error handler, 404
+│       ├── utils/         asyncHandler, route-param guard
+│       └── modules/       restaurants · menu · orders  (routes → controller → service)
+├── client/        React + Vite + Tailwind (design tokens ported from the prototype)
+│   └── src/
+│       ├── lib/           axios client, react-query client, socket
+│       ├── features/      restaurants · orders (hooks, components, realtime)
+│       ├── components/    shared UI (StatusBadge…)
+│       └── pages/         OrderBoardPage (the working slice)
+├── docker-compose.yml     local Postgres
+├── tsconfig.base.json     shared strict TS config
+└── (legacy prototype)     index.html / pages/ / assets/ — the original static
+                           localStorage demo, still live on GitHub Pages.
 ```
 
-## Running locally
+### Architecture notes (for reviewers)
 
-Any static server works (the customer-link QR needs a real URL, so a server beats
-double-clicking the file):
+- **One contract, two consumers.** Enums, the order state machine
+  (`canTransition`, `nextStatus`), Zod input schemas and response DTOs live in
+  `shared/` and are imported by both sides — no duplicated types.
+- **Layered server.** `routes → controller → service`. Controllers validate input
+  with the shared Zod schemas and stay thin; services hold business logic; a single
+  error handler maps `ApiError` / `ZodError` / Prisma errors to a consistent
+  `{ error: { message, code, details } }` envelope.
+- **Trustworthy money.** Order totals are computed **server-side** from the live
+  menu (client prices are never trusted), stored as `Decimal`, and item rows
+  snapshot name/price so historical orders are immune to later menu edits.
+- **Enforced lifecycle.** Status changes are validated against the shared state
+  machine; every change appends an `OrderEvent` (audit trail).
+- **Realtime.** socket.io broadcasts order events to a per-restaurant room; the
+  client keeps its React Query cache in sync with no polling.
+
+---
+
+## Getting started
+
+**Prerequisites:** Node ≥ 20, and Docker (or any local Postgres).
 
 ```bash
-# From the project root:
-python -m http.server 5173
-# then open http://localhost:5173
+# 1. Install (also builds the shared package)
+npm install
+
+# 2. Start Postgres
+npm run db:up                      # docker compose up -d db
+
+# 3. Configure + create the schema + seed demo data
+cp server/.env.example server/.env
+npm run db:migrate                 # prisma migrate dev
+npm run db:seed
+
+# 4. Run API + web together (http://localhost:5173, API on :4000)
+npm run dev
 ```
 
-To reset all demo data, run `OL.reset()` in the browser console (or clear site data).
+The web client proxies `/api` and `/socket.io` to the API in dev, so everything
+runs from one origin with no CORS setup.
 
-## Notes & next steps
+### Root scripts
 
-- The Tailwind Play CDN compiles styles in the browser (great for prototyping). For
-  production, switch to a compiled Tailwind build and replace the CDN `<script>`.
-- The data layer is intentionally swappable: replacing the `localStorage` read/write and
-  the broadcast in `store.js` with API/WebSocket calls would make it multi-device without
-  changing any of the views.
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Run shared (watch) + API + client together |
+| `npm run build` | Build all three workspaces |
+| `npm run typecheck` | Type-check every workspace |
+| `npm run format` | Prettier across the repo |
+| `npm run db:up` / `db:migrate` / `db:seed` / `db:studio` | Database lifecycle |
+| `npm run legacy` | Serve the original static prototype on :5173 |
+
+---
+
+## API
+
+Base URL `http://localhost:4000/api`.
+
+| Method | Route | Purpose |
+|--------|-------|---------|
+| `GET` | `/health` | Liveness probe |
+| `GET` | `/restaurants/:slug` | Restaurant details |
+| `GET` | `/restaurants/:slug/menu` | Menu items |
+| `POST`·`PUT`·`PATCH`·`DELETE` | `/restaurants/:slug/menu[/:itemId]` | Menu CRUD + availability |
+| `GET` | `/restaurants/:slug/orders` | List orders (`?status=&today=`) |
+| `POST` | `/restaurants/:slug/orders` | Place an order |
+| `GET` | `/restaurants/:slug/stats` | Live dashboard metrics |
+| `GET` | `/orders/:id` | Single order |
+| `PATCH` | `/orders/:id/status` | Set status (state-machine enforced) |
+| `POST` | `/orders/:id/advance` | Advance one step along the pipeline |
+
+---
+
+## Status / roadmap
+
+- ✅ **Foundation + working slice:** shared contracts, full API (restaurants/menu/
+  orders) with realtime, and the **Order Board** page wired end-to-end.
+- ⏭️ **Next:** port the remaining screens (menu manager, POS, customer menu +
+  tracking) into React against the same API; auth for multi-restaurant access; tests.
+
+> The original localStorage prototype remains in the repo (and deployed) as a
+> visual reference; the PERN app under `server/` + `client/` supersedes it.
