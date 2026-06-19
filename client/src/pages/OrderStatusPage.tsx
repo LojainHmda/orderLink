@@ -70,7 +70,7 @@ export function OrderStatusPage() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col">
-      <header className="bg-primary-container px-4 pb-6 pt-5 text-center text-on-primary-container">
+      <header className="bg-primary px-4 pb-6 pt-5 text-center text-on-primary">
         <div className="mx-auto mb-2.5 flex h-16 w-16 items-center justify-center rounded-full bg-white/25">
           <span className="material-symbols-outlined text-[32px]">
             {rejected ? 'cancel' : order.status === 'COMPLETED' ? 'task_alt' : (flow[Math.max(0, idx)]?.icon ?? 'receipt_long')}

@@ -11,8 +11,8 @@ import { groupByCategory, useMenu } from '../features/menu/queries';
 import { useCreateOrder, useGuestOrderHistory } from '../features/orders/queries';
 import { StatusBadge } from '../components/StatusBadge';
 import { CategoryChips } from '../components/CategoryChips';
-import { timeAgo } from '../lib/format';
 import { getGuestPhone, rememberGuestPhone } from '../lib/guest';
+import { useLang, UI, tr, timeAgoL, type Lang } from '../lib/i18n';
 
 interface CartLine {
   menuItemId: string;
@@ -33,6 +33,9 @@ export function CustomerMenuPage() {
   const [searchParams] = useSearchParams();
   const table = searchParams.get('table');
   const navigate = useNavigate();
+
+  const { lang, toggle } = useLang();
+  const t = UI[lang];
 
   const restaurantQ = useRestaurant(slug);
   const menuQ = useMenu(slug);
@@ -95,7 +98,7 @@ export function CustomerMenuPage() {
   const placeOrder = () => {
     setError(null);
     if (!name.trim()) {
-      setError('Please add your name');
+      setError(t.addName);
       return;
     }
     rememberGuestPhone(phone);
@@ -112,94 +115,110 @@ export function CustomerMenuPage() {
       {
         onSuccess: (order) => navigate(`/order/${order.id}`),
         onError: (err: unknown) =>
-          setError(err instanceof Error ? err.message : 'Could not place order'),
+          setError(err instanceof Error ? err.message : t.orderFailed),
       },
     );
   };
 
   if (restaurantQ.isError) {
     return (
-      <div className="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-        <div className="mb-4 text-6xl">🔍</div>
-        <h1 className="font-headline-md text-headline-md">Menu not found</h1>
-        <p className="max-w-xs text-body-md text-secondary">
-          This ordering link looks invalid. Please ask the restaurant for an updated link.
-        </p>
+      <div
+        dir={t.dir}
+        className="flex min-h-screen flex-col items-center justify-center px-6 text-center"
+      >
+        <div className="mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-surface-container text-3xl">
+          🔍
+        </div>
+        <h1 className="mb-1 font-headline-md text-headline-md text-on-surface">{t.notFoundTitle}</h1>
+        <p className="max-w-xs text-body-md text-secondary">{t.notFoundBody}</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl pb-24">
+    <div dir={t.dir} className="mx-auto max-w-2xl pb-24">
       {/* Header */}
-      <header className="bg-primary-container px-3 pb-3 pt-3 text-on-primary-container sm:px-4">
-        <div className="flex items-center gap-2.5">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/25 text-2xl">
+      <header className="border-b border-outline-variant bg-surface-container-lowest px-4 pb-4 pt-5 sm:px-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-primary/8 text-2xl">
             {restaurant?.emoji ?? '🍽️'}
           </div>
           <div className="min-w-0 flex-1">
-            <h1 className="truncate font-headline-md text-headline-md font-bold">
-              {restaurant?.name ?? 'Menu'}
+            <h1 className="truncate font-headline-md text-headline-md text-on-surface">
+              {restaurant ? tr(restaurant.name, lang) : t.menuFallback}
             </h1>
-            <p className="truncate text-body-sm opacity-80">{restaurant?.tagline ?? restaurant?.cuisine}</p>
+            <p className="truncate text-body-sm text-secondary">
+              {tr(restaurant?.tagline ?? restaurant?.cuisine, lang)}
+            </p>
           </div>
           <button
             type="button"
+            onClick={toggle}
+            aria-label={t.switchTo}
+            className="flex shrink-0 items-center gap-1 rounded-full border border-outline-variant px-3 py-2 text-label-md text-on-surface transition active:scale-95"
+          >
+            <span className="material-symbols-outlined text-[18px]">language</span>
+            {t.switchTo}
+          </button>
+          <button
+            type="button"
             onClick={() => setHistoryOpen(true)}
-            className="flex shrink-0 items-center gap-1.5 rounded-full bg-white/25 px-3 py-2 text-label-md font-bold transition active:scale-95"
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-outline-variant px-3 py-2 text-label-md text-on-surface transition active:scale-95"
           >
             <span className="material-symbols-outlined text-[18px]">receipt_long</span>
-            My orders
+            {t.myOrders}
           </button>
         </div>
         {table && (
-          <span className="mt-2 inline-block rounded-full bg-white/25 px-2 py-0.5 text-[11px] font-bold">
-            Table {table}
+          <span className="mt-3 inline-block rounded-full bg-primary/8 px-2.5 py-1 text-label-sm font-semibold text-primary">
+            {t.table(table)}
           </span>
         )}
       </header>
 
       {/* Category filter — same chips as the POS menu picker */}
       {groups.length > 0 && (
-        <div className="sticky top-0 z-20 border-b border-outline-variant bg-surface/95 px-3 py-2.5 backdrop-blur sm:px-4">
+        <div className="sticky top-0 z-20 border-b border-outline-variant bg-surface-container-lowest/90 px-4 py-3 backdrop-blur sm:px-6">
           <CategoryChips
             categories={groups.map((g) => g.category)}
             active={activeCat}
             onSelect={setActiveCat}
+            tone="soft"
+            allLabel={t.all}
+            labelFor={(c) => tr(c, lang)}
           />
         </div>
       )}
 
       {/* Menu */}
-      <main className="space-y-5 px-3 py-4 sm:px-4">
+      <main className="space-y-8 px-4 py-6 sm:px-6">
         {shown.map((group) => (
           <section key={group.category}>
-            <h2 className="mb-2 font-headline-sm text-headline-sm">{group.category}</h2>
-            <div className="space-y-2">
+            <h2 className="mb-3 text-label-md font-semibold uppercase tracking-[0.12em] text-secondary">
+              {tr(group.category, lang)}
+            </h2>
+            <div className="divide-y divide-outline-variant/60">
               {group.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest p-2.5"
-                >
-                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary-container/15 text-2xl">
+                <div key={item.id} className="flex items-center gap-3.5 py-4 first:pt-0">
+                  <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-surface-container text-3xl">
                     {item.emoji ?? '🍽️'}
                   </div>
                   <div className="min-w-0 flex-1">
-                    <h3 className="truncate font-label-lg text-label-lg">{item.name}</h3>
+                    <h3 className="truncate text-body-lg font-semibold text-on-surface">{tr(item.name, lang)}</h3>
                     {item.description && (
-                      <p className="line-clamp-1 text-body-sm text-secondary">{item.description}</p>
+                      <p className="line-clamp-1 text-body-md text-secondary">{tr(item.description, lang)}</p>
                     )}
-                    <p className="mt-0.5 font-headline-sm text-headline-sm text-primary">
+                    <p className="mt-0.5 text-body-lg font-semibold text-on-surface">
                       {formatMoney(item.price, currency)}
                     </p>
                   </div>
                   <button
                     type="button"
-                    aria-label={`Add ${item.name}`}
+                    aria-label={`${t.add} ${tr(item.name, lang)}`}
                     onClick={() => add(item)}
-                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary shadow transition-transform active:scale-90"
+                    className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-outline-variant text-primary transition active:scale-90 hover:bg-primary/8"
                   >
-                    <span className="material-symbols-outlined">add</span>
+                    <span className="material-symbols-outlined text-[24px]">add</span>
                   </button>
                 </div>
               ))}
@@ -208,9 +227,7 @@ export function CustomerMenuPage() {
         ))}
         {!menuQ.isLoading && shown.length === 0 && (
           <p className="py-16 text-center text-body-sm text-secondary">
-            {groups.length === 0
-              ? 'This menu has no items yet. Please check back soon.'
-              : 'No items in this category.'}
+            {groups.length === 0 ? t.emptyMenu : t.emptyCategory}
           </p>
         )}
       </main>
@@ -220,7 +237,7 @@ export function CustomerMenuPage() {
         <button
           type="button"
           onClick={() => setCartOpen(true)}
-          className="fixed inset-x-0 bottom-3 z-30 mx-auto flex w-[92%] max-w-md items-center justify-between rounded-2xl bg-primary px-4 py-3 text-on-primary shadow-xl transition-transform active:scale-[0.98]"
+          className="fixed inset-x-0 bottom-3 z-30 mx-auto flex w-[92%] max-w-md items-center justify-between rounded-2xl bg-primary px-4 py-3 text-on-primary shadow-lg transition-transform active:scale-[0.98]"
         >
           <span className="flex items-center gap-2 font-label-lg">
             <span className="relative material-symbols-outlined">
@@ -229,7 +246,7 @@ export function CustomerMenuPage() {
                 {count}
               </span>
             </span>
-            View order
+            {t.viewOrder}
           </span>
           <span className="font-headline-sm">{formatMoney(total, currency)}</span>
         </button>
@@ -237,35 +254,35 @@ export function CustomerMenuPage() {
 
       {/* Cart sheet */}
       {cartOpen && (
-        <div className="fixed inset-0 z-40 bg-black/40" onClick={() => setCartOpen(false)}>
+        <div className="fixed inset-0 z-40 bg-on-surface/30 backdrop-blur-sm" onClick={() => setCartOpen(false)}>
           <div
-            className="absolute inset-x-0 bottom-0 mx-auto flex max-h-[92vh] max-w-2xl flex-col rounded-t-3xl bg-surface shadow-2xl"
+            className="absolute inset-x-0 bottom-0 mx-auto flex max-h-[92vh] max-w-2xl flex-col rounded-t-3xl border-t border-outline-variant bg-surface-container-lowest shadow-xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex shrink-0 items-center justify-between border-b border-outline-variant px-4 py-3">
-              <h2 className="font-headline-sm text-headline-sm">Your order</h2>
-              <button type="button" aria-label="Close" onClick={() => setCartOpen(false)} className="rounded-full p-2 hover:bg-surface-container-high">
-                <span className="material-symbols-outlined">close</span>
+            <div className="flex shrink-0 items-center justify-between px-5 pb-3 pt-4">
+              <h2 className="font-headline-sm text-headline-sm text-on-surface">{t.yourOrder}</h2>
+              <button type="button" aria-label={t.close} onClick={() => setCartOpen(false)} className="-mr-2 flex h-9 w-9 items-center justify-center rounded-full text-secondary transition hover:bg-surface-container-high">
+                <span className="material-symbols-outlined text-[20px]">close</span>
               </button>
             </div>
 
-            <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
-              <div className="space-y-2">
+            <div className="flex-1 space-y-6 overflow-y-auto px-5 pb-4">
+              <div className="divide-y divide-outline-variant/60">
                 {cart.map((c) => (
-                  <div key={c.menuItemId} className="flex items-center gap-2.5 rounded-xl bg-surface-container-low p-2">
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary-container/15 text-lg">
+                  <div key={c.menuItemId} className="flex items-center gap-3 py-3 first:pt-0">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface-container text-lg">
                       {c.emoji ?? '🍽️'}
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="truncate font-label-lg text-label-lg">{c.name}</p>
+                      <p className="truncate font-label-lg text-label-lg text-on-surface">{tr(c.name, lang)}</p>
                       <p className="text-body-sm text-secondary">{formatMoney(c.price, currency)}</p>
                     </div>
-                    <div className="flex items-center gap-1.5 rounded-full border border-outline-variant bg-surface px-1 py-1">
-                      <button type="button" aria-label="Decrease" onClick={() => changeQty(c.menuItemId, -1)} className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-surface-container-high">
+                    <div className="flex items-center gap-1 rounded-full border border-outline-variant px-1 py-1">
+                      <button type="button" aria-label={t.decrease} onClick={() => changeQty(c.menuItemId, -1)} className="flex h-7 w-7 items-center justify-center rounded-full text-on-surface transition hover:bg-surface-container-high">
                         <span className="material-symbols-outlined text-[18px]">remove</span>
                       </button>
-                      <span className="w-5 text-center font-label-lg">{c.qty}</span>
-                      <button type="button" aria-label="Increase" onClick={() => changeQty(c.menuItemId, 1)} className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary">
+                      <span className="w-5 text-center font-label-lg text-on-surface">{c.qty}</span>
+                      <button type="button" aria-label={t.increase} onClick={() => changeQty(c.menuItemId, 1)} className="flex h-7 w-7 items-center justify-center rounded-full text-primary transition hover:bg-primary/8">
                         <span className="material-symbols-outlined text-[18px]">add</span>
                       </button>
                     </div>
@@ -274,51 +291,51 @@ export function CustomerMenuPage() {
               </div>
 
               <div>
-                <p className="mb-1.5 font-label-lg text-label-lg">Order type</p>
+                <p className="mb-2 text-label-md font-semibold uppercase tracking-[0.12em] text-secondary">{t.orderType}</p>
                 <div className="grid grid-cols-3 gap-2">
-                  {TYPES.map((t) => (
+                  {TYPES.map((opt) => (
                     <button
-                      key={t.value}
+                      key={opt.value}
                       type="button"
-                      onClick={() => setType(t.value)}
-                      className={`flex flex-col items-center gap-0.5 rounded-xl border px-2 py-2 text-label-md ${
-                        type === t.value
-                          ? 'border-primary bg-primary-container/20 text-on-primary-container'
-                          : 'border-outline-variant text-on-surface-variant'
+                      onClick={() => setType(opt.value)}
+                      className={`flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 text-label-md transition ${
+                        type === opt.value
+                          ? 'border-primary bg-primary/8 text-primary'
+                          : 'border-outline-variant text-secondary hover:bg-surface-container-low'
                       }`}
                     >
-                      <span className="material-symbols-outlined text-[20px]">{t.icon}</span>
-                      {t.label}
+                      <span className="material-symbols-outlined text-[22px]">{opt.icon}</span>
+                      {opt.value === 'DELIVERY' ? t.delivery : opt.value === 'PICKUP' ? t.pickup : t.dineIn}
                     </button>
                   ))}
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Your name" className="w-full rounded-xl border border-outline-variant bg-surface-container px-3.5 py-2.5 focus:border-primary focus:ring-primary" />
-                <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" placeholder="Phone (optional)" className="w-full rounded-xl border border-outline-variant bg-surface-container px-3.5 py-2.5 focus:border-primary focus:ring-primary" />
-                <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder="Notes for the kitchen" className="w-full resize-none rounded-xl border border-outline-variant bg-surface-container px-3.5 py-2.5 focus:border-primary focus:ring-primary" />
+              <div className="space-y-2.5">
+                <input value={name} onChange={(e) => setName(e.target.value)} placeholder={t.name} className="w-full rounded-xl border border-outline-variant bg-transparent px-3.5 py-3 text-on-surface placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+                <input value={phone} onChange={(e) => setPhone(e.target.value)} inputMode="tel" placeholder={t.phoneOptional} className="w-full rounded-xl border border-outline-variant bg-transparent px-3.5 py-3 text-on-surface placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
+                <textarea value={note} onChange={(e) => setNote(e.target.value)} rows={2} placeholder={t.kitchenNote} className="w-full resize-none rounded-xl border border-outline-variant bg-transparent px-3.5 py-3 text-on-surface placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary" />
               </div>
             </div>
 
-            <div className="shrink-0 space-y-1.5 border-t border-outline-variant bg-surface px-4 py-3">
+            <div className="shrink-0 space-y-2 border-t border-outline-variant px-5 py-4">
               <div className="flex justify-between text-body-md text-secondary">
-                <span>Subtotal</span>
+                <span>{t.subtotal}</span>
                 <span>{formatMoney(subtotal, currency)}</span>
               </div>
               {deliveryFee > 0 && (
                 <div className="flex justify-between text-body-md text-secondary">
-                  <span>Delivery</span>
+                  <span>{t.deliveryFee}</span>
                   <span>{formatMoney(deliveryFee, currency)}</span>
                 </div>
               )}
-              <div className="flex justify-between pt-0.5 font-headline-sm text-headline-sm">
-                <span>Total</span>
+              <div className="flex justify-between pt-0.5 font-headline-sm text-headline-sm text-on-surface">
+                <span>{t.total}</span>
                 <span>{formatMoney(total, currency)}</span>
               </div>
               {belowMin && (
                 <p className="text-label-md text-error">
-                  Minimum for delivery is {formatMoney(restaurant?.minOrder ?? 0, currency)}.
+                  {t.minDelivery(formatMoney(restaurant?.minOrder ?? 0, currency))}
                 </p>
               )}
               {error && <p className="text-label-md text-error">{error}</p>}
@@ -326,10 +343,10 @@ export function CustomerMenuPage() {
                 type="button"
                 onClick={placeOrder}
                 disabled={cart.length === 0 || belowMin || createOrder.isPending}
-                className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3 font-label-lg text-on-primary transition-all active:scale-[0.98] disabled:opacity-50"
+                className="mt-1 flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-3.5 font-label-lg text-on-primary shadow-sm transition-all active:scale-[0.98] disabled:opacity-50"
               >
-                <span className="material-symbols-outlined">send</span>
-                Place order
+                <span className="material-symbols-outlined text-[20px]">send</span>
+                {t.placeOrder}
               </button>
             </div>
           </div>
@@ -340,6 +357,7 @@ export function CustomerMenuPage() {
         <HistorySheet
           slug={slug}
           currency={currency}
+          lang={lang}
           onClose={() => setHistoryOpen(false)}
           onReorder={reorder}
         />
@@ -352,14 +370,17 @@ export function CustomerMenuPage() {
 function HistorySheet({
   slug,
   currency,
+  lang,
   onClose,
   onReorder,
 }: {
   slug: string;
   currency: string;
+  lang: Lang;
   onClose: () => void;
   onReorder: (order: OrderDTO) => number;
 }) {
+  const t = UI[lang];
   const [phone, setPhone] = useState(() => getGuestPhone());
   const historyQ = useGuestOrderHistory(slug, phone, true);
   const orders = historyQ.data ?? [];
@@ -367,80 +388,80 @@ function HistorySheet({
 
   const handleReorder = (order: OrderDTO) => {
     const added = onReorder(order);
-    if (added === 0) setNotice('Those items are no longer available.');
+    if (added === 0) setNotice(t.notAvailable);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40" onClick={onClose}>
+    <div dir={t.dir} className="fixed inset-0 z-50 bg-on-surface/30 backdrop-blur-sm" onClick={onClose}>
       <div
-        className="absolute inset-x-0 bottom-0 mx-auto flex max-h-[88vh] max-w-2xl flex-col rounded-t-3xl bg-surface shadow-2xl"
+        className="absolute inset-x-0 bottom-0 mx-auto flex max-h-[88vh] max-w-2xl flex-col rounded-t-3xl border-t border-outline-variant bg-surface-container-lowest shadow-xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="flex shrink-0 items-center justify-between border-b border-outline-variant px-4 py-3">
-          <h2 className="font-headline-sm text-headline-sm">My orders</h2>
-          <button type="button" aria-label="Close" onClick={onClose} className="rounded-full p-2 hover:bg-surface-container-high">
-            <span className="material-symbols-outlined">close</span>
+        <div className="flex shrink-0 items-center justify-between px-5 pb-3 pt-4">
+          <h2 className="font-headline-sm text-headline-sm text-on-surface">{t.myOrders}</h2>
+          <button type="button" aria-label={t.close} onClick={onClose} className="-mr-2 flex h-9 w-9 items-center justify-center rounded-full text-secondary transition hover:bg-surface-container-high">
+            <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </div>
 
-        <div className="flex-1 space-y-3 overflow-y-auto px-4 py-3">
+        <div className="flex-1 space-y-3 overflow-y-auto px-5 pb-4">
           <label className="block">
-            <span className="mb-1 block text-label-md text-secondary">
-              Ordered on another device? Enter your phone to find those too.
-            </span>
+            <span className="mb-1.5 block text-body-sm text-secondary">{t.historyHint}</span>
             <input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               inputMode="tel"
-              placeholder="Phone number"
-              className="w-full rounded-xl border border-outline-variant bg-surface-container px-3.5 py-2.5 focus:border-primary focus:ring-primary"
+              placeholder={t.phoneNumber}
+              className="w-full rounded-xl border border-outline-variant bg-transparent px-3.5 py-3 text-on-surface placeholder:text-secondary focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
             />
           </label>
 
           {notice && <p className="text-label-md text-error">{notice}</p>}
 
           {historyQ.isLoading ? (
-            <p className="py-10 text-center text-body-sm text-secondary">Loading…</p>
+            <p className="py-12 text-center text-body-sm text-secondary">{t.loading}</p>
           ) : orders.length === 0 ? (
-            <div className="py-10 text-center">
-              <div className="mb-2 text-4xl">🧾</div>
-              <p className="font-label-lg text-label-lg">No orders yet</p>
-              <p className="text-body-sm text-secondary">Your past orders will show up here.</p>
+            <div className="py-12 text-center">
+              <div className="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl bg-surface-container text-2xl">
+                🧾
+              </div>
+              <p className="font-label-lg text-label-lg text-on-surface">{t.noOrders}</p>
+              <p className="text-body-sm text-secondary">{t.noOrdersBody}</p>
             </div>
           ) : (
             orders.map((order) => (
               <div
                 key={order.id}
-                className="rounded-xl border border-outline-variant bg-surface-container-lowest p-3"
+                className="rounded-2xl border border-outline-variant p-4"
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
-                    <span className="font-label-lg text-label-lg">#{order.code}</span>
-                    <StatusBadge status={order.status} customer />
+                    <span className="font-label-lg text-label-lg text-on-surface">#{order.code}</span>
+                    <StatusBadge status={order.status} customer lang={lang} />
                   </div>
-                  <span className="text-label-md text-secondary">{timeAgo(order.createdAt)}</span>
+                  <span className="text-label-md text-secondary">{timeAgoL(order.createdAt, lang)}</span>
                 </div>
-                <p className="mt-1 line-clamp-2 text-body-sm text-secondary">
-                  {order.items.map((i) => `${i.qty}× ${i.name}`).join(', ')}
+                <p className="mt-1.5 line-clamp-2 text-body-sm text-secondary">
+                  {order.items.map((i) => `${i.qty}× ${tr(i.name, lang)}`).join('، ')}
                 </p>
-                <div className="mt-2 flex items-center justify-between gap-2">
-                  <span className="font-headline-sm text-headline-sm">
+                <div className="mt-3 flex items-center justify-between gap-2">
+                  <span className="font-headline-sm text-headline-sm text-on-surface">
                     {formatMoney(order.total, currency)}
                   </span>
                   <div className="flex items-center gap-2">
                     <Link
                       to={`/order/${order.id}`}
-                      className="rounded-lg bg-surface-container-high px-3 py-2 font-label-md text-on-surface transition active:scale-95"
+                      className="rounded-full border border-outline-variant px-3.5 py-2 font-label-md text-on-surface transition active:scale-95"
                     >
-                      Track
+                      {t.track}
                     </Link>
                     <button
                       type="button"
                       onClick={() => handleReorder(order)}
-                      className="flex items-center gap-1 rounded-lg bg-primary px-3 py-2 font-label-md text-on-primary transition active:scale-95"
+                      className="flex items-center gap-1 rounded-full bg-primary px-3.5 py-2 font-label-md text-on-primary transition active:scale-95"
                     >
                       <span className="material-symbols-outlined text-[16px]">replay</span>
-                      Reorder
+                      {t.reorder}
                     </button>
                   </div>
                 </div>

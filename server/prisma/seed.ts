@@ -10,22 +10,111 @@ const prisma = new PrismaClient();
 
 type SeedItem = { name: string; category: string; price: number; emoji: string; description: string };
 
+// Category order — drives the section order on the customer menu & POS picker.
+const CATEGORIES = [
+  'الإسبريسو',
+  'آيس كوفي',
+  'المشروبات الساخنة',
+  'سموذي',
+  'ميلك شيك',
+  'مكس طبيعي',
+  'حلويات',
+];
+
 const MENU: SeedItem[] = [
-  { name: 'Hummus & Pita', category: 'Starters', price: 6.5, emoji: '🥙', description: 'Creamy chickpea hummus, warm pita, olive oil' },
-  { name: 'Falafel Plate', category: 'Starters', price: 7.0, emoji: '🧆', description: 'Six crispy falafel, tahini, pickles' },
-  { name: 'Greek Salad', category: 'Starters', price: 8.5, emoji: '🥗', description: 'Tomato, cucumber, feta, kalamata olives' },
-  { name: 'Chicken Shawarma', category: 'Mains', price: 12.0, emoji: '🌯', description: 'Marinated chicken, garlic sauce, fries' },
-  { name: 'Lamb Kofta', category: 'Mains', price: 14.5, emoji: '🍖', description: 'Spiced lamb skewers, grilled veg, rice' },
-  { name: 'Grilled Halloumi Wrap', category: 'Mains', price: 11.0, emoji: '🫓', description: 'Halloumi, roasted peppers, hummus' },
-  { name: 'Margherita Flatbread', category: 'Mains', price: 10.5, emoji: '🍕', description: 'Tomato, mozzarella, fresh basil' },
-  { name: 'Truffle Fries', category: 'Sides', price: 6.5, emoji: '🍟', description: 'Parmesan, truffle oil, aioli' },
-  { name: 'Saffron Rice', category: 'Sides', price: 4.0, emoji: '🍚', description: 'Fragrant basmati, toasted almonds' },
-  { name: 'Garlic Bread', category: 'Sides', price: 4.5, emoji: '🥖', description: 'Toasted ciabatta, herb butter' },
-  { name: 'Fresh Lemonade', category: 'Beverages', price: 3.5, emoji: '🍋', description: 'Hand-squeezed, mint' },
-  { name: 'Mint Tea', category: 'Beverages', price: 3.0, emoji: '🍵', description: 'Moroccan-style sweet mint tea' },
-  { name: 'Sparkling Water', category: 'Beverages', price: 2.5, emoji: '💧', description: 'Chilled, with lemon' },
-  { name: 'Baklava', category: 'Desserts', price: 5.0, emoji: '🍯', description: 'Pistachio, honey, filo' },
-  { name: 'Chocolate Mousse', category: 'Desserts', price: 5.5, emoji: '🍫', description: 'Dark chocolate, sea salt' },
+  // ☕ الإسبريسو
+  { name: 'اسبريسو', category: 'الإسبريسو', price: 8, emoji: '☕', description: 'سنجل ٥ / دبل ٨' },
+  { name: 'امريكانو', category: 'الإسبريسو', price: 8, emoji: '☕', description: 'سنجل ٦ / دبل ٨' },
+  { name: 'فلتر امريكي', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'كابتشينو', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'لاتيه', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'سبانيش لاتيه', category: 'الإسبريسو', price: 8, emoji: '☕', description: '' },
+  { name: 'موكا', category: 'الإسبريسو', price: 8, emoji: '☕', description: 'وايت أو دارك' },
+  { name: 'مكياتو', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'كون بانا', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'افوكاتو', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'كورتادو', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  { name: 'نسكافيه', category: 'الإسبريسو', price: 7, emoji: '☕', description: '' },
+  // 🧊 آيس كوفي
+  { name: 'ايس لاتيه', category: 'آيس كوفي', price: 10, emoji: '🧊', description: '' },
+  { name: 'ايس امريكانو', category: 'آيس كوفي', price: 10, emoji: '🧊', description: '' },
+  { name: 'ايس بندق لاتيه', category: 'آيس كوفي', price: 10, emoji: '🧊', description: '' },
+  { name: 'ايس فانيلا لاتيه', category: 'آيس كوفي', price: 10, emoji: '🧊', description: '' },
+  { name: 'ايس كراميل لاتيه', category: 'آيس كوفي', price: 10, emoji: '🧊', description: '' },
+  { name: 'ايس كراميل مكياتو لاتيه', category: 'آيس كوفي', price: 12, emoji: '🧊', description: '' },
+  { name: 'ايس سبانيش لاتيه', category: 'آيس كوفي', price: 12, emoji: '🧊', description: '' },
+  { name: 'ايس وايت موكا لاتيه', category: 'آيس كوفي', price: 12, emoji: '🧊', description: '' },
+  { name: 'ايس موكا لاتيه', category: 'آيس كوفي', price: 12, emoji: '🧊', description: '' },
+  // 🔥 المشروبات الساخنة
+  { name: 'مرشملو فانيلا', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: '' },
+  { name: 'مرشملو بندق', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: '' },
+  { name: 'مرشملو كراميل', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: '' },
+  { name: 'شاي كرك', category: 'المشروبات الساخنة', price: 7, emoji: '🍵', description: '' },
+  { name: 'هوت شوكلت', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: 'بودرة / وايت / دارك' },
+  { name: 'هوت نوتيلا', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: '' },
+  { name: 'هوت توفي كراميل', category: 'المشروبات الساخنة', price: 8, emoji: '🍫', description: '' },
+  { name: 'هوت سبانيش', category: 'المشروبات الساخنة', price: 8, emoji: '☕', description: '' },
+  { name: 'سحلب', category: 'المشروبات الساخنة', price: 5, emoji: '🥛', description: '' },
+  { name: 'شاي', category: 'المشروبات الساخنة', price: 4, emoji: '🍵', description: '' },
+  { name: 'اعشاب طبيعية', category: 'المشروبات الساخنة', price: 4, emoji: '🌿', description: '' },
+  // 🧃 سموذي — سعرين: صغير ٨ / كبير ١٠
+  { name: 'ليمون ونعنع', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'بسفلورا', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'فراولة', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'بطيخ', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'اناناس', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'بلوبري', category: 'سموذي', price: 10, emoji: '🧃', description: 'مكس بيري / رازبيري — صغير ٨ / كبير ١٠' },
+  { name: 'خوخ', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'برتقال', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'جريفوت', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'مانجا', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'مانجا وبسفلورا', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'فراولة وموز', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'بنكولادا', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'كيوي', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'جوز الهند', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'عنب', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'شوكليت', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'نوتيلا', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'بندق', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  { name: 'فانيل', category: 'سموذي', price: 10, emoji: '🧃', description: 'صغير ٨ / كبير ١٠' },
+  // 🥤 ميلك شيك
+  { name: 'أوريو', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'فانيل', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'شوكولاتة', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'فراولة', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'بلوبري', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'لوتس', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'كورنتو', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'بلو انجل', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'بابل كم', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'كورن فليكس', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'تشيز كيك', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'نوتيلا', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'بون بون', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'كيندر', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'سيريلاك', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'توتي فروتي', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'منجا', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'مكس حوامض', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'اسبرسو', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'مستكة', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  { name: 'بيستاشيو', category: 'ميلك شيك', price: 12, emoji: '🥤', description: '' },
+  // 🍹 مكس طبيعي
+  { name: 'مكس حيفا', category: 'مكس طبيعي', price: 10, emoji: '🍹', description: '' },
+  { name: 'حوامض', category: 'مكس طبيعي', price: 10, emoji: '🍹', description: '' },
+  { name: 'استوائي', category: 'مكس طبيعي', price: 10, emoji: '🍹', description: '' },
+  { name: 'تروبيكال', category: 'مكس طبيعي', price: 10, emoji: '🍹', description: '' },
+  { name: 'موسمي', category: 'مكس طبيعي', price: 10, emoji: '🍹', description: '' },
+  // 🍰 حلويات
+  { name: 'كوكيز', category: 'حلويات', price: 4, emoji: '🍪', description: '' },
+  { name: 'كلير', category: 'حلويات', price: 6, emoji: '🥐', description: '' },
+  { name: 'دونات', category: 'حلويات', price: 6, emoji: '🍩', description: '' },
+  { name: 'سينابون رول', category: 'حلويات', price: 8, emoji: '🥐', description: '' },
+  { name: 'كرات شوكلاتة', category: 'حلويات', price: 3, emoji: '🍫', description: '' },
+  { name: 'ليزي كيك', category: 'حلويات', price: 3, emoji: '🍰', description: '' },
+  { name: 'تشيز كيك', category: 'حلويات', price: 3, emoji: '🧀', description: '' },
+  { name: 'براونيز', category: 'حلويات', price: 3, emoji: '🍫', description: '' },
 ];
 
 type OrderSpec = {
@@ -41,14 +130,14 @@ type OrderSpec = {
 };
 
 const ORDERS: OrderSpec[] = [
-  { status: 'NEW', type: 'DELIVERY', channel: 'ONLINE', customer: 'Aya Mansour', phone: '15551110011', note: 'Extra garlic sauce, please', minutesAgo: 3, items: [{ name: 'Chicken Shawarma', qty: 2 }, { name: 'Truffle Fries', qty: 1 }, { name: 'Fresh Lemonade', qty: 2 }] },
-  { status: 'NEW', type: 'PICKUP', channel: 'ONLINE', customer: 'Omar Haddad', minutesAgo: 7, items: [{ name: 'Falafel Plate', qty: 1, note: 'No pickles' }, { name: 'Hummus & Pita', qty: 1 }, { name: 'Mint Tea', qty: 1 }] },
-  { status: 'PREPARING', type: 'DELIVERY', channel: 'ONLINE', customer: 'Lina Saleh', phone: '15552220022', minutesAgo: 14, items: [{ name: 'Lamb Kofta', qty: 1 }, { name: 'Saffron Rice', qty: 1 }, { name: 'Baklava', qty: 2 }] },
-  { status: 'PREPARING', type: 'DINE_IN', channel: 'POS', customer: 'Table 5', table: '5', minutesAgo: 18, items: [{ name: 'Margherita Flatbread', qty: 1 }, { name: 'Greek Salad', qty: 1 }, { name: 'Sparkling Water', qty: 2 }] },
-  { status: 'READY', type: 'PICKUP', channel: 'ONLINE', customer: 'Sara Khalil', minutesAgo: 24, items: [{ name: 'Grilled Halloumi Wrap', qty: 2 }, { name: 'Garlic Bread', qty: 1 }] },
-  { status: 'COMPLETED', type: 'DELIVERY', channel: 'ONLINE', customer: 'Yusuf Ali', minutesAgo: 52, items: [{ name: 'Chicken Shawarma', qty: 1 }, { name: 'Baklava', qty: 1 }, { name: 'Fresh Lemonade', qty: 1 }] },
-  { status: 'COMPLETED', type: 'DINE_IN', channel: 'POS', customer: 'Table 2', table: '2', minutesAgo: 70, items: [{ name: 'Lamb Kofta', qty: 2 }, { name: 'Greek Salad', qty: 1 }, { name: 'Sparkling Water', qty: 2 }] },
-  { status: 'REJECTED', type: 'DELIVERY', channel: 'ONLINE', customer: 'Guest', minutesAgo: 30, items: [{ name: 'Truffle Fries', qty: 1 }] },
+  { status: 'NEW', type: 'DELIVERY', channel: 'ONLINE', customer: 'Aya Mansour', phone: '15551110011', note: 'بدون سكر لو سمحت', minutesAgo: 3, items: [{ name: 'ايس لاتيه', qty: 2 }, { name: 'ايس كراميل لاتيه', qty: 1 }] },
+  { status: 'NEW', type: 'PICKUP', channel: 'ONLINE', customer: 'Omar Haddad', minutesAgo: 7, items: [{ name: 'كابتشينو', qty: 1 }, { name: 'هوت شوكلت', qty: 1 }, { name: 'شاي كرك', qty: 1 }] },
+  { status: 'PREPARING', type: 'DELIVERY', channel: 'ONLINE', customer: 'Lina Saleh', phone: '15552220022', minutesAgo: 14, items: [{ name: 'ايس موكا لاتيه', qty: 1 }, { name: 'مكس حيفا', qty: 2 }] },
+  { status: 'PREPARING', type: 'DINE_IN', channel: 'POS', customer: 'Table 5', table: '5', minutesAgo: 18, items: [{ name: 'سبانيش لاتيه', qty: 1 }, { name: 'مرشملو كراميل', qty: 1 }] },
+  { status: 'READY', type: 'PICKUP', channel: 'ONLINE', customer: 'Sara Khalil', minutesAgo: 24, items: [{ name: 'ايس سبانيش لاتيه', qty: 2 }, { name: 'سحلب', qty: 1 }] },
+  { status: 'COMPLETED', type: 'DELIVERY', channel: 'ONLINE', customer: 'Yusuf Ali', minutesAgo: 52, items: [{ name: 'لاتيه', qty: 1 }, { name: 'هوت نوتيلا', qty: 1 }] },
+  { status: 'COMPLETED', type: 'DINE_IN', channel: 'POS', customer: 'Table 2', table: '2', minutesAgo: 70, items: [{ name: 'امريكانو', qty: 2 }, { name: 'شاي', qty: 1 }] },
+  { status: 'REJECTED', type: 'DELIVERY', channel: 'ONLINE', customer: 'Guest', minutesAgo: 30, items: [{ name: 'استوائي', qty: 1 }] },
 ];
 
 const PIPELINE: OrderStatus[] = ['NEW', 'PREPARING', 'READY', 'COMPLETED'];
@@ -68,37 +157,42 @@ function buildEvents(status: OrderStatus, channel: OrderChannel, createdAt: Date
 async function main() {
   const slug = 'green-olive-bistro';
 
+  const branding = {
+    name: 'حيفا كافيه',
+    tagline: 'قهوة مختصة',
+    cuisine: 'قهوة',
+    currency: '₪',
+    emoji: '☕',
+    categories: CATEGORIES,
+  };
+
   const restaurant = await prisma.restaurant.upsert({
     where: { slug },
-    update: {},
+    // Keep branding in sync on re-runs (upsert with an empty update is a no-op).
+    update: branding,
     create: {
       slug,
-      name: 'Green Olive Bistro',
-      tagline: 'Mediterranean Kitchen',
-      cuisine: 'Mediterranean',
-      phone: '15551234567',
-      currency: '$',
-      address: '12 Garden Street, Riverside',
+      phone: '0595550768',
+      address: 'حيفا',
       deliveryFee: new Prisma.Decimal(2.5),
       minOrder: new Prisma.Decimal(8),
-      emoji: '🫒',
-      categories: ['Starters', 'Mains', 'Sides', 'Beverages', 'Desserts'],
+      ...branding,
     },
   });
 
-  // Seed the menu only the first time.
-  if ((await prisma.menuItem.count({ where: { restaurantId: restaurant.id } })) === 0) {
-    await prisma.menuItem.createMany({
-      data: MENU.map((m) => ({
-        restaurantId: restaurant.id,
-        name: m.name,
-        description: m.description,
-        category: m.category,
-        price: new Prisma.Decimal(m.price),
-        emoji: m.emoji,
-      })),
-    });
-  }
+  // Replace the menu on every run so edits to MENU above always take effect.
+  // OrderItem.menuItemId is onDelete: SetNull, so past orders keep their snapshots.
+  await prisma.menuItem.deleteMany({ where: { restaurantId: restaurant.id } });
+  await prisma.menuItem.createMany({
+    data: MENU.map((m) => ({
+      restaurantId: restaurant.id,
+      name: m.name,
+      description: m.description,
+      category: m.category,
+      price: new Prisma.Decimal(m.price),
+      emoji: m.emoji,
+    })),
+  });
 
   const menuItems = await prisma.menuItem.findMany({ where: { restaurantId: restaurant.id } });
   const byName = new Map(menuItems.map((m) => [m.name, m]));
