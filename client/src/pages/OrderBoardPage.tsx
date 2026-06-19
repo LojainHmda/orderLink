@@ -5,6 +5,7 @@ import { useRestaurant, useRestaurantStats } from '../features/restaurants/queri
 import { useAdvanceOrder, useOrders, useUpdateOrderStatus } from '../features/orders/queries';
 import { useOrderStream } from '../features/orders/useOrderStream';
 import { OrderCard } from '../features/orders/OrderCard';
+import { usePendingIds } from '../lib/usePendingIds';
 
 const LANES: { key: OrderStatus; title: string; icon: string }[] = [
   { key: 'NEW', title: 'Requested', icon: 'notifications_active' },
@@ -35,8 +36,17 @@ export function OrderBoardPage() {
 
   const advance = useAdvanceOrder(slug);
   const updateStatus = useUpdateOrderStatus(slug);
-  const busy = advance.isPending || updateStatus.isPending;
+  const pending = usePendingIds();
   const currency = restaurantQ.data?.currency ?? '$';
+
+  const handleAdvance = (id: string) => {
+    pending.begin(id);
+    advance.mutate(id, { onSettled: () => pending.end(id) });
+  };
+  const handleReject = (id: string) => {
+    pending.begin(id);
+    updateStatus.mutate({ id, status: 'REJECTED' }, { onSettled: () => pending.end(id) });
+  };
 
   const grouped = useMemo(() => groupByStatus(ordersQ.data ?? []), [ordersQ.data]);
   const stats = statsQ.data;
@@ -46,8 +56,8 @@ export function OrderBoardPage() {
   }
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
-      <header className="mb-6 flex flex-col gap-1">
+    <div className="mx-auto max-w-7xl px-3 py-4 md:px-6">
+      <header className="mb-4 flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <h1 className="font-headline-md text-headline-md">
             {restaurantQ.data?.name ?? 'Order board'}
@@ -63,7 +73,7 @@ export function OrderBoardPage() {
       </header>
 
       {/* KPIs */}
-      <section className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <section className="mb-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
         <Kpi label="Live orders" value={stats ? String(stats.liveOrders) : '—'} />
         <Kpi label="Orders today" value={stats ? String(stats.ordersToday) : '—'} />
         <Kpi label="Revenue today" value={stats ? formatMoney(stats.revenueToday, currency) : '—'} />
@@ -73,13 +83,13 @@ export function OrderBoardPage() {
       {ordersQ.isError ? (
         <CenteredMessage emoji="⚠️" title="Couldn't load orders" subtitle="Is the API running?" />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-4">
           {LANES.map((lane) => {
             const list =
               lane.key === 'COMPLETED' ? grouped.COMPLETED.slice(0, 12) : grouped[lane.key];
             return (
               <section key={lane.key}>
-                <div className="mb-3 flex items-center justify-between px-1">
+                <div className="mb-2 flex items-center justify-between px-1">
                   <div className="flex items-center gap-2">
                     <span className="material-symbols-outlined text-on-surface-variant">
                       {lane.icon}
@@ -90,20 +100,20 @@ export function OrderBoardPage() {
                     {list.length}
                   </span>
                 </div>
-                <div className="min-h-[120px] space-y-3 rounded-xl bg-surface-container-low/40 p-2">
+                <div className="min-h-[96px] space-y-2.5 rounded-xl bg-surface-container-low/40 p-2">
                   {ordersQ.isLoading ? (
-                    <p className="py-8 text-center text-body-sm text-secondary">Loading…</p>
+                    <p className="py-6 text-center text-body-sm text-secondary">Loading…</p>
                   ) : list.length === 0 ? (
-                    <p className="py-8 text-center text-body-sm text-secondary">No orders</p>
+                    <p className="py-6 text-center text-body-sm text-secondary">No orders</p>
                   ) : (
                     list.map((order) => (
                       <OrderCard
                         key={order.id}
                         order={order}
                         currency={currency}
-                        busy={busy}
-                        onAdvance={(id) => advance.mutate(id)}
-                        onReject={(id) => updateStatus.mutate({ id, status: 'REJECTED' })}
+                        busy={pending.has(order.id)}
+                        onAdvance={handleAdvance}
+                        onReject={handleReject}
                       />
                     ))
                   )}
@@ -119,7 +129,7 @@ export function OrderBoardPage() {
 
 function Kpi({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-4">
+    <div className="rounded-xl border border-outline-variant bg-surface-container-lowest p-3">
       <p className="font-label-md text-secondary">{label}</p>
       <p className="font-headline-md text-headline-md">{value}</p>
     </div>

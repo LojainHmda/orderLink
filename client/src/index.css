@@ -6,11 +6,41 @@
   color-scheme: light;
 }
 
+html,
 body {
   margin: 0;
+  /* Guard against accidental horizontal scrolling on small screens. */
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
   background-color: #f8f9fa;
   color: #191c1d;
   font-family: 'Inter', system-ui, sans-serif;
+  /* Avoid the grey flash on tap; we use explicit active states instead. */
+  -webkit-tap-highlight-color: transparent;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+}
+
+/*
+ * Keep form controls at >=16px so iOS Safari doesn't auto-zoom on focus,
+ * independent of the (smaller) body type scale used elsewhere.
+ */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+/* Utility for horizontal scroll regions (category chips, mobile nav). */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 .material-symbols-outlined {

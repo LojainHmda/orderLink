@@ -31,7 +31,8 @@ export function OrderStatusPage() {
   const qc = useQueryClient();
   const orderQ = useOrder(id);
   const order = orderQ.data;
-  const restaurantQ = useRestaurant(order?.restaurantId ?? '');
+  // Look up by slug (not id) — this drives the currency and the "Order more" link.
+  const restaurantQ = useRestaurant(order?.restaurantSlug ?? '');
 
   // Live updates: join the restaurant room and patch this order on changes.
   useEffect(() => {
@@ -69,24 +70,24 @@ export function OrderStatusPage() {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-lg flex-col">
-      <header className="bg-primary-container px-5 pb-8 pt-6 text-center text-on-primary-container">
-        <div className="mx-auto mb-3 flex h-20 w-20 items-center justify-center rounded-full bg-white/25">
-          <span className="material-symbols-outlined text-[40px]">
+      <header className="bg-primary-container px-4 pb-6 pt-5 text-center text-on-primary-container">
+        <div className="mx-auto mb-2.5 flex h-16 w-16 items-center justify-center rounded-full bg-white/25">
+          <span className="material-symbols-outlined text-[32px]">
             {rejected ? 'cancel' : order.status === 'COMPLETED' ? 'task_alt' : (flow[Math.max(0, idx)]?.icon ?? 'receipt_long')}
           </span>
         </div>
         <h1 className="font-headline-md text-headline-md font-bold">
           {rejected ? 'Order declined' : order.status === 'COMPLETED' ? 'All done — enjoy!' : (flow[Math.max(0, idx)]?.label ?? 'Order received')}
         </h1>
-        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-label-md">
+        <div className="mt-2.5 inline-flex items-center gap-2 rounded-full bg-white/20 px-3 py-1 text-label-md">
           <span className="material-symbols-outlined text-[16px]">tag</span>
           {order.code}
         </div>
       </header>
 
-      <main className="-mt-4 flex-1 space-y-6 rounded-t-3xl bg-surface px-5 py-6">
+      <main className="-mt-4 flex-1 space-y-4 rounded-t-3xl bg-surface px-4 py-5">
         {/* Stepper */}
-        <section className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-5">
+        <section className="rounded-2xl border border-outline-variant bg-surface-container-lowest p-4">
           {rejected ? (
             <div className="flex items-center gap-3 text-error">
               <span className="material-symbols-outlined">cancel</span>
@@ -110,7 +111,7 @@ export function OrderStatusPage() {
                       <div className={`my-1 w-0.5 flex-1 ${i < idx ? 'bg-primary' : 'bg-outline-variant'}`} />
                     )}
                   </div>
-                  <div className="pb-5 pt-1">
+                  <div className="pb-4 pt-1">
                     <p className={`font-label-lg text-label-lg ${done || current ? 'text-on-surface' : 'text-secondary'}`}>
                       {step.label}
                     </p>
@@ -124,16 +125,16 @@ export function OrderStatusPage() {
 
         {/* Summary */}
         <section className="overflow-hidden rounded-2xl border border-outline-variant bg-surface-container-lowest">
-          <div className="flex items-center justify-between border-b border-outline-variant px-5 py-4">
+          <div className="flex items-center justify-between border-b border-outline-variant px-4 py-3">
             <h2 className="font-headline-sm text-headline-sm">Order summary</h2>
             <span className="rounded-full bg-surface-container-high px-2.5 py-1 text-label-md text-on-surface-variant">
               {order.type === 'DELIVERY' ? 'Delivery' : order.type === 'PICKUP' ? 'Pickup' : 'Dine-in'}
               {order.table ? ` · Table ${order.table}` : ''}
             </span>
           </div>
-          <div className="divide-y divide-outline-variant px-5">
+          <div className="divide-y divide-outline-variant px-4">
             {order.items.map((item) => (
-              <div key={item.id} className="flex items-center justify-between py-2.5">
+              <div key={item.id} className="flex items-center justify-between py-2">
                 <span className="flex items-center gap-2">
                   <span className="text-xl">{item.emoji ?? '🍽️'}</span>
                   <span className="font-label-lg text-label-lg">
@@ -145,7 +146,7 @@ export function OrderStatusPage() {
               </div>
             ))}
           </div>
-          <div className="space-y-1.5 bg-surface-container-low px-5 py-4">
+          <div className="space-y-1.5 bg-surface-container-low px-4 py-3">
             <div className="flex justify-between text-body-sm text-secondary">
               <span>Subtotal</span>
               <span>{formatMoney(order.subtotal, currency)}</span>
@@ -171,7 +172,7 @@ export function OrderStatusPage() {
         )}
 
         <Link
-          to={`/r/${order.restaurantId && restaurantQ.data ? restaurantQ.data.slug : ''}`}
+          to={`/r/${order.restaurantSlug}`}
           className="flex w-full items-center justify-center gap-2 rounded-2xl bg-surface-container-high py-3 font-label-lg text-on-surface"
         >
           <span className="material-symbols-outlined">add</span>

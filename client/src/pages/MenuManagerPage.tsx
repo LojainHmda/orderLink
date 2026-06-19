@@ -36,9 +36,9 @@ export function MenuManagerPage() {
   };
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 md:px-8">
-      <div className="mb-6 flex items-center justify-between">
-        <div>
+    <div className="mx-auto max-w-5xl px-3 py-4 md:px-6">
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <div className="min-w-0">
           <h1 className="font-headline-md text-headline-md">Menu items</h1>
           <p className="text-body-sm text-secondary">
             {menuQ.data?.length ?? 0} items · {groups.length} categories
@@ -47,7 +47,7 @@ export function MenuManagerPage() {
         <button
           type="button"
           onClick={startAdd}
-          className="flex items-center gap-2 rounded-xl bg-primary px-5 py-3 font-label-lg text-on-primary transition-all hover:shadow-lg active:scale-95"
+          className="flex shrink-0 items-center gap-2 rounded-xl bg-primary px-4 py-2.5 font-label-lg text-on-primary transition-all hover:shadow-lg active:scale-95"
         >
           <span className="material-symbols-outlined">add</span>
           Add item
@@ -61,21 +61,21 @@ export function MenuManagerPage() {
           <p className="text-body-sm text-secondary">Add your first dish to start taking orders.</p>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-5">
           {groups.map((group) => (
             <section key={group.category}>
-              <h2 className="mb-3 px-1 font-label-lg text-label-lg uppercase tracking-wide text-secondary">
+              <h2 className="mb-2 px-1 font-label-lg text-label-lg uppercase tracking-wide text-secondary">
                 {group.category} · {group.items.length}
               </h2>
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-2.5 sm:grid-cols-2">
                 {group.items.map((item) => (
                   <div
                     key={item.id}
-                    className={`flex items-center gap-3 rounded-xl border border-outline-variant bg-surface-container-lowest p-3 ${
+                    className={`flex items-center gap-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest p-2.5 ${
                       item.available ? '' : 'opacity-60'
                     }`}
                   >
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-primary-container/20 text-2xl">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-primary-container/20 text-xl">
                       {item.emoji ?? '🍽️'}
                     </div>
                     <div className="min-w-0 flex-1">
@@ -187,9 +187,9 @@ function ItemModal({
     >
       <form
         onSubmit={submit}
-        className="animate-slide-in max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-surface p-6 shadow-xl sm:max-w-md sm:rounded-2xl"
+        className="animate-slide-in max-h-[92vh] w-full overflow-y-auto rounded-t-2xl bg-surface p-5 shadow-xl sm:max-w-md sm:rounded-2xl"
       >
-        <div className="mb-5 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <h3 className="font-headline-sm text-headline-sm">{item ? 'Edit item' : 'Add item'}</h3>
           <button type="button" onClick={onClose} className="rounded-full p-2 hover:bg-surface-container-high">
             <span className="material-symbols-outlined">close</span>

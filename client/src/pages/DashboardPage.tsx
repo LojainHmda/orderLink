@@ -5,6 +5,7 @@ import { useRestaurant, useRestaurantStats } from '../features/restaurants/queri
 import { useAdvanceOrder, useOrders } from '../features/orders/queries';
 import { useOrderStream } from '../features/orders/useOrderStream';
 import { StatusBadge } from '../components/StatusBadge';
+import { usePendingIds } from '../lib/usePendingIds';
 
 const ACTIVE: OrderDTO['status'][] = ['NEW', 'PREPARING', 'READY'];
 
@@ -15,6 +16,12 @@ export function DashboardPage() {
   const ordersQ = useOrders(slug);
   useOrderStream(restaurant?.id, slug);
   const advance = useAdvanceOrder(slug);
+  const pending = usePendingIds();
+
+  const handleAdvance = (id: string) => {
+    pending.begin(id);
+    advance.mutate(id, { onSettled: () => pending.end(id) });
+  };
 
   const currency = restaurant?.currency ?? '$';
   const live = useMemo(
@@ -24,35 +31,35 @@ export function DashboardPage() {
   const shareUrl = `${window.location.origin}/r/${slug}`;
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-6 md:px-8">
-      <header className="mb-6">
+    <div className="mx-auto max-w-7xl px-3 py-4 md:px-6">
+      <header className="mb-4">
         <h1 className="font-headline-md text-headline-md">
           Good day, {restaurant?.name ?? 'there'} 👋
         </h1>
         <p className="text-body-sm text-secondary">Here's what's happening in your kitchen.</p>
       </header>
 
-      <section className="mb-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+      <section className="mb-4 grid grid-cols-2 gap-2.5 lg:grid-cols-4">
         <Kpi icon="receipt_long" label="Orders today" value={stats ? String(stats.ordersToday) : '—'} />
         <Kpi icon="payments" label="Revenue today" value={stats ? formatMoney(stats.revenueToday, currency) : '—'} />
         <Kpi icon="local_fire_department" label="Live orders" value={stats ? String(stats.liveOrders) : '—'} />
         <Kpi icon="sell" label="Avg. ticket" value={stats ? formatMoney(stats.avgTicket, currency) : '—'} />
       </section>
 
-      <div className="grid gap-4 lg:grid-cols-3">
+      <div className="grid gap-3 lg:grid-cols-3">
         {/* Live queue */}
-        <section className="glass-card rounded-2xl p-5 lg:col-span-2">
-          <h2 className="mb-4 font-headline-sm text-headline-sm">Live order queue</h2>
+        <section className="glass-card rounded-2xl p-4 lg:col-span-2">
+          <h2 className="mb-3 font-headline-sm text-headline-sm">Live order queue</h2>
           <div className="space-y-2">
             {live.length === 0 ? (
-              <p className="py-8 text-center text-body-sm text-secondary">
+              <p className="py-6 text-center text-body-sm text-secondary">
                 No active orders. Share your menu to get started.
               </p>
             ) : (
               live.map((order) => (
                 <div
                   key={order.id}
-                  className="flex items-center gap-3 rounded-xl border border-outline-variant bg-surface-container-lowest p-3"
+                  className="flex items-center gap-2.5 rounded-xl border border-outline-variant bg-surface-container-lowest p-2.5"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
@@ -66,8 +73,8 @@ export function DashboardPage() {
                   </div>
                   <button
                     type="button"
-                    disabled={advance.isPending}
-                    onClick={() => advance.mutate(order.id)}
+                    disabled={pending.has(order.id)}
+                    onClick={() => handleAdvance(order.id)}
                     className="whitespace-nowrap rounded-lg bg-primary px-3 py-2 font-label-md text-on-primary transition-all active:scale-95 disabled:opacity-50"
                   >
                     {order.status === 'NEW' ? 'Accept' : order.status === 'PREPARING' ? 'Ready' : 'Complete'}
@@ -79,12 +86,12 @@ export function DashboardPage() {
         </section>
 
         {/* Side column */}
-        <div className="space-y-4">
+        <div className="space-y-3">
           <ShareCard shareUrl={shareUrl} />
-          <section className="glass-card rounded-2xl p-5">
+          <section className="glass-card rounded-2xl p-4">
             <h2 className="mb-3 font-headline-sm text-headline-sm">Top sellers today</h2>
             {stats && stats.topItems.length > 0 ? (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {stats.topItems.map((t) => {
                   const max = stats.topItems[0]?.qty ?? 1;
                   return (
@@ -115,9 +122,9 @@ export function DashboardPage() {
 
 function Kpi({ icon, label, value }: { icon: string; label: string; value: string }) {
   return (
-    <div className="glass-card rounded-2xl p-5">
-      <div className="mb-3 w-fit rounded-lg bg-primary/10 p-2.5 text-primary">
-        <span className="material-symbols-outlined">{icon}</span>
+    <div className="glass-card rounded-2xl p-3.5">
+      <div className="mb-2 w-fit rounded-lg bg-primary/10 p-2 text-primary">
+        <span className="material-symbols-outlined text-[20px]">{icon}</span>
       </div>
       <p className="font-label-md text-secondary">{label}</p>
       <h3 className="font-headline-lg text-headline-lg text-on-surface">{value}</h3>
@@ -136,7 +143,7 @@ function ShareCard({ shareUrl }: { shareUrl: string }) {
   };
 
   return (
-    <section className="glass-card rounded-2xl p-5">
+    <section className="glass-card rounded-2xl p-4">
       <h2 className="mb-3 font-headline-sm text-headline-sm">Your menu link</h2>
       <div className="flex gap-3">
         <div className="min-w-0 flex-1">

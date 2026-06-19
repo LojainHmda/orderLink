@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query';
 import type { CreateOrderInput, OrderDTO, OrderStatus } from '@orderlink/shared';
 import { api } from '../../lib/api';
+import { getGuestId } from '../../lib/guest';
 
 export const orderKeys = {
   all: ['orders'] as const,
   list: (slug: string) => [...orderKeys.all, slug] as const,
   detail: (id: string) => ['order', id] as const,
+  history: (slug: string, phone: string) => ['orderHistory', slug, phone] as const,
 };
 
 /** Insert or replace an order in the cached list, keeping newest first. */
@@ -38,9 +40,32 @@ export function useOrder(id: string) {
 export function useCreateOrder(slug: string) {
   const qc = useQueryClient();
   return useMutation({
+    // Stamp every order with the anonymous guest id so the customer can find it
+    // again under "My orders" (the server keeps any explicitly-provided id).
     mutationFn: async (input: CreateOrderInput) =>
-      (await api.post<OrderDTO>(`/restaurants/${slug}/orders`, input)).data,
-    onSuccess: (order) => upsertOrder(qc, slug, order),
+      (await api.post<OrderDTO>(`/restaurants/${slug}/orders`, { guestId: getGuestId(), ...input }))
+        .data,
+    onSuccess: (order) => {
+      upsertOrder(qc, slug, order);
+      qc.invalidateQueries({ queryKey: ['orderHistory', slug] });
+    },
+  });
+}
+
+/**
+ * A guest's own past orders for this restaurant, looked up by their anonymous
+ * guest id (always) plus an optional phone number (broadens the match across
+ * devices). No login required.
+ */
+export function useGuestOrderHistory(slug: string, phone: string, enabled = true) {
+  return useQuery({
+    queryKey: orderKeys.history(slug, phone),
+    queryFn: async () => {
+      const params = new URLSearchParams({ guestId: getGuestId() });
+      if (phone.trim()) params.set('phone', phone.trim());
+      return (await api.get<OrderDTO[]>(`/restaurants/${slug}/orders/history?${params}`)).data;
+    },
+    enabled: enabled && Boolean(slug),
   });
 }
 

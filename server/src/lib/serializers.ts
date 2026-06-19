@@ -49,13 +49,18 @@ function toOrderItemDTO(i: OrderItem): OrderItemDTO {
   };
 }
 
-export type OrderWithRelations = Order & { items: OrderItem[]; events: OrderEvent[] };
+export type OrderWithRelations = Order & {
+  items: OrderItem[];
+  events: OrderEvent[];
+  restaurant: { slug: string };
+};
 
 export function toOrderDTO(o: OrderWithRelations): OrderDTO {
   return {
     id: o.id,
     code: o.code,
     restaurantId: o.restaurantId,
+    restaurantSlug: o.restaurant.slug,
     channel: o.channel,
     type: o.type,
     table: o.table,

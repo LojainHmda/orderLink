@@ -1,4 +1,9 @@
-import { createOrderSchema, listOrdersQuerySchema, updateOrderStatusSchema } from '@orderlink/shared';
+import {
+  createOrderSchema,
+  guestOrdersQuerySchema,
+  listOrdersQuerySchema,
+  updateOrderStatusSchema,
+} from '@orderlink/shared';
 import { asyncHandler } from '../../utils/async-handler.js';
 import { param } from '../../utils/http.js';
 import { getRestaurantBySlug } from '../restaurants/restaurants.service.js';
@@ -16,6 +21,12 @@ export const create = asyncHandler(async (req, res) => {
   const input = createOrderSchema.parse(req.body);
   const order = await service.createOrder(restaurant, input);
   res.status(201).json(order);
+});
+
+export const history = asyncHandler(async (req, res) => {
+  const restaurant = await getRestaurantBySlug(param(req, 'slug'));
+  const query = guestOrdersQuerySchema.parse(req.query);
+  res.json(await service.listGuestOrders(restaurant.id, query));
 });
 
 export const stats = asyncHandler(async (req, res) => {

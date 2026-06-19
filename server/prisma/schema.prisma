@@ -84,6 +84,9 @@ model Order {
   table         String?
   customerName  String
   customerPhone String?
+  // Anonymous, client-generated id that links a guest's orders for history /
+  // reorder — no account required.
+  guestId       String?
   note          String?
   status        OrderStatus  @default(NEW)
 
@@ -100,6 +103,7 @@ model Order {
   @@unique([restaurantId, code])
   @@index([restaurantId, status])
   @@index([restaurantId, createdAt])
+  @@index([restaurantId, guestId])
 }
 
 model OrderItem {

@@ -36,28 +36,28 @@ export function OrderCard({ order, currency, isNew, busy, onAdvance, onReject }:
 
   return (
     <article
-      className={`rounded-xl border border-outline-variant bg-surface-container-lowest p-4 shadow-sm animate-slide-in ${
+      className={`rounded-xl border border-outline-variant bg-surface-container-lowest p-3 shadow-sm animate-slide-in ${
         order.status === 'NEW' && isNew ? 'animate-new-order border-primary-container' : ''
       }`}
     >
-      <header className="mb-2 flex items-start justify-between">
-        <div>
-          <div className="flex items-center gap-2">
-            <h3 className="font-headline-sm text-headline-sm">#{order.code}</h3>
-            <span className="inline-flex items-center gap-1 text-label-sm text-secondary">
-              <span className="material-symbols-outlined text-[14px]">
-                {order.channel === 'POS' ? 'point_of_sale' : 'smartphone'}
-              </span>
-              {order.channel === 'POS' ? 'POS' : 'Online'}
+      {/* Order type — full-width band across the top of the card. */}
+      <div className="mb-2 flex items-center justify-center gap-1 rounded-lg bg-surface-container-high px-2 py-1 font-label-md text-label-md text-on-surface-variant">
+        <span className="material-symbols-outlined text-[15px]">{type.icon}</span>
+        {type.label}
+        {order.table ? ` · T${order.table}` : ''}
+      </div>
+
+      <header className="mb-2">
+        <div className="flex items-center gap-2">
+          <h3 className="font-headline-sm text-headline-sm">#{order.code}</h3>
+          <span className="inline-flex items-center gap-1 text-label-sm text-secondary">
+            <span className="material-symbols-outlined text-[14px]">
+              {order.channel === 'POS' ? 'point_of_sale' : 'smartphone'}
             </span>
-          </div>
-          <p className="font-label-lg text-on-surface">{order.customerName}</p>
+            {order.channel === 'POS' ? 'POS' : 'Online'}
+          </span>
         </div>
-        <span className="inline-flex items-center gap-1 rounded-full border border-outline-variant bg-surface-container-high px-2.5 py-1 font-label-md text-label-md text-on-surface-variant">
-          <span className="material-symbols-outlined text-[15px]">{type.icon}</span>
-          {type.label}
-          {order.table ? ` · T${order.table}` : ''}
-        </span>
+        <p className="mt-0.5 truncate font-label-lg text-on-surface">{order.customerName}</p>
       </header>
 
       <ul className="mb-2 space-y-1">
@@ -84,13 +84,15 @@ export function OrderCard({ order, currency, isNew, busy, onAdvance, onReject }:
       </div>
 
       {isLive ? (
-        <div className="mt-3 grid grid-cols-2 gap-2">
+        <div
+          className={`mt-2.5 grid gap-2 ${order.status === 'NEW' ? 'grid-cols-2' : 'grid-cols-1'}`}
+        >
           {canAdvance ? (
             <button
               type="button"
               disabled={busy}
               onClick={() => onAdvance(order.id)}
-              className="rounded-lg bg-primary py-2.5 font-label-lg text-on-primary transition-all active:scale-95 disabled:opacity-50"
+              className="rounded-lg bg-primary py-1.5 font-label-md text-on-primary transition-all active:scale-95 disabled:opacity-50"
             >
               {advanceLabel(order)}
             </button>
@@ -100,14 +102,14 @@ export function OrderCard({ order, currency, isNew, busy, onAdvance, onReject }:
               type="button"
               disabled={busy}
               onClick={() => onReject(order.id)}
-              className="rounded-lg bg-surface-container-high py-2.5 font-label-lg text-secondary transition-all hover:bg-error-container hover:text-on-error-container disabled:opacity-50"
+              className="rounded-lg bg-surface-container-high py-1.5 font-label-md text-secondary transition-all hover:bg-error-container hover:text-on-error-container disabled:opacity-50"
             >
               Reject
             </button>
           ) : null}
         </div>
       ) : (
-        <p className="mt-3 flex items-center gap-1 text-label-md text-secondary">
+        <p className="mt-2.5 flex items-center gap-1 text-label-md text-secondary">
           <span className="material-symbols-outlined text-[18px]">check</span>
           {order.status === 'COMPLETED' ? 'Completed' : 'Closed'} {timeAgo(order.updatedAt)}
         </p>

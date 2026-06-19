@@ -51,6 +51,8 @@ export interface OrderDTO {
   id: string;
   code: number;
   restaurantId: string;
+  /** Public slug of the owning restaurant — lets the order page link back to its menu. */
+  restaurantSlug: string;
   channel: OrderChannel;
   type: OrderType;
   table: string | null;

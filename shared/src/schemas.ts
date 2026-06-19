@@ -38,6 +38,9 @@ export const createOrderSchema = z.object({
   table: z.string().trim().max(20).nullish(),
   customerName: z.string().trim().min(1).max(80),
   customerPhone: z.string().trim().max(30).optional(),
+  // Anonymous, client-generated identifier that ties a guest's orders together
+  // for "my orders" history — no account or login required.
+  guestId: z.string().trim().min(8).max(64).optional(),
   note: z.string().trim().max(500).optional(),
   items: z.array(createOrderItemSchema).min(1, 'An order needs at least one item'),
 });
@@ -59,3 +62,13 @@ export const listOrdersQuerySchema = z.object({
     .transform((v) => v === true || v === 'true'),
 });
 export type ListOrdersQuery = z.infer<typeof listOrdersQuerySchema>;
+
+/**
+ * Lookup for a guest's own order history. Matches by the anonymous guest id
+ * and/or a phone number — at least one must be supplied by the caller.
+ */
+export const guestOrdersQuerySchema = z.object({
+  guestId: z.string().trim().min(8).max(64).optional(),
+  phone: z.string().trim().min(4).max(30).optional(),
+});
+export type GuestOrdersQuery = z.infer<typeof guestOrdersQuerySchema>;

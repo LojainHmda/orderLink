@@ -4,6 +4,7 @@ import {
   nextStatus,
   round2,
   type CreateOrderInput,
+  type GuestOrdersQuery,
   type ListOrdersQuery,
   type OrderDTO,
   type OrderStatus,
@@ -17,6 +18,7 @@ import { emitOrderCreated, emitOrderUpdated } from '../../lib/realtime.js';
 const ORDER_INCLUDE = {
   items: true,
   events: { orderBy: { createdAt: 'asc' } },
+  restaurant: { select: { slug: true } },
 } satisfies Prisma.OrderInclude;
 
 const LIVE_STATUSES: OrderStatus[] = ['NEW', 'PREPARING', 'READY'];
@@ -80,6 +82,7 @@ export async function createOrder(
         table: input.table ?? null,
         customerName: input.customerName,
         customerPhone: input.customerPhone ?? null,
+        guestId: input.guestId ?? null,
         note: input.note ?? null,
         status: initialStatus,
         subtotal: new Prisma.Decimal(subtotal),
@@ -118,6 +121,30 @@ export async function listOrders(
     where,
     include: ORDER_INCLUDE,
     orderBy: { createdAt: 'desc' },
+  });
+  return orders.map(toOrderDTO);
+}
+
+/**
+ * A guest's own order history, scoped to one restaurant. Matches on the
+ * anonymous guest id and/or the phone number they ordered with. Requires at
+ * least one identifier — with neither, there is nothing to look up, so we
+ * return an empty list rather than leaking the restaurant's whole order book.
+ */
+export async function listGuestOrders(
+  restaurantId: string,
+  query: GuestOrdersQuery,
+): Promise<OrderDTO[]> {
+  const match: Prisma.OrderWhereInput[] = [];
+  if (query.guestId) match.push({ guestId: query.guestId });
+  if (query.phone) match.push({ customerPhone: query.phone });
+  if (match.length === 0) return [];
+
+  const orders = await prisma.order.findMany({
+    where: { restaurantId, OR: match },
+    include: ORDER_INCLUDE,
+    orderBy: { createdAt: 'desc' },
+    take: 25,
   });
   return orders.map(toOrderDTO);
 }
